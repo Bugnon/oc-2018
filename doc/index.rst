@@ -11,6 +11,7 @@ Welcome to oc-2018's documentation!
    :caption: Contents:
 
    01-intro
+   glossary
 
 
 Indices and tables
