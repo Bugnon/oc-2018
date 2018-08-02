@@ -3,3 +3,7 @@ Option Complémentaire informatique
 
 install Sphinx
 
+  $cd
+  
+  >>>1+1
+  2
