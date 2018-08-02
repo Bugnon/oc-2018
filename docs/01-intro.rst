@@ -2,6 +2,32 @@
 Option complémentaire en informatique
 =====================================
 
+Ce site GitHub contient le matériel pour le cours d'option complémentaire 
+en informatique du gymnase du Bugnon.
+
+Les sujets sonts: 
+
+* Raspberry Pi
+* GitHub
+* Linux
+* LaTeX
+* Python
+* Jupyter Lab
+* Jupyter Notebook
+* Widgets
+* Bokeh
+* Matplotlib
+* NumPy
+* SciPy
+* OpenCV
+* MarkDown
+* reStructuredText
+* Sphinx
+* HTML
+* CSS
+* Pygame
+* Minecraft
+
 Once Sphinx is :doc:`installed <glossary>`, you can proceed with
 setting up your first Sphinx project. To ease the process of getting started,
 Sphinx provides a tool, :program:`sphinx-quickstart`, which will generate a
@@ -137,5 +163,10 @@ This is a heading
 This is a heading
 -----------------
 
+.. this is a comment
+
+.. code-block:: shell
+
+   $ sphinx-quickstart
 
 
