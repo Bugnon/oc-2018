@@ -1,0 +1,2 @@
+This is the nano text editor.
+Add some more text

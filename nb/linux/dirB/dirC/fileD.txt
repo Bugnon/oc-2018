@@ -1,0 +1,11 @@
+total 152
+-rw-r--r--  1 raphael  staff  33848  3 aoû 15:36 Linux.ipynb
+-rw-r--r--  1 raphael  staff     48  3 aoû 15:20 demo.txt
+drwxr-xr-x  2 raphael  staff     68  3 aoû 13:45 dirA
+drwxr-xr-x  2 raphael  staff     68  3 aoû 13:45 dirB
+-rw-r--r--  1 raphael  staff     12  3 aoû 15:33 fileA.txt
+-rw-r--r--  1 raphael  staff     31  3 aoû 15:37 fileB.txt
+-rw-r--r--  1 raphael  staff    140  3 aoû 15:37 fileC.txt
+-rw-r--r--  1 raphael  staff      0  3 aoû 15:37 fileD.txt
+-rw-r--r--  1 raphael  staff     31  3 aoû 15:10 hello.txt
+-rw-r--r--@ 1 raphael  staff  18708  3 aoû 15:15 nano.png
