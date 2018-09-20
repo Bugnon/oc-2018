@@ -1,8 +1,5 @@
-# Projet Tokyo 1
+# Projet Tokyo 3
 
-Hélène cheffe de projet, on t'écoute
-
-+
 ## Variable definitions
 
 ```
@@ -31,9 +28,5 @@ var t_hr
 * forward = increment counter
 * center =
 * backword = decrement counter
-
 * left = previous state (time/alarm/chrono/timer)
 * right = next state 
-
-
-
