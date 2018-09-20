@@ -2,6 +2,4 @@
 
 Hélène cheffe de projet, on t'écoute
 
-bah je comprends rien donc m'ecoutez pas trop :)
-
-Go créer le prochain Iphone
+non je rigole, je comprends tout
