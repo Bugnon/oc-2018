@@ -1,0 +1,78 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="12279" name="thymio-II">#Thymio Tokyo watch structure commune groupe 1
+#Hélène Hugo Pierre Térence
+#2018.09.20
+
+var display_h #Affichage heures
+var display_m #Affichage minutes
+var display_s #Affichage secondes
+
+var display_am # AM?
+
+var mode
+# 0 : clock
+# 1 : alarm
+# 2 : chronometer
+# 3 : timer
+
+timer.period[0] = 1 #1000ms=1s
+
+display_am = 1 #commence en tant que AM
+
+call leds.rc(0)
+call leds.temperature(0,0)
+	
+	onevent timer0
+
+	display_s++ #incrémente les secondes
+	
+	when display_s>=60 do #reset les secondes chaque minute
+		display_s=0
+		display_m++ #incrémente les minutes chaque 60s
+	end
+	
+	when display_m>=60 do #reset les minutes chaque heure
+		display_m=0
+		display_h++ #incrémente l'heure chaque 60minutes
+	end
+	
+	when display_h>=12 and display_am==0 do #passe AM en 1 après 12h s'il vaut 0
+		display_am=1
+		display_h=0 #reset l'heure
+	end
+	
+	when display_h>=12 and display_am==1 do #passe AM en 0 après 12h s'il vaut 1
+		display_am=0
+		display_h=0 #reset l'heure
+	end
+
+onevent acc #activation 10Hz
+	#affiche les secondes en binaire sur les capteurs frontaux
+	call leds.prox.h((display_s&amp;1)*32,(display_s&amp;2)*16,(display_s&amp;4)*8,(display_s&amp;8)*4,(display_s&amp;16)*2,(display_s&amp;32)*1,0,0)
+	#affiche les minutes en binaire sur le cercle
+	call leds.circle((display_m&amp;1)*32,(display_m&amp;2)*16,(display_m&amp;4)*8,(display_m&amp;8)*4,(display_m&amp;16)*2,(display_m&amp;32)*1,0,0)
+	#affiche les heures en binaire sur les boutons
+	call leds.buttons((display_h&amp;1)*32,(display_h&amp;2)*16,(display_h&amp;4)*8,(display_h&amp;8)*4)
+
+	#allume le coté gauche si AM==1
+	call leds.bottom.left(display_am*32,display_am*32,display_am*0)
+	#allume le coté droit si AM==0
+	#~display_am retourne -1 si AM==0 -> +2 permet d'obtenir 1, *32 donne 32 si AM==1
+	call leds.bottom.right(((~display_am)+2)*32,((~display_am)+2)*32,((~display_am)+2)*0)</node>
+
+
+</network>
