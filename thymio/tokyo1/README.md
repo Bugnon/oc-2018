@@ -25,12 +25,25 @@ var c_hr
 var t_sec
 var t_min
 var t_hr
+
+# mode
+var mode
+# 0 : clock
+# 1 : alarm
+# 2 : chronometer
+# 3 : timer
+
+# display
+var display_s #display seconds
+var display_m #display minutes
+var display_h #display hours
+
 ```
 
 ## Button meanings
-* forward = increment counter
+* forwards = increment counter
 * center =
-* backword = decrement counter
+* backwards = decrement counter
 
 * left = previous state (time/alarm/chrono/timer)
 * right = next state 
