@@ -28,7 +28,6 @@ var t_hr
 * forward = increment counter
 * center =
 * backword = decrement counter
-
 * left = previous state (time/alarm/chrono/timer)
 * right = next state 
 
