@@ -1,0 +1,42 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="45620" name="thymio-II"># Auteur : Hugo Ducommun
+
+# Déclaration des variables
+
+var c_sec
+var c_min
+var c_hr
+var state
+
+# Début du programme
+
+# On appuie sur le bouton du milieu pour démarrer
+when button.center==1 do
+	if state == 0 then
+		state=1	
+	end
+	timer.period[0]=1000
+end
+
+# Quand le timer sonne, rajouter une seconde
+onevent timer0
+	c_sec++
+	timer.period[0]=1000
+	</node>
+
+
+</network>
