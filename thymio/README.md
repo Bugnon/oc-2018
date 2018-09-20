@@ -1,4 +1,4 @@
-# Projet Toyko Watch
+# Projet Tokyo Watch
 
 Programmer le Thymio pour créer un chronomètre à affichage binaire avec les fonctionalités suivantes:
 * Montre qui affiche heures, minutes et secondes (hh:mm:ss)
