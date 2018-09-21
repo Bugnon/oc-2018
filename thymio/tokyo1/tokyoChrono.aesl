@@ -20,24 +20,24 @@
 ##########################################################
 #DÉCLARATION DES VARIABLES
 
-var c_h = 0
-var c_m = 0	#Chrono normal
+var c_h = 0	#Temps du chrono normal
+var c_m = 0
 var c_s = 0
 
-var c_h_mem1 = 0
-var c_m_mem1 = 0 #Temps enregistré N°1
+var c_h_mem1 = 0 #Temps enregistré N°1
+var c_m_mem1 = 0
 var c_s_mem1 = 0
 
-var c_h_mem2 = 0
-var c_m_mem2 = 0 #Temps enregistré N°2
+var c_h_mem2 = 0 #Temps enregistré N°2
+var c_m_mem2 = 0
 var c_s_mem2 = 0
 
-var c_h_mem3 = 0
-var c_m_mem3 = 0 #Temps enregistré N°3
+var c_h_mem3 = 0 #Temps enregistré N°3
+var c_m_mem3 = 0
 var c_s_mem3 = 0
 
 var c_state = 0  #État du chronomètre (0 = éteint, 1 = allumé et 2 = arrêté)
-var c_mem = 0	 #Indique le nombre de temps déjà enregistré, s'il y en a déjà 3, ne fait rien.
+var c_mem = 0	 #Indique le nombre de temps déjà enregistré.
 
 #FIN DÉCLARATION DES VARIABLES
 ##########################################################
@@ -53,6 +53,7 @@ call leds.circle(0, 0, 0, 0, 0, 0, 0, 0)
 call leds.buttons(0, 0, 0, 0)
 
 call leds.top(32, 32, 0) #S'allume en jaune pour indiquer le mode chronomètre
+
 
 onevent buttons
 
@@ -72,7 +73,7 @@ when button.center==1 do	#Choisis si le chrono démarre, s'arrête ou s'efface e
 		timer.period[0] = 0
 	else
 		c_state=0	#Passe en état éteint si on appuie sur le bouton avec l'état arrêté
-		c_h=0	#Reset des variables
+		c_h=0	#Reset toutes les variables dans l'éventualité de relancer le chrono
 		c_m=0
 		c_s=0
 		
@@ -116,6 +117,8 @@ when button.backward == 1 do	#Enregistre le temps en appuyant sur le bouton arri
 
 end
 
+##########################################################
+
 onevent timer0 #Chaque seconde
 
 	c_s++ #Incrémente les secondes
@@ -134,6 +137,8 @@ onevent timer0 #Chaque seconde
 		c_state++	  #Passe en état arrêté
 		timer.period[0] = 0
 	end
+
+##########################################################
 
 onevent prox
 
