@@ -60,14 +60,14 @@ onevent buttons
 when button.forward==1 do #Si le chronomètre est arrêté, possibilité de la relancer en appuyant sur le bouton avant.
 	if c_state==2 then
 		c_state--
-		timer.period[0] = 1
+		timer.period[0] = 1000
 	end
 end
 
 when button.center==1 do	#Choisis si le chrono démarre, s'arrête ou s'efface en appuyant sur le bouton central
 	if c_state==0 then	#Passe en état allumé si on appuie sur le bouton avec l'état éteint
 		c_state++
-		timer.period[0] = 1
+		timer.period[0] = 1000
 	elseif c_state==1 then	#Passe en état arrêté si on appuie sur le bouton avec l'état allumé
 		c_state++
 		timer.period[0] = 0
@@ -133,7 +133,7 @@ onevent timer0 #Chaque seconde
 		c_h++ #Incrémente l'heure chaque 60minutes
 	end
 	
-	when c_h >= 16 do #Arrête le chronomètre après 15 heures passées
+	when c_h >= 15 do #Arrête le chronomètre après 15 heures passées
 		c_state++	  #Passe en état arrêté
 		timer.period[0] = 0
 	end
