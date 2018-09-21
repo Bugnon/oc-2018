@@ -17,6 +17,12 @@
 #Hélène Hugo Pierre Térence
 #2018.09.20
 
+####################
+#                  #
+# Module principal #
+#                  #
+####################
+
 var display_h #Affichage heures
 var display_m #Affichage minutes
 var display_s #Affichage secondes
@@ -29,14 +35,28 @@ var mode
 # 2 : chronometer
 # 3 : timer
 
-timer.period[0] = 1 #1000ms=1s
+var active #mode actif?
+
+var couleur1[4] #tableau R des modules
+var couleur2[4] #tableau G des modules
+var couleur3[4] #tableau B des modules
+
+var test #variable de test
+
+couleur1 = [16,32,0,32]
+couleur2 = [0,16,0,32]
+couleur3 = [16,0,0,0]
+
+#Timer temporaire, à déplacer dans le module horloge
+timer.period[0] = 1 #1000ms=1s | mis sur 0.001s pour les tests
 
 display_am = 1 #commence en tant que AM
 
 call leds.rc(0)
 call leds.temperature(0,0)
-	
-	onevent timer0
+
+#Gestion des heures/minutes/secondes		
+onevent timer0
 
 	display_s++ #incrémente les secondes
 	
@@ -59,8 +79,30 @@ call leds.temperature(0,0)
 		display_am=0
 		display_h=0 #reset l'heure
 	end
+	
+onevent buttons
+	when button.left==1 do #décrémente le mode de 1 à chaque pression
+		mode --
+		active=0 #marque la sélection comme non active à chaque changement de mode
+		if mode&lt;0 then #saute à 3 si minimum atteint
+			mode=3
+		end
+	end
+	
+	when button.right==1 do #pareil mais dans le sens inverse
+		mode ++
+		active=0
+		if mode>3 then
+			mode=0
+		end
+	end
 
-onevent acc #activation 10Hz
+	when button.center==1 do #active la sélection
+		active=1
+	end
+
+#Gestion de l'affichage
+onevent acc #activation 16Hz
 	#affiche les secondes en binaire sur les capteurs frontaux
 	call leds.prox.h((display_s&amp;1)*32,(display_s&amp;2)*16,(display_s&amp;4)*8,(display_s&amp;8)*4,(display_s&amp;16)*2,(display_s&amp;32)*1,0,0)
 	#affiche les minutes en binaire sur le cercle
@@ -72,7 +114,18 @@ onevent acc #activation 10Hz
 	call leds.bottom.left(display_am*32,display_am*32,display_am*0)
 	#allume le coté droit si AM==0
 	#~display_am retourne -1 si AM==0 -> +2 permet d'obtenir 1, *32 donne 32 si AM==1
-	call leds.bottom.right(((~display_am)+2)*32,((~display_am)+2)*32,((~display_am)+2)*0)</node>
+	call leds.bottom.right(((~display_am)+2)*32,((~display_am)+2)*32,((~display_am)+2)*0)
+	
+	#affiche la fonction à intensité/2 si non activée, ou à intensité normale si activée. ~active+3 == 2 si active==0, ~active+3 == 1 si active==1
+	call leds.top(couleur1[mode]/(~active+3),couleur2[mode]/(~active+3),couleur3[mode]/(~active+3))
+	test = (~active+2)+1
+	
+#################################
+#                               #
+# Fin du module principal       #
+# Début des modules secondaires #
+#                               #
+#################################</node>
 
 
 </network>
