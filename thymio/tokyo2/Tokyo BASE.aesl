@@ -1,0 +1,134 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="46529" name="thymio-II"># projet: Tokyo Watch
+# Auteur: Michael
+# Date : 21.09.2018
+ 
+#Définition des variables
+var h
+var m 
+var s 
+var mode=10
+
+#* Définition des différents mode
+10 = affichage classique de l'horloge
+11 = (horloge) modification de l'heure
+12 = (horloge) modification des minutes
+13 = (horloge) modification des secondes
+
+
+*#
+ 
+# Extinction de toutes les leds
+call leds.circle(0, 0, 0, 0, 0, 0,0 , 0)
+call leds.top(0, 0, 0)
+call leds.buttons(0, 0, 0, 0)
+call leds.bottom.left(0, 0, 0)
+call leds.bottom.right(0, 0, 0)
+call leds.prox.h(0, 0, 0, 0, 0, 0, 0, 0)
+call leds.prox.v(0, 0)
+call leds.rc(0)
+call leds.temperature(0, 0)
+call leds.sound(0)
+
+#Début du code de l'horloge
+
+timer.period[0] = 992 #Définitoin de notre seconde en milli-seconde
+
+onevent timer0 #incrementer seconde
+	s++
+	if s==60 then
+		m++
+		s=0
+	end
+	
+	if m==60 then
+		h++ #Incrémenter heure
+		m=0
+	end
+	
+	if h==24 then
+		h=0 #reset de l'heure après 24 heures
+	end
+
+# réglages de l'heure
+onevent buttons
+when button.left==1 do
+	
+	if  mode==10 then
+			call leds.top(32, 0, 0)
+			mode=11 #heure
+	end
+	
+	while  mode==11 do
+			call leds.top(0, 32, 0)
+			mode=12 #minute
+	end
+	
+	while  mode==12 do
+			call leds.top(0, 0, 32)
+			mode=13 #seconde
+	end
+	
+	while  mode==13 do
+			call leds.top(0, 0, 0)
+			mode=10
+	end
+end
+
+when button.backward==1 do
+
+ 	while  mode==11 do
+ 			h++
+ 	end
+		
+	while  mode==12 do
+ 			m++
+ 	end
+ 	
+ 	while  mode==13 do
+ 			s=0
+ 	end
+ 		
+end
+ 	
+if button.forward==1 then
+
+
+ 	while  mode==11 do
+ 			h--
+ 	end
+		
+	while  mode==12 do
+ 			m--
+ 	end
+ 	
+ 	while  mode==13 do
+ 			s=0
+ 	end
+	
+end		
+		
+		# affichage heure exact
+if mode>=10 and  mode&lt;=13 then
+	call leds.circle( 0, 0, (m&amp;1)*32, (m&amp;2)*16, (m&amp;4)*8, (m&amp;8)*4, (m&amp;16)*2, (m&amp;32)) 
+	call leds.prox.h((s&amp;32), (s&amp;16)*2, (s&amp;8)*4, (s&amp;4)*8, (s&amp;2)*16 , (s&amp;1)*32, 0, 0)
+	call leds.buttons ((h&amp;8)*4, (h&amp;1)*32, (h&amp;2)*16, (h&amp;4)*8)
+	call leds.prox.v((h&amp;16)*2, (h&amp;16)*2)
+end</node>
+
+
+</network>
