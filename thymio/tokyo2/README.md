@@ -29,8 +29,8 @@
 # Définitons des boutons
 
 * Bouton central => changement de mode (montre, chrono, horloge, timer)
-* Bouton bas => descendre la valeur
-* Bouton haut => augmenter la valeur
+* Bouton avancer => descendre la valeur
+* Bouton reculer=> augmenter la valeur
 * Bouton gauche => set / pause / désafficher la pause du chrono
 * Bouton droit => Démarrage / Stop
 
