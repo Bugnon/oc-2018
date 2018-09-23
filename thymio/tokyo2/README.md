@@ -29,8 +29,8 @@
 # Définitons des boutons
 
 * Bouton central => changement de mode (montre, chrono, horloge, timer)
-* Bouton avancer => descendre la valeur
-* Bouton reculer=> augmenter la valeur
+* Bouton avancer => augmenter la valeur
+* Bouton reculer=> descendre la valeur
 * Bouton gauche => set / pause / désafficher la pause du chrono
 * Bouton droit => Démarrage / Stop
 
@@ -39,4 +39,4 @@
 * Leds du cercle => minutes
 * Leds de proximité avant (celles en haut uniquement) => secondes
 * Leds des boutons + autre led à définir => heures
-* Led à définir=> état du robot
+* Led du top=> état du robot (rouge = état 1 (montre) / vert = état 2 (chronomètre) / bleu = état 3 (alarme) / blanc = état 4 (Timer)
