@@ -21,7 +21,7 @@
 var h
 var m 
 var s 
-var mode=10
+var mode=11
 
 #* Définition des différents mode
 10 = affichage classique de l'horloge
@@ -68,58 +68,56 @@ onevent timer0 #incrementer seconde
 onevent buttons
 when button.left==1 do
 	
-	if  mode==10 then
-			call leds.top(32, 0, 0)
-			mode=11 #heure
-	end
-	
-	while  mode==11 do
+	if mode==10 then
+		call leds.top(32, 0, 0)
+		mode=11 #heure
+	else
+		if mode==11 then
 			call leds.top(0, 32, 0)
 			mode=12 #minute
-	end
-	
-	while  mode==12 do
-			call leds.top(0, 0, 32)
-			mode=13 #seconde
-	end
-	
-	while  mode==13 do
-			call leds.top(0, 0, 0)
-			mode=10
+		else
+			if mode==12 then
+				call leds.top(0, 0, 32)
+				mode=13 #seconde
+			else
+				if  mode==13 then
+					call leds.top(0, 0, 0)
+					mode=10
+				end		
+			end
+		end
 	end
 end
 
 when button.backward==1 do
 
- 	while  mode==11 do
- 			h++
- 	end
-		
-	while  mode==12 do
+ 	if mode==11 then
+ 		h++
+ 	else
+ 		if mode==12 then
  			m++
+ 		else
+ 			if mode==13 then
+ 				s=0
+ 			end
+ 		end
  	end
- 	
- 	while  mode==13 do
- 			s=0
- 	end
- 		
 end
  	
-if button.forward==1 then
+when button.forward==1 do
 
 
- 	while  mode==11 do
- 			h--
- 	end
-		
-	while  mode==12 do
+ 	if mode==11 then
+ 		h--
+ 	else
+ 		if mode==12 then
  			m--
- 	end
- 	
- 	while  mode==13 do
- 			s=0
- 	end
-	
+ 		else
+ 			if mode==13 then
+ 				s=0
+ 			end
+ 		end
+ 	end	
 end		
 		
 		# affichage heure exact
