@@ -1,0 +1,55 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+<constant value="0" name="STOP"/>
+<constant value="1" name="COUNT"/>
+<constant value="2" name="ALARM"/>
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="7100" name="thymio-II"># file TimerDemo
+
+var sec = 10
+var state = STOP
+
+# 0: stop - setting timer (blue)
+# 1: count - counting down (green)
+# 2: alarm (red)
+
+timer.period[0]=1000
+
+onevent buttons
+  when button.forward==1  do sec++   end  # increment seconds
+  when button.backward==1 do sec--   end  # decrement seconds
+  when button.center==1   do state=STOP end  # stop alarm
+  when button.right==1    do state=COUNT end  # start timer
+  
+  call leds.buttons((sec&amp;1)*32, (sec&amp;2)*16, (sec&amp;4)*8, (sec&amp;8)*4)
+
+onevent timer0
+  if  state==STOP then
+  	call leds.top(0, 0, 32)
+  	
+  elseif  state==COUNT then
+  	call leds.top(0, 32, 0)
+  	sec--
+  	call sound.freq(880, 1)
+  	if  sec==0 then
+  		state=ALARM
+  	end
+  elseif state==ALARM then
+  	call leds.top(32, 0, 0)
+	call sound.freq(880, 30)
+  end</node>
+
+
+</network>
