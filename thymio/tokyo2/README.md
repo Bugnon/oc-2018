@@ -39,4 +39,4 @@
 * Leds du cercle => minutes
 * Leds de proximité avant (celles en haut uniquement) => secondes
 * Leds des boutons + autre led à définir => heures
-* Led du top=> état du robot (rouge = état 1 (montre) / vert = état 2 (chronomètre) / bleu = état 3 (alarme) / absence de lumière = état 4 (Timer)
+* Led du top=> état du robot (aucune lumière = aucun état (montre) / rouge = état 2 (chronomètre) / vert = état 1 (alarme) / bleu = état 3 (Timer)
