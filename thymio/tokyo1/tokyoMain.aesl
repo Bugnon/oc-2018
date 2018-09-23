@@ -29,6 +29,8 @@ var display_s #Affichage secondes
 
 var display_am # AM?
 
+var time
+
 var mode
 # 0 : clock
 # 1 : alarm
@@ -43,43 +45,24 @@ var couleur3[4] #tableau B des modules
 
 var test #variable de test
 
+#Variables modules
+
+var clock_h
+var clock_m
+var clock_s
+
+#Tableau de couleurs des modules
+
 couleur1 = [16,32,0,32]
 couleur2 = [0,16,0,32]
 couleur3 = [16,0,0,0]
 
 #Timer temporaire, à déplacer dans le module horloge
-timer.period[0] = 1 #1000ms=1s | mis sur 0.001s pour les tests
+timer.period[0] = 10 #1000ms=1s | mis sur 0.001s pour les tests
 
 display_am = 1 #commence en tant que AM
 
-call leds.rc(0)
-call leds.temperature(0,0)
-
-#Gestion des heures/minutes/secondes		
-onevent timer0
-
-	display_s++ #incrémente les secondes
-	
-	when display_s>=60 do #reset les secondes chaque minute
-		display_s=0
-		display_m++ #incrémente les minutes chaque 60s
-	end
-	
-	when display_m>=60 do #reset les minutes chaque heure
-		display_m=0
-		display_h++ #incrémente l'heure chaque 60minutes
-	end
-	
-	when display_h>=12 and display_am==0 do #passe AM en 1 après 12h s'il vaut 0
-		display_am=1
-		display_h=0 #reset l'heure
-	end
-	
-	when display_h>=12 and display_am==1 do #passe AM en 0 après 12h s'il vaut 1
-		display_am=0
-		display_h=0 #reset l'heure
-	end
-	
+#Gestion des modules
 onevent buttons
 	when button.left==1 do #décrémente le mode de 1 à chaque pression
 		mode --
@@ -120,12 +103,46 @@ onevent acc #activation 16Hz
 	call leds.top(couleur1[mode]/(~active+3),couleur2[mode]/(~active+3),couleur3[mode]/(~active+3))
 	test = (~active+2)+1
 	
+	callsub clock
+	
 #################################
 #                               #
 # Fin du module principal       #
 # Début des modules secondaires #
 #                               #
-#################################</node>
+#################################
+
+###### Clock - Hélène ######
+ 
+sub clock 
+	onevent timer0
+		if active==1 and mode==0 then 
+			time++ #incrémente les secondes
+			
+			display_s = time%60
+			display_m = (time/60)%60
+			
+			when time>=3600 do
+				clock_h++
+				time=0
+			end
+			
+			when clock_h>=12 and display_am==0 do #passe AM en 1 après 12h s'il vaut 0
+				display_am=1
+				clock_h=0
+			end
+
+			when clock_h>=12 and display_am==1 do #passe AM en 0 après 12h s'il vaut 1
+				display_am=0
+				clock_h=0
+			end
+				
+			display_h = clock_h
+		end
+		
+###### Chrono ######
+
+</node>
 
 
 </network>
