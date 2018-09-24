@@ -51,16 +51,37 @@ var clock_h
 var clock_m
 var clock_s
 
+var c_state
+var c_h
+var c_m
+var c_s
+var c_h_mem1
+var c_m_mem1
+var c_s_mem1
+var c_mem
+var c_time
+
+var t_h
+var t_m
+var t_s
+var t_state
 #Tableau de couleurs des modules
 
-couleur1 = [16,32,0,32]
-couleur2 = [0,16,0,32]
+couleur1 = [16,0,32,0]
+couleur2 = [0,0,32,0]
 couleur3 = [16,0,0,0]
 
 #Timer temporaire, à déplacer dans le module horloge
 timer.period[0] = 10 #1000ms=1s | mis sur 0.001s pour les tests
 
 display_am = 1 #commence en tant que AM
+
+#################################
+#                               #
+#        Module principal       #
+#        Fait par Terence       #
+#                               #
+#################################
 
 #Gestion des modules
 onevent buttons
@@ -104,6 +125,9 @@ onevent acc #activation 16Hz
 	test = (~active+2)+1
 	
 	callsub clock
+	callsub chrono
+	callsub alarm
+	callsub timer
 	
 #################################
 #                               #
@@ -116,7 +140,7 @@ onevent acc #activation 16Hz
  
 sub clock 
 	onevent timer0
-		if active==1 and mode==0 then 
+		if active==1 and (mode==0 or mode==3) then 
 			time++ #incrémente les secondes
 			
 			display_s = time%60
@@ -139,10 +163,89 @@ sub clock
 				
 			display_h = clock_h
 		end
-		
-###### Chrono ######
 
-</node>
+###### Alarm - Terence ######
+
+sub alarm
+
+###### Chrono - Hugo ######
+#/!\ Bug inconnu cause un crash du chrono si changement de module
+
+sub chrono
+	if active==1 and mode==2 then
+		when button.center==1 do	#Choisis si le chrono démarre, s'arrête ou s'efface en appuyant sur le bouton central
+			if c_state==0 then	#Passe en état allumé si on appuie sur le bouton avec l'état éteint
+				c_state++
+				timer.period[1] = 100
+			elseif c_state==1 then	#Passe en état arrêté si on appuie sur le bouton avec l'état allumé
+				c_state++
+				timer.period[1] = 0
+			else
+				c_state=0	#Passe en état éteint si on appuie sur le bouton avec l'état arrêté
+				c_h=0	#Reset toutes les variables dans l'éventualité de relancer le chrono
+				c_m=0
+				c_s=0
+				
+				c_h_mem1=0
+				c_m_mem1=0
+				c_s_mem1=0
+			end
+		end
+		
+		when button.backward == 1 do	#Enregistre le temps en appuyant sur le bouton arrière
+			if  c_mem == 0 then	#Enregistre le temps intermédiaire s'il n'est encore enregistré
+				c_mem++
+				c_h_mem1 = c_h
+				c_m_mem1 = c_m
+				c_s_mem1 = c_s
+			else 
+				#Si l'on enregistre le temps alors qu'il est déjà enregistré, ne fait rien.
+			end
+		end
+	end
+	onevent timer1
+		if active==1 and mode==2 then
+			c_time++ #incrémente les secondes
+			
+			c_s = c_time%60
+			c_m = (c_time/60)%60
+			
+			when c_time>=3600 do
+				c_h++
+				c_time=0
+			end
+			when c_time>=12 do
+				c_state=0
+				timer.period[1]=0
+			end
+			if prox.ground.reflected[0]>=300 or prox.ground.reflected[1]>=300 then	#Tant que la main est sur les capteurs du dessous, 		           			
+				display_h=c_h_mem1
+				display_m=c_m_mem1
+				display_s=c_s_mem1
+			else
+				display_h=c_h
+				display_m=c_m
+				display_s=c_s
+			end
+		end
+		
+###### Timer - Pierre ######
+
+sub timer
+	if active==1 and mode==3 then
+		display_h=t_h
+		display_m=t_m
+		display_s=t_s
+		when button.forward==1  do t_s++   end  # increment seconds
+		when button.backward==1 do t_s--   end  # decrement seconds
+		when button.center==1   do
+			if t_state==0 then 
+				t_state=1 #Start
+			elseif t_state==1 then
+				t_state=0 #Stop
+			end 
+		end
+	end</node>
 
 
 </network>
