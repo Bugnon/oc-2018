@@ -1,0 +1,127 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="62200" name="thymio-II"># variables for state
+var state[4] = [0,0,0,0]
+var new_state[4] = [0,0,0,0]
+#Variables horloge
+var h
+var m
+var s
+#Variables pour alarme
+var i=0
+var saveheure #heure à enregistrer
+var saveminutes #minutes à enregistrer
+var savesecondes #secondes à enregistrer
+var done[3]=[0,0,0]
+
+#Actions avec boutons
+onevent buttons
+when button.forward==1 do i++ end
+when button.backward==1 do i-- end
+call leds.circle((i&amp;1)*32, (i&amp;2)*16, (i&amp;4)*8, (i&amp;8)*4, (i&amp;16)*2, i&amp;32, (i&amp;64)/2, (i&amp;128)/4)
+	
+#Selection section (secondes, minutes, heures)
+when button.right==1 do
+	#heure
+	if state[0] == 0 then
+	i=0 #remise à 0
+		call leds.top(32,0,0)
+		new_state[0] = 1
+		done[0] = 1
+			end
+	#minutes
+	if state[0] == 1 then
+		i=0 #remise à 0
+		call leds.top(0,32,0)
+		new_state[1] = 1
+		done[0] = 0
+		done[1] = 1
+	end
+	#secondes
+	if state[1] == 1 then
+		i=0 #remise à 0
+		call leds.top(0,0,32)
+		new_state[2] = 1
+		done[1] = 0
+		done[2] = 1
+	end
+
+	if state[2] == 1 then
+		call leds.top(0,0,0)
+		new_state[0] = 0
+		new_state[1] = 0
+		new_state[2] = 0
+		new_state[3] = 0
+		done[2] = 0
+	end
+
+	call math.copy(state, new_state)
+end
+
+#Limiter temps
+if done[0] == 1 then
+if i==24 then
+	i=0
+end
+if i==-1 then
+	i=23
+end
+end
+if done[1] == 1 then
+if i==60 then
+	i=0
+end
+if i==-1 then
+	i=59
+end
+end
+if done[2] == 1 then
+if i==60 then
+	i=0
+end
+if i==-1 then
+	i=59
+end
+end
+
+#Enregistrer les variables
+
+	if done[0] == 1 then
+		when button.center==1 do
+		saveheure = i
+		end
+			end
+	if done[1] == 1 then
+		when button.center==1 do
+		saveminutes = i
+		end
+			end
+	if done[2] == 1 then
+		when button.center==1 do
+		savesecondes = i
+		end
+			end
+#Alarme
+if h == saveheure and m == saveminutes and s == savesecondes then
+	call sound.freq(880, 30)
+end
+
+#Arreter alarme
+onevent tap 
+call sound.freq(0, 0)</node>
+
+
+</network>
