@@ -1,0 +1,69 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="45788" name="thymio-II"># Alarme
+# Valentin Piquerez
+# 25.09.2018
+
+var m
+var h
+var m_a
+var h_a
+var alarm
+
+timer.period[1] = 200
+
+#### Alarme
+
+if  m_a==m and h_a==h then
+	call sound.freq(880, 100)
+end
+
+onevent tap
+	call sound.freq(1, 1)
+	
+
+####Choisir l'heure
+
+onevent timer1
+	if  button.forward==1 then
+		m_a++
+	end
+	if  button.backward==1 then
+		m_a--
+	end
+
+
+if m_a==60 then
+		m_a=0
+		h_a++
+end
+
+if  m_a==-1 then
+		m_a=59
+		h_a--
+end
+if h_a==24 then
+		h_a=0
+end
+if  h_a==-1 then
+		h_a=23
+end
+	
+
+	</node>
+
+
+</network>
