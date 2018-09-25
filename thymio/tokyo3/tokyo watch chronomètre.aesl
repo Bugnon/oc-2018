@@ -20,10 +20,12 @@ var c_min
 var c_hr
 var c_pm
 var c_actif
+var k
 
  c_sec = 0
  c_min = 0
  c_hr = 0
+ k=0
  
  timer.period[0] = 1000 #= à une sec
 
@@ -51,6 +53,29 @@ var c_actif
 	 	end
 	 end
 	
+	# Affichage du temps pour les 4 états
+		k++
+		if k==15 then
+			k=0
+		end
+		if k/5==0 then
+			call leds.circle((c_hr/2&amp;1)*32,(c_hr/2&amp;2)*16,(c_hr/2&amp;4)*8,(c_hr/2&amp;8)*4,(c_hr/2&amp;16)*2,(c_hr/2&amp;32)*1,(c_hr/2&amp;64)/2,(c_hr/2&amp;128)/4)
+			call leds.bottom.left(32,0,0)
+			call leds.bottom.right(32,0,0)
+		end
+		if k/5==1 then
+			call leds.circle((c_min/2&amp;1)*32,(c_min/2&amp;2)*16,(c_min/2&amp;4)*8,(c_min/2&amp;8)*4,(c_min/2&amp;16)*c_min/2,c_min/2&amp;32,(c_min/2&amp;64)/2,(c_min/2&amp;128)/4)
+			call leds.bottom.left(0,32,0)
+			call leds.bottom.right(0,32,0)
+		end
+		if k/5==2 then
+			call leds.circle((c_sec/2&amp;1)*32,(c_sec/2&amp;2)*16,(c_sec/2&amp;4)*8,(c_sec/2&amp;8)*4,(c_sec/2&amp;16)*c_sec/2,c_sec/2&amp;32,(c_sec/2&amp;64)/2,(c_sec/2&amp;128)/4)
+			call leds.bottom.left(0,0,32)
+			call leds.bottom.right(0,0,32)
+		end
+
+	
+	
 ######### Controles
 	
 onevent button.center   #demmarage pause
@@ -69,22 +94,8 @@ onevent button.backward  # remet à 0 qd il est en pause
  	c_hr = 0
  
 
-######### Affichage
-onevent acc
-	if c_sec&lt;20 then #secondes
-		call leds.circle((c_sec&amp;1)*32,(c_sec&amp;2)*16,(c_sec&amp;4)*8,(c_sec&amp;8)*4,(c_sec&amp;16)*2,(c_sec&amp;32)*1,0,0)
-	end
-	if c_sec>19 and c_sec&lt;40 then #minutes
-		call leds.circle((c_min&amp;1)*32,(c_min&amp;2)*16,(c_min&amp;4)*8,(c_min&amp;8)*4,(c_min&amp;16)*2,(c_min&amp;32)*1,0,0)
-	end
-	if c_sec>39 then #heures
-		call leds.circle((c_hr&amp;1)*32,(c_hr&amp;2)*16,(c_hr&amp;4)*8,(c_hr&amp;8)*4,(c_hr&amp;16)*2,(c_hr&amp;32)*1,0,0)
-	end
-	if c_pm==1 then  #pour afficher quand on passe pm
-		call leds.top(32,0,0)
-	else
-		call leds.top(0,0,0)
-	end</node>
+
+	</node>
 
 
 </network>
