@@ -77,6 +77,53 @@ onevent timer1
 	end
 
 
+VRAIE PARTIE
+
+var t_s = 0
+var t_m = 0
+var t_h = 0
+var t_state = 0 # 4 états différents ( 0= choix du mode, 1= choix du 	temps du timer, 3= arrêt du timer après sonnerie) 
+
+onevent
+
+	when button.center==1 do	
+		if t_state==0 then	#Passe la minuterie en mode sélection temps
+		c_state++
+		
+		elseif 	t_state==1 then	#Passe la minuterie en mode décompte
+				t_state++
+				timer.period[0] = 1000
+				
+		elseif 	t_state==2 then	#passe la minuterie en mode arrêt
+				t_state==0
+				t_s=0
+				t_m=0
+				t_h=0
+	
+	end
+
+
+onevent timer1 
+
+	t_s-- #Décrémente les secondes
+	
+	when t_s = 0 do #Reset les secondes chaque minute
+		t_s = 60
+		t_m-- #Décrémente les minutes chaque 60s
+	end
+	
+	when t_m = 0 do #Reset les minutes chaque heure
+		t_m = 60
+		t_h-- #Décrémente l'heure chaque 60minutes
+	end
+	
+	when t_h = 15 do #Arrête le chronomètre après 15 heures passées
+		t_state++	  #Passe en état arrêté
+
+end
+
+
+
 onevent prox
 
 	#affiche les secondes en binaire sur les capteurs frontaux
