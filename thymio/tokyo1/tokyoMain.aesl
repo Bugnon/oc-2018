@@ -47,11 +47,11 @@ var test #variable de test
 
 #Variables modules
 
-var clock_h
-var clock_m
-var clock_s
+var clock_h #heure de l'horloge
+var clock_m #minutes de l'horloge
+var clock_s #secondes de l'horloge
 
-var c_state
+var c_state #état du chrono
 var c_h
 var c_m
 var c_s
@@ -61,20 +61,29 @@ var c_s_mem1
 var c_mem
 var c_time
 
+var a_h #heure d'alarme
+var a_m #^ minute
+var a_s #^ seconde
+var set #alarme mise?
+var s_h #sélection heure
+var s_m #^ minutes
+var s_s #^ secondes
+
 var t_h
 var t_m
 var t_s
 var t_state
 #Tableau de couleurs des modules
 
-couleur1 = [16,0,32,0]
-couleur2 = [0,0,32,0]
+couleur1 = [16,32,32,0]
+couleur2 = [0,0,32,32]
 couleur3 = [16,0,0,0]
 
 #Timer temporaire, à déplacer dans le module horloge
 timer.period[0] = 10 #1000ms=1s | mis sur 0.001s pour les tests
 
 display_am = 1 #commence en tant que AM
+s_s=1
 
 #################################
 #                               #
@@ -91,6 +100,7 @@ onevent buttons
 		if mode&lt;0 then #saute à 3 si minimum atteint
 			mode=3
 		end
+		callsub change
 	end
 	
 	when button.right==1 do #pareil mais dans le sens inverse
@@ -99,6 +109,7 @@ onevent buttons
 		if mode>3 then
 			mode=0
 		end
+		callsub change
 	end
 
 	when button.center==1 do #active la sélection
@@ -129,6 +140,14 @@ onevent acc #activation 16Hz
 	callsub alarm
 	callsub timer
 	
+sub change
+	call leds.circle(0,0,0,0,0,0,0,0)
+	call leds.prox.h(0,0,0,0,0,0,0,0)
+	call leds.buttons(0,0,0,0)
+	display_h=0
+	display_m=0
+	display_s=0
+	
 #################################
 #                               #
 # Fin du module principal       #
@@ -140,11 +159,18 @@ onevent acc #activation 16Hz
  
 sub clock 
 	onevent timer0
-		if active==1 and (mode==0 or mode==3) then 
+		if active==1 and (mode==0 or mode==3 or mode==1) then 
 			time++ #incrémente les secondes
+			if mode==1 and set==1 then
+				display_s = time%60
+				display_m = (time/60)%60
+			elseif mode==0 then
+				display_s = time%60
+				display_m = (time/60)%60
+			end
 			
-			display_s = time%60
-			display_m = (time/60)%60
+			clock_s=time%60
+			clock_m=(time/60)%60
 			
 			when time>=3600 do
 				clock_h++
@@ -167,9 +193,85 @@ sub clock
 ###### Alarm - Terence ######
 
 sub alarm
+	#lance l'alarme si les conditions sont atteintes
+	if a_h&lt;=clock_h and a_m&lt;=clock_m and a_s&lt;=clock_s and set==1 then
+		call sound.play(32)
+		motor.left.target=500
+		motor.right.target=500
+	else
+		display_h=a_h
+		display_m=a_m
+		display_s=a_s
+		motor.left.target=0
+		motor.right.target=0
+	end
+	if a_h&lt;0 then #empeche une heure negative
+		a_h=0
+	end
+	if a_m&lt;0 then
+		a_m=0
+	end
+	if a_s&lt;0 then
+		a_s=0
+	end
+	when prox.ground.reflected[1]>=300 do #changement de sélection
+		if s_s==1 then
+			s_m=1
+			s_s=0
+		elseif s_m==1 then
+			s_m=0
+			s_h=1
+		elseif s_h==1  then
+			s_h=0
+			s_s=1
+		end
+	end
+	when prox.ground.reflected[0]>=300 do #^
+		if s_h==1 then
+			s_m=1
+			s_h=0
+		elseif s_m==1 then
+			s_m=0
+			s_s=1
+		elseif s_s==1  then
+			s_h=1
+			s_s=0
+		end
+	end
+	when button.forward==1 do #incrémente la sélection
+		if s_h==1 then
+			a_h++
+		end
+		if s_m==1 then
+			a_m++
+		end
+		if s_s==1 then
+			a_s++
+		end
+	end
+	when button.backward==1 do #décrémente la sélection
+		if s_h==1 then
+			a_h--
+		end
+		if s_m==1 then
+			a_m--
+		end
+		if s_s==1 then
+			a_s--
+		end
+	end
+	when button.center==1 do #active (set==1) ou reset
+		if set==1 then
+			set=0
+			a_h=0
+			a_m=0
+			a_s=0
+		elseif set==0 then
+			set=1
+		end
+	end
 
 ###### Chrono - Hugo ######
-#/!\ Bug inconnu cause un crash du chrono si changement de module
 
 sub chrono
 	if active==1 and mode==2 then
@@ -185,12 +287,21 @@ sub chrono
 				c_h=0	#Reset toutes les variables dans l'éventualité de relancer le chrono
 				c_m=0
 				c_s=0
-				
+				c_time=0
 				c_h_mem1=0
 				c_m_mem1=0
 				c_s_mem1=0
 			end
 		end
+			if prox.ground.reflected[0]>=300 or prox.ground.reflected[1]>=300 then	#Tant que la main est sur les capteurs du dessous, 		           			
+				display_h=c_h_mem1
+				display_m=c_m_mem1
+				display_s=c_s_mem1
+			else
+				display_h=c_h
+				display_m=c_m
+				display_s=c_s
+			end
 		
 		when button.backward == 1 do	#Enregistre le temps en appuyant sur le bouton arrière
 			if  c_mem == 0 then	#Enregistre le temps intermédiaire s'il n'est encore enregistré
@@ -214,18 +325,9 @@ sub chrono
 				c_h++
 				c_time=0
 			end
-			when c_time>=12 do
+			when c_h>=12 do
 				c_state=0
 				timer.period[1]=0
-			end
-			if prox.ground.reflected[0]>=300 or prox.ground.reflected[1]>=300 then	#Tant que la main est sur les capteurs du dessous, 		           			
-				display_h=c_h_mem1
-				display_m=c_m_mem1
-				display_s=c_s_mem1
-			else
-				display_h=c_h
-				display_m=c_m
-				display_s=c_s
 			end
 		end
 		
