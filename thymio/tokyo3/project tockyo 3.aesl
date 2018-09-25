@@ -1,0 +1,246 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="11521" name="thymio-II"># file: Projet
+# autor: Fabian Roulin
+# date: 23.09.2018
+
+# Variable de l'état
+
+var stat
+
+# Définition des variables:
+
+	var t_m = 0 #minutes
+	var t_s = 0 #secondes
+	var t_h = 0 #heures
+	
+	var a_h = 0 #heures pour alame
+	var a_m = 0 #heures pour alame
+	var a_s = 0 #heures pour alame
+	
+	var i=0
+	var j=0
+	var k=0
+	var l=0
+# Définition du timer de 1 seconde et 0.3 sec.
+
+	timer.period[0]=1000
+	timer.period[1]=300
+
+# Définition de l'état (0 = montre, 2 = alarm, 4 = chrono, 6 = timer).
+
+onevent button.center
+	stat ++
+	if stat==8 then
+		stat=0
+		# Remise à zéro de la variable j.
+		j=0
+	end
+	if stat==0 then
+		call leds.top(32,0,32)
+	end
+	if stat==2 then
+		call leds.top(32,32,0)
+	end
+	if stat==4 then
+		call leds.top(0,32,32)
+	end
+	if stat==6 then
+		call leds.top(0,0,32)
+	end
+# Sélection du temps pour les 4 états.
+onevent button.left
+	j++
+	
+	if j==6 then
+		j=0
+	end
+	
+# Ajouter du temps
+onevent button.forward
+		if j==0 then
+			t_h++
+			call leds.circle((t_h/2&amp;1)*32,(t_h/2&amp;2)*16,(t_h/2&amp;4)*8,(t_h/2&amp;8)*4,(t_h/2&amp;16)*2,(t_h/2&amp;32)*1,(t_h/2&amp;64)/2,(t_h/2&amp;128)/4)
+		end
+		if j==2 then
+			t_m++
+			call leds.circle((t_m/2&amp;1)*32,(t_m/2&amp;2)*16,(t_m/2&amp;4)*8,(t_m/2&amp;8)*4,(t_m/2&amp;16)*t_m/2,t_m/2&amp;32,(t_m/2&amp;64)/2,(t_m/2&amp;128)/4)
+		end
+		if j==4 then
+			t_s++
+			call leds.circle((t_s/2&amp;1)*32,(t_s/2&amp;2)*16,(t_s/2&amp;4)*8,(t_s/2&amp;8)*4,(t_s/2&amp;16)*t_s/2,t_s/2&amp;32,(t_s/2&amp;64)/2,(t_s/2&amp;128)/4)
+		end
+		if t_h==48 then
+			t_h=0
+		end
+		if t_m==120 then
+			t_m=0
+		end
+		if t_s==120 then
+			t_s=0
+		end
+
+# Enlever du temps
+onevent button.backward
+		if j==0 then
+			t_h--
+			call leds.circle((t_h/2&amp;1)*32,(t_h/2&amp;2)*16,(t_h/2&amp;4)*8,(t_h/2&amp;8)*4,(t_h/2&amp;16)*2,(t_h/2&amp;32)*1,(t_h/2&amp;64)/2,(t_h/2&amp;128)/4)
+		end
+		if j==2 then
+			t_m--
+			call leds.circle((t_m/2&amp;1)*32,(t_m/2&amp;2)*16,(t_m/2&amp;4)*8,(t_m/2&amp;8)*4,(t_m/2&amp;16)*t_m/2,t_m/2&amp;32,(t_m/2&amp;64)/2,(t_m/2&amp;128)/4)
+		end
+		if j==4 then
+			t_s--
+			call leds.circle((t_s/2&amp;1)*32,(t_s/2&amp;2)*16,(t_s/2&amp;4)*8,(t_s/2&amp;8)*4,(t_s/2&amp;16)*t_s/2,t_s/2&amp;32,(t_s/2&amp;64)/2,(t_s/2&amp;128)/4)
+		end
+		if t_h==0 then
+			t_h=46
+		end
+		if t_m==0 then
+			t_m=118
+		end
+		if t_s==0 then
+			t_s=118
+		end
+
+# Bouton pour lancer le mode.
+onevent button.right
+		j=8
+		l++
+		if l==4 then
+		l=0
+		end
+
+	
+onevent timer0
+	# Si on a lancé le mode
+	if j==8 then
+	
+		# Montre
+		if stat==0 then
+			t_s=t_s+2
+			
+			if t_s==120 then
+				t_s=0
+				t_m=t_m+2
+			end
+			if t_m==120 then
+				t_m=0
+				t_h=t_h+2
+			end
+			if t_h==48 then
+				t_h=0
+				t_m=0
+				t_s=0
+			end
+		end
+		
+		# Alarm
+		if stat==2 then
+			if i==0 then
+				a_s=a_s+2
+				
+				if a_s==120 then
+					a_s=0
+					a_m=a_m+2
+				end
+				if a_m==120 then
+					a_m=0
+					a_h=a_h+2
+				end
+			end
+			if a_h==t_h and a_m==t_m and a_s==t_s then
+				i=1
+				
+			end
+		end
+		
+		# Chrono
+		if stat==4 then
+			if l==2 then
+				t_s=t_s+2
+				
+				if t_s==120 then
+					t_s=0
+					t_m=t_m+2
+				end
+				if t_m==120 then
+					t_m=0
+					t_h=t_h+2
+				end
+			end
+		end
+		
+		# Timer
+		if stat==6 then
+			if (t_s/2)!=0 then
+				t_s=t_s-2
+			end
+			if  (t_s/2)==0 and (t_m/2)!=0 then 
+				t_s=118
+				t_m=t_m-2
+			end
+			if  (t_s/2)==0 and (t_m/2)==0 and (t_h/2)!=0 then 
+				t_s=118
+				t_m=118
+				t_h=t_h-2
+			end
+		end
+		
+		# Affichage du temps pour les 4 états
+		k++
+		if k==15 then
+			k=0
+		end
+		if k/5==0 then
+			call leds.circle((t_s/2&amp;1)*32,(t_s/2&amp;2)*16,(t_s/2&amp;4)*8,(t_s/2&amp;8)*4,(t_s/2&amp;16)*t_s/2,t_s/2&amp;32,(t_s/2&amp;64)/2,(t_s/2&amp;128)/4)
+			call leds.bottom.left(0,0,32)
+			call leds.bottom.right(0,0,32)
+		end
+		if k/5==1 then
+			call leds.circle((t_m/2&amp;1)*32,(t_m/2&amp;2)*16,(t_m/2&amp;4)*8,(t_m/2&amp;8)*4,(t_m/2&amp;16)*t_m/2,t_m/2&amp;32,(t_m/2&amp;64)/2,(t_m/2&amp;128)/4)
+			call leds.bottom.left(0,32,0)
+			call leds.bottom.right(0,32,0)
+		end
+		if k/5==2 then
+			call leds.circle((t_h/2&amp;1)*32,(t_h/2&amp;2)*16,(t_h/2&amp;4)*8,(t_h/2&amp;8)*4,(t_h/2&amp;16)*2,(t_h/2&amp;32)*1,(t_h/2&amp;64)/2,(t_h/2&amp;128)/4)
+			call leds.bottom.left(32,0,0)
+			call leds.bottom.right(32,0,0)
+		end
+	end
+		
+onevent timer1 # Pour le son rapide
+
+	# Si on a lancé le mode
+	if j==8 then
+		# Alarm
+		if stat==2 then
+			if i==1 then
+				call sound.play(1)
+			end
+		end
+		
+		# Timer
+		if stat==6 then
+			if t_s==0 and t_m==0 and t_h==0 then
+				call sound.play(1)
+			end
+		end
+	end</node>
+
+
+</network>
