@@ -2,7 +2,7 @@
 
 ## Mode d'emploi :
 
-Pour commencer, le projet contient 4 différents états qui correspondent aux 4 modes de notre programme. Pour changer de mode, il suffit d’appuyer sur le bouton central. La couleur sur le dessus du robot indique le mode qui est sélectionné. L’ordre des modes est le suivant même montre, alarme, chrono et timer. Les couleurs de ces modes sont respectivement ... Le mode d’emplois de chacun de ces modes se trouve ci-dessous  
+Pour commencer, le projet contient 4 différents états qui correspondent aux 4 modes de notre programme. Pour changer de mode, il suffit d’appuyer sur le bouton central. La couleur sur le dessus du robot indique le mode qui est sélectionné. L’ordre des modes est le suivant  montre, alarme, chrono et timer. Les couleurs de ces modes sont respectivement ... Le mode d’emplois de chacun de ces modes se trouve ci-dessous.
 
 ### Montre
 
