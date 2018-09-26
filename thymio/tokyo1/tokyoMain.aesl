@@ -1,63 +1,403 @@
-var t_s = 0
-var t_m = 0
-var t_h = 0
-var t_state = 0 # 4 états différents ( 0= choix du mode, 1= choix du 	temps du timer, 3= arrêt du timer après sonnerie) 
-
-		when button.center==1 do	
-		if t_state==0 then	#Passe la minuterie en mode sélection temps
-		t_state++
-		when button.forward==1 do #incrémente la sélection
-				if t_h==1 then
-					t_h++
+ <!DOCTYPE aesl-source>
+ <network>
+ 
+ 
+ <!--list of global events-->
+ 
+ 
+ <!--list of constants-->
+ 
+ 
+ <!--show keywords state-->
+ <keywords flag="true"/>
+ 
+ 
+ <!--node thymio-II-->
+ <node nodeId="12279" name="thymio-II">#Thymio Tokyo watch structure commune groupe 1
+ #Hélène Hugo Pierre Térence
+ #2018.09.20
+ 
+ ####################
+ #                  #
+ # Module principal #
+ #                  #
+ ####################
+ 
+ var display_h #Affichage heures
+ var display_m #Affichage minutes
+ var display_s #Affichage secondes
+ 
+ var display_am # AM?
+ 
+ var time
+ 
+ var mode
+ # 0 : clock
+ # 1 : alarm
+ # 2 : chronometer
+ # 3 : timer
+ 
+ var active #mode actif?
+ 
+ var couleur1[4] #tableau R des modules
+ var couleur2[4] #tableau G des modules
+ var couleur3[4] #tableau B des modules
+ 
+ var test #variable de test
+ 
+ #Variables modules
+ 
+ var clock_h #heure de l'horloge
+ var clock_m #minutes de l'horloge
+ var clock_s #secondes de l'horloge
+ 
+ var c_state #état du chrono
+ var c_h
+ var c_m
+ var c_s
+ var c_h_mem1
+ var c_m_mem1
+ var c_s_mem1
+ var c_mem
+ var c_time
+ 
+ var a_h #heure d'alarme
+ var a_m #^ minute
+ var a_s #^ seconde
+ var set #alarme mise?
+ var s_h #sélection heure
+ var s_m #^ minutes
+ var s_s #^ secondes
+ 
+ var t_h
+ var t_m
+ var t_s
+ var t_state
+ #Tableau de couleurs des modules
+ 
+ couleur1 = [16,32,32,0]
+ couleur2 = [0,0,32,32]
+ couleur3 = [16,0,0,0]
+ 
+ #Timer temporaire, à déplacer dans le module horloge
+ timer.period[0] = 10 #1000ms=1s | mis sur 0.001s pour les tests
+ 
+ display_am = 1 #commence en tant que AM
+ s_s=1
+ 
+ #################################
+ #                               #
+ #        Module principal       #
+ #        Fait par Terence       #
+ #                               #
+ #################################
+ 
+ #Gestion des modules
+ onevent buttons
+ 	when button.left==1 do #décrémente le mode de 1 à chaque pression
+ 		mode --
+ 		active=0 #marque la sélection comme non active à chaque changement de mode
+ 		if mode&lt;0 then #saute à 3 si minimum atteint
+ 			mode=3
+ 		end
+ 		callsub change
+ 	end
+ 	
+ 	when button.right==1 do #pareil mais dans le sens inverse
+ 		mode ++
+ 		active=0
+ 		if mode>3 then
+ 			mode=0
+ 		end
+ 		callsub change
+ 	end
+ 
+ 	when button.center==1 do #active la sélection
+ 		active=1
+ 	end
+ 
+ #Gestion de l'affichage
+ onevent acc #activation 16Hz
+ 	#affiche les secondes en binaire sur les capteurs frontaux
+ 	call leds.prox.h((display_s&amp;1)*32,(display_s&amp;2)*16,(display_s&amp;4)*8,(display_s&amp;8)*4,(display_s&amp;16)*2,(display_s&amp;32)*1,0,0)
+ 	#affiche les minutes en binaire sur le cercle
+ 	call leds.circle((display_m&amp;1)*32,(display_m&amp;2)*16,(display_m&amp;4)*8,(display_m&amp;8)*4,(display_m&amp;16)*2,(display_m&amp;32)*1,0,0)
+ 	#affiche les heures en binaire sur les boutons
+ 	call leds.buttons((display_h&amp;1)*32,(display_h&amp;2)*16,(display_h&amp;4)*8,(display_h&amp;8)*4)
+ 
+ 	#allume le coté gauche si AM==1
+ 	call leds.bottom.left(display_am*32,display_am*32,display_am*0)
+ 	#allume le coté droit si AM==0
+ 	#~display_am retourne -1 si AM==0 -> +2 permet d'obtenir 1, *32 donne 32 si AM==1
+ 	call leds.bottom.right(((~display_am)+2)*32,((~display_am)+2)*32,((~display_am)+2)*0)
+ 	
+ 	#affiche la fonction à intensité/2 si non activée, ou à intensité normale si activée. ~active+3 == 2 si active==0, ~active+3 == 1 si active==1
+ 	call leds.top(couleur1[mode]/(~active+3),couleur2[mode]/(~active+3),couleur3[mode]/(~active+3))
+ 	test = (~active+2)+1
+ 	
+ 	callsub clock
+ 	callsub chrono
+ 	callsub alarm
+ 	callsub timer
+ 	
+ sub change
+ 	call leds.circle(0,0,0,0,0,0,0,0)
+ 	call leds.prox.h(0,0,0,0,0,0,0,0)
+ 	call leds.buttons(0,0,0,0)
+ 	display_h=0
+ 	display_m=0
+ 	display_s=0
+ 	
+ #################################
+ #                               #
+ # Fin du module principal       #
+ # Début des modules secondaires #
+ #                               #
+ #################################
+ 
+ ###### Clock - Hélène ######
+  
+ sub clock 
+	onevent timer0
+		if active==1 and (mode==0 or mode==3 or mode==1) then 
+			time++ #incrémente les secondes
+			if mode==1 and set==1 then
+			if mode==1 and set==2 then
+				display_s = time%60
+				display_m = (time/60)%60
+				display_h = clock_h
+			elseif mode==0 then
+				display_s = time%60
+				display_m = (time/60)%60
+				display_h = clock_h
 			end
-				if t_m==1 then
-					t_m++
-				end
-				if t_s==1 then
-					t_s++
-				end
+			
+		end
+			clock_s=time%60
+			clock_m=(time/60)%60
+			
+@@ -186,15 +188,14 @@ sub clock
+				display_am=0
+				clock_h=0
 			end
-			when button.backward==1 do #décrémente la sélection
-				if t_h==1 then
-					t_h--
-			end
-				if t_m==1 then
-					t_m--
-			end
-				if t_s==1 then
-				t_s--
+				
+			display_h = clock_h
+		end
+	
+		
+###### Alarm - Terence ######
+sub alarm
+	#lance l'alarme si les conditions sont atteintes
+	if a_h&lt;=clock_h and a_m&lt;=clock_m and a_s&lt;=clock_s and set==1 then
+	if a_h&lt;=clock_h and a_m&lt;=clock_m and a_s&lt;=clock_s and set==2 then
+		call sound.play(32)
+		motor.left.target=500
+		motor.right.target=500
+@@ -205,72 +206,75 @@ sub alarm
+		motor.left.target=0
+		motor.right.target=0
+	end
+	if a_h&lt;0 then #empeche une heure negative
+		a_h=0
+	end
+	if a_m&lt;0 then
+		a_m=0
+	end
+	if a_s&lt;0 then
+		a_s=0
+	end
+	when prox.ground.reflected[1]>=300 do #changement de sélection
+		if s_s==1 then
+			s_m=1
+			s_s=0
+		elseif s_m==1 then
+			s_m=0
+			s_h=1
+		elseif s_h==1  then
+			s_h=0
+			s_s=1
+		end
+	end
+	when prox.ground.reflected[0]>=300 do #^
+		if s_h==1 then
+			s_m=1
+			s_h=0
+		elseif s_m==1 then
+			s_m=0
+			s_s=1
+		elseif s_s==1  then
+			s_h=1
+			s_s=0
+	if mode==1 and active==1 then
+		if a_h&lt;0 then #empeche une heure negative
+			a_h=0
+		end
+	end
+	when button.forward==1 do #incrémente la sélection
+		if s_h==1 then
+			a_h++
+		if a_m&lt;0 then
+			a_m=0
+		end
+		if s_m==1 then
+			a_m++
+		if a_s&lt;0 then
+			a_s=0
+		end
+		if s_s==1 then
+			a_s++
+		when prox.ground.reflected[1]>=300 do #changement de sélection
+			if s_s==1 then
+				s_m=1
+				s_s=0
+			elseif s_m==1 then
+				s_m=0
+				s_h=1
+			elseif s_h==1  then
+				s_h=0
+				s_s=1
 			end
 		end
-		
-		elseif 	t_state==1 then	#Passe la minuterie en mode décompte
-				t_state++
-				timer.period[1] = 1000
-				
-		elseif 	t_state==2 then	#passe la minuterie en mode arrêt
-				t_state==0
-				t_s=0
-				t_m=0
-				t_h=0
-	
 	end
-
-onevent timer1 
-
-	t_s-- #Décrémente les secondes
-	
-	when t_s = 0 do #Reset les secondes chaque minute
-		t_s = 60
-		t_m-- #Décrémente les minutes chaque 60s
+	when button.backward==1 do #décrémente la sélection
+		if s_h==1 then
+			a_h--
+		when prox.ground.reflected[0]>=300 do #^
+			if s_h==1 then
+				s_m=1
+				s_h=0
+			elseif s_m==1 then
+				s_m=0
+				s_s=1
+			elseif s_s==1  then
+				s_h=1
+				s_s=0
+			end
+		end
+		if s_m==1 then
+			a_m--
+		when button.forward==1 do #incrémente la sélection
+			if s_h==1 then
+				a_h++
+			end
+			if s_m==1 then
+				a_m++
+			end
+			if s_s==1 then
+				a_s++
+			end
+		end
+		if s_s==1 then
+			a_s--
+		when button.backward==1 do #décrémente la sélection
+			if s_h==1 then
+				a_h--
+			end
+			if s_m==1 then
+				a_m--
+			end
+			if s_s==1 then
+				a_s--
+			end
+		end
 	end
-	
-	when t_m = 0 do #Reset les minutes chaque heure
-		t_m = 60
-		t_h-- #Décrémente l'heure chaque 60minutes
+	when button.center==1 do #active (set==1) ou reset
+		if set==1 then
+			set=0
+			a_h=0
+			a_m=0
+			a_s=0
+		elseif set==0 then
+			set=1
+		when button.center==1 do #active (set==1) ou reset
+			if set==2 then
+				set=0
+				a_h=0
+				a_m=0
+				a_s=0
+			elseif set==0 then
+				set=1
+			elseif set==1 then
+				set=2
+			end
+		end
 	end
-	
-	when t_h = 15 do #Arrête le chronomètre après 15 heures passées
-		t_state++	  #Passe en état arrêté
-		t_s=0
-		t_m=0
-		t_h=0
-end
+###### Chrono - Hugo ######
+sub chrono
+ 	if active==1 and mode==2 then
+ 		when button.center==1 do	#Choisis si le chrono démarre, s'arrête ou s'efface en appuyant sur le bouton central
+ 			if c_state==0 then	#Passe en état allumé si on appuie sur le bouton avec l'état éteint
+ 				c_state++
+ 				timer.period[1] = 100
+ 			elseif c_state==1 then	#Passe en état arrêté si on appuie sur le bouton avec l'état allumé
+ 				c_state++
+ 				timer.period[1] = 0
+ 			else
+ 				c_state=0	#Passe en état éteint si on appuie sur le bouton avec l'état arrêté
+ 				c_h=0	#Reset toutes les variables dans l'éventualité de relancer le chrono
+ 				c_m=0
+ 				c_s=0
+ 				c_time=0
+ 				c_h_mem1=0
+ 				c_m_mem1=0
+ 				c_s_mem1=0
+ 			end
+ 		end
+ 			if prox.ground.reflected[0]>=300 or prox.ground.reflected[1]>=300 then	#Tant que la main est sur les capteurs du dessous, 		           			
+ 				display_h=c_h_mem1
+ 				display_m=c_m_mem1
+ 				display_s=c_s_mem1
+ 			else
+ 				display_h=c_h
+ 				display_m=c_m
+ 				display_s=c_s
+ 			end
+ 		
+ 		when button.backward == 1 do	#Enregistre le temps en appuyant sur le bouton arrière
+ 			if  c_mem == 0 then	#Enregistre le temps intermédiaire s'il n'est encore enregistré
+ 				c_mem++
+ 				c_h_mem1 = c_h
+ 				c_m_mem1 = c_m
+ 				c_s_mem1 = c_s
+ 			else 
+ 				#Si l'on enregistre le temps alors qu'il est déjà enregistré, ne fait rien.
+ 			end
+ 		end
+ 	end
+ 	onevent timer1
+ 		if active==1 and mode==2 then
+ 			c_time++ #incrémente les secondes
+ 			
+ 			c_s = c_time%60
+ 			c_m = (c_time/60)%60
+ 			
+ 			when c_time>=3600 do
+ 				c_h++
+ 				c_time=0
+ 			end
+ 			when c_h>=12 do
+ 				c_state=0
+ 				timer.period[1]=0
+ 			end
+ 		end
+ 		
+ ###### Timer - Pierre ######
+ 
+ sub timer
+ 	if active==1 and mode==3 then
+ 		display_h=t_h
+ 		display_m=t_m
+ 		display_s=t_s
+ 		when button.forward==1  do t_s++   end  # increment seconds
+ 		when button.backward==1 do t_s--   end  # decrement seconds
+ 		when button.center==1   do
+ 			if t_state==0 then 
+ 				t_state=1 #Start
+ 			elseif t_state==1 then
+ 				t_state=0 #Stop
+ 			end 
+ 		end
+ 	end</node>
+ 
+ 
+</network>
