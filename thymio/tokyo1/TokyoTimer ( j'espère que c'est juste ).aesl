@@ -32,16 +32,20 @@ var t_state = 0 # 4 états différents ( 0= choix du mode, 1= choix du 	temps du
 		elseif 	t_state==1 then	#Passe la minuterie en mode décompte
 				t_state++
 				timer.period[1] = 1000
+			when t_s==0 and t_m==0 and t_s==0 do
+				call sound.play(32)
+			end
 				
+			end
 		elseif 	t_state==2 then	#passe la minuterie en mode arrêt
-				t_state==0
+				t_state=0
 				t_s=0
 				t_m=0
 				t_h=0
-	
-	end
+		
+		end
 
-onevent timer1 
+onevent timer1
 
 	t_s-- #Décrémente les secondes
 	
