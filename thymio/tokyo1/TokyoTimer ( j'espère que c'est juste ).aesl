@@ -64,4 +64,9 @@ onevent timer1
 		t_s=0
 		t_m=0
 		t_h=0
+	end
+	display_s=t_s
+	display_m=t_m
+	display_h=t_h
 end
+
