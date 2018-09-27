@@ -6,11 +6,11 @@
 
 ### Affichage
 
-Les *secondes* sont affichées sur les *leds de proximité leds.prox.h*
+Les *secondes* sont affichées sur les *leds de proximité leds.prox.h* (1 sur le schéma)
 
-Les *minutes* sont affichées sur les *leds circulaires*
+Les *minutes* sont affichées sur les *leds circulaires* (2 sur le schéma)
 
-Les *heures* sont affichées sur les *leds des boutons*
+Les *heures* sont affichées sur les *leds des boutons* (3 sur le schéma)
 
 Les *heures* ne pouvant aller que jusqu'à 12, une lumière est utilisée pour représenter AM/PM
 
