@@ -1,5 +1,7 @@
 # Projet Tokyo 1
 
+![PhotoThymio](https://github.com/Bugnon/oc-2018/blob/master/img/thymio.jpg)
+
 ## Fonctionnement général
 
 ### Modules
