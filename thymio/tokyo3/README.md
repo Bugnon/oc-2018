@@ -12,9 +12,9 @@ Pour utiliser la montre, il faut que la couleur sur le robot soit ... Après il 
 
 Afin d'utiliser l'alarme, vous devez appuyer sur le bouton central de Thymio. La couleur correspondant à ce mode est le jaune. Dans cette section, il vous faut d'abord appuyer sur la touche droite afin de sélectionner les heures, les minutes ou les secondes. Les leds du bas vont s’allumer.
 
-Rouge = Heures
-Vert = Minutes
-Bleu = Secondes
+*Rouge = Heures
+*Vert = Minutes
+*Bleu = Secondes
 
 Pour incrémenter et décrémenter, on utilise les flèches avant et arrière. Afin d’enregistrer les valeurs souhaitées, nous devons appuyer sur la touche gauche.
 
