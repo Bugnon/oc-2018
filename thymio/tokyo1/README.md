@@ -1,6 +1,6 @@
 # Projet Tokyo 1
 
-![PhotoThymio](https://github.com/Bugnon/oc-2018/blob/master/img/thymio.jpg)
+
 
 ## Fonctionnement général
 
@@ -34,5 +34,5 @@ Les quatre *modules* fonctionnent autour d'un *module* central, qui utilise les 
 
 ### Sélection des modules
 
-Les modules sont sélectionnés en utilisant les boutons 5 et 3. Ils sont ensuite validés en utilisant le bouton 1.
+Les modules sont sélectionnés en utilisant les boutons *gauche* et *droite*. Ils sont ensuite validés en utilisant le bouton *central*
 
