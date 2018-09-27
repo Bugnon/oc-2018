@@ -20,7 +20,7 @@
 #Définition des variables
 
 # variables pour les états
-var mode = 30
+var mode = 10
 
 #Pour Montre:
 var h = 0 #heure
@@ -47,7 +47,7 @@ var t_m = 0 #heure
 var t_s = 0 #seconde
 var start_timer = 0
 timer.period[0] = 992  #Définitoin de notre seconde en milli-seconde
-
+timer.period[1] = 300
 
 #* Définition des différents mode
 10 = affichage classique de l'horloge
@@ -67,7 +67,7 @@ timer.period[0] = 992  #Définitoin de notre seconde en milli-seconde
 Réglages
 *#
 
-onevent timer0
+onevent timer1
 	if button.center == 1 then
 		if mode == 30 then
 			mode = 40
@@ -229,8 +229,9 @@ onevent timer0
 	#*
  Affichage
  *########
+ onevent timer0
  
-if mode>9 and  mode>14 then
+if mode>9 and  mode&lt;14 then
 	call leds.circle( 0, 0, (m&amp;1)*32, (m&amp;2)*16, (m&amp;4)*8, (m&amp;8)*4, (m&amp;16)*2, (m&amp;32)) 
 	call leds.prox.h((s&amp;32), (s&amp;16)*2, (s&amp;8)*4, (s&amp;4)*8, (s&amp;2)*16 , (s&amp;1)*32, 0, 0)
 	call leds.buttons ((h&amp;8)*4, (h&amp;1)*32, (h&amp;2)*16, (h&amp;4)*8)
@@ -287,7 +288,7 @@ Code
 	
 	if  t_s==0 and t_m==0 and start_timer==1 then
 
-		call sound.play(10)	
+		call sound.play(4000)	
 		start_timer =0
 		
 	elseif t_s==0 and t_m>0 then 
@@ -315,7 +316,7 @@ Code
 
 #code  de l'alarme
 	if  a_m==m and a_h==h and alarm == 1 then
-		call sound.play(10)
+		call sound.play(4000)
 	end
 	
 	onevent tap
