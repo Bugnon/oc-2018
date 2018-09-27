@@ -20,8 +20,8 @@ Pour utiliser le timer, il faut d’abord sélectionner ce mode. La couleur corr
 Lorsque le mode est le bon, on doit choisir un nombre d’heures, de minutes et de secondes. Pour le faire, il faut appuyer sur le bouton de droite, quand le robot est en face de nous, pour changer entre heures, minutes ou secondes. Les lumières du bas nous montre sur quelle sélection nous sommes, le rouge signifie qu’on doit sélectionner les heures, le vert les minutes et le bleu les secondes. Pour incrémenter ou décrémenter, on doit appuyer respectivement sur le bouton avant et arrière. Lorsqu’on est sur la sélection des secondes et qu’on reappuie sur le bouton de droite, on revient à la sélection des heures. Pour chacune des sélections, les lumières en cercle affiche le nombre en binaire. Une fois qu’on a sélectionné le temps voulu, on appuie sur le bouton gauche pour lancer le timer.  L’affichage du temps restant est fait par les lumières du cercle situé sur le dessus du robot. Pour commencer, il affiche les secondes, les lumières dessous le robot sont alors bleu. Puis il affiche les minutes avec la couleur du dessous en rouge, et finalement il affiche les heures avec la couleur sous le robot en vert. Les changement se font toutes les 5 secondes et les nombre sont écrit en binaire
 
 ## Signification des boutons
-Le bouton central permet de changer d'état (montre, alarme, chrono, timer).
-Le bouton avant permet d´incrémenter les heures, les minutes ou les secondes lors de la sélection.
-Le bouton arrière permet de décrémenter les heures, les minutes ou les secondes lors de la sélection.
-Le bouton de droite permet de passer des heures, aux minutes et aux secondes lors de la sélection
-Le bouton de gauche permet de lancer le programme de tout les différents modes.
+* Le bouton central permet de changer d'état (montre, alarme, chrono, timer).
+* Le bouton avant permet d´incrémenter les heures, les minutes ou les secondes lors de la sélection.
+* Le bouton arrière permet de décrémenter les heures, les minutes ou les secondes lors de la sélection.
+* Le bouton de droite permet de passer des heures, aux minutes et aux secondes lors de la sélection
+* Le bouton de gauche permet de lancer le programme de tout les différents modes.
