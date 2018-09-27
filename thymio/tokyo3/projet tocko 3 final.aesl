@@ -83,7 +83,9 @@ onevent button.left
 	
 # Ajouter du temps
 onevent button.forward
-	if stat!=2 then
+		if stat ==2 then
+			a_i++
+		end
 		if j==0 then
 			t_h++
 			call leds.circle((t_h/2&amp;1)*32,(t_h/2&amp;2)*16,(t_h/2&amp;4)*8,(t_h/2&amp;8)*4,(t_h/2&amp;16)*2,(t_h/2&amp;32)*1,(t_h/2&amp;64)/2,(t_h/2&amp;128)/4)
@@ -105,11 +107,12 @@ onevent button.forward
 		if t_s==120 then
 			t_s=0
 		end
-	end
 
 # Enlever du temps
 onevent button.backward
-	if stat!=2 then
+		if stat ==2 then
+			a_i--
+		end
 		if j==0 then
 			t_h--
 			call leds.circle((t_h/2&amp;1)*32,(t_h/2&amp;2)*16,(t_h/2&amp;4)*8,(t_h/2&amp;8)*4,(t_h/2&amp;16)*2,(t_h/2&amp;32)*1,(t_h/2&amp;64)/2,(t_h/2&amp;128)/4)
@@ -131,7 +134,6 @@ onevent button.backward
 		if t_s==0 then
 			t_s=118
 		end
-	end
 # Bouton pour lancer le mode.
 onevent button.right
 	if stat!=2 then
@@ -247,11 +249,6 @@ onevent timer1 # Pour le son rapide
 			
 	if stat==2 then
 
-		#Actions avec boutons
-		when button.forward==1 do a_i++ end
-		when button.backward==1 do a_i-- end
-			call leds.circle((a_i&amp;1)*32, (a_i&amp;2)*16, (a_i&amp;4)*8, (a_i&amp;8)*4, (a_i&amp;16)*2, a_i&amp;32, (a_i&amp;64)/2, (a_i&amp;128)/4)
-	
 		#Selection section (secondes, minutes, heures)
 		when button.left==1 do
 		
