@@ -16,19 +16,19 @@ La **Tokyo Watch** est une **montre binaire** ayant 4 modes différents correspo
 
 * Le bouton **1** sert à **changer de mode**
 ### Horloge
-* Incrémenter : 2
-* Décrémenter : 4
+* Incrémenter : 4
+* Décrémenter : 2
 ### Alarme
-* Incrémenter : 2
-* Décrémenter : 4
+* Incrémenter : 4
+* Décrémenter : 2
 * Arrêter : taper sur le Thymio
 ### Chronomètre
 * Play/pause : 3
 * Reset : 2
 * Temps intermédiaire : 5
 ### Timer
-* Incrémenter : 2
-* Décrémenter : 4
+* Incrémenter : 4
+* Décrémenter : 2
 ## Affichage
 Les **leds du cercle** représentent les minutes sauf pour le _chronomètre_ où elles représentent les _secondes_.
 
