@@ -4,7 +4,7 @@
 
 ## Fonctionnement général
 
-### Modules
+### Modules
 
 Quatre *modules* sont disponibles :
 
