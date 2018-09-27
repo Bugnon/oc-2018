@@ -1,6 +1,6 @@
 # Projet Tokyo 1
 
-
+![Thymio](https://github.com/Bugnon/oc-2018/blob/master/img/Tokyo1_Thymio.jpg)
 
 ## Fonctionnement général
 
