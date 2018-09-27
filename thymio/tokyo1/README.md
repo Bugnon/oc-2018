@@ -34,5 +34,5 @@ Les quatre *modules* fonctionnent autour d'un *module* central, qui utilise les 
 
 ### Sélection des modules
 
-Les modules sont sélectionnés en utilisant les boutons *gauche*, *droite* et validés en utilisant le bouton *central*.
+Les modules sont sélectionnés en utilisant les boutons 5 et 3. Ils sont ensuite validés en utilisant le bouton 1.
 
