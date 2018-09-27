@@ -5,6 +5,11 @@ La **Tokyo Watch** est une **montre binaire** ayant 4 modes différents correspo
 * Le **vert** correspond au mode « **minuteur** »
 * Le **bleu** correspond au mode « **Alarme** »
 
+## Fonctionement
+* Le mode « **montre** » permet d’afficher **l’heure en binaire**. La montre affiche sur les différentes lumières du robot les heures, les minutes et les secondes.
+* Le mode « **chronomètre** » permet de **chronométrer** un temps en heures, minutes et secondes et d’avoir *un temps intermédiaire*.
+* Le mode « **minuteur** » est un dispositif permettant de **séléctioner une durée** qui, quand elle est écoulée, permet de déclencher une alarme.
+* Le mode « **alarme** » permet de **sélectionner** une heure (heures, minutes et secondes) à laquelle on souhaite que la montre sonne.
 ## Définitions des commandes
 
 ![Numérotations des boutons du thymio](https://github.com/Bugnon/oc-2018/blob/master/img/thymio.jpg)
