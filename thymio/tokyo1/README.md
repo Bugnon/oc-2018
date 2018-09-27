@@ -1,49 +1,36 @@
 # Projet Tokyo 1
 
-Hélène cheffe de projet, on t'écoute
+## Fonctionnement général
 
-+
-## Variable definitions
+### Modules
 
-```
-# watch
-var sec
-var min
-var hr
+Quatre *modules* sont disponibles :
 
-# alarm
-var a_sec
-var a_min
-var a_hr
+- Horloge (Mauve)
 
-# chronometer
-var c_sec
-var c_min
-var c_hr
+- Alarme (Rouge)
 
-# timer
-var t_sec
-var t_min
-var t_hr
+- Chronomètre (Jaune)
 
-# mode
-var mode
-# 0 : clock
-# 1 : alarm
-# 2 : chronometer
-# 3 : timer
+- Timer (Vert)
 
-# display
-var display_s #display seconds
-var display_m #display minutes
-var display_h #display hours
+### Variables
 
-```
+Les quatre *modules* fonctionnent autour d'un *module* central, qui utilise les variables suivantes : 
 
-## Button meanings
-* forwards = increment counter
-* center =
-* backwards = decrement counter
+- display_h : 0-12 : affichage des heures
 
-* left = previous state (time/alarm/chrono/timer)
-* right = next state 
+- display_m : 0-60 : affichage des minutes
+
+- display_s : 0-60 : affichage des secondes
+
+- am : 0-1 : AM ou PM?
+
+- mode : 0-3 :  module sélectionné
+
+- active : 0-1 : sélection active? 
+
+### Sélection des modules
+
+Les modules sont sélectionnés en utilisant les boutons *gauche*, *droite* et validés en utilisant le bouton *central*.
+
