@@ -227,7 +227,7 @@ onevent timer0
 			end
 		end
 	end
-		
+
 onevent timer1 # Pour le son rapide
 
 	# Si on a lancé le mode
@@ -245,6 +245,10 @@ onevent timer1 # Pour le son rapide
 				call sound.play(1)
 			end
 		end
+	end
+onevent tap
+	if stat ==2 or stat==6 then
+		call sound.freq(1, 1)
 	end
 			
 	if stat==2 then
