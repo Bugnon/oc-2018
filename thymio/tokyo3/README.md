@@ -2,13 +2,23 @@
 
 ## Mode d'emploi :
 
-Pour commencer, le projet contient 4 différents états qui correspondent aux 4 modes de notre programme. Pour changer de mode, il suffit d’appuyer sur le bouton central. La couleur sur le dessus du robot indique le mode qui est sélectionné. L’ordre des modes est le suivant  montre, alarme, chrono et timer. Les couleurs de ces modes sont respectivement ... Le mode d’emplois de chacun de ces modes se trouve ci-dessous.
+Pour commencer, le projet contient 4 différents états qui correspondent aux 4 modes de notre programme. Pour changer de mode, il suffit d’appuyer sur le bouton central. La couleur sur le dessus du robot indique le mode qui est sélectionné. L’ordre des modes est le suivant  montre, alarme, chrono et timer. Les couleurs de ces modes sont respectivement violet, jaune, bleu clair et bleu foncé. Le mode d’emplois de chacun de ces modes se trouve ci-dessous.
 
 ### Montre
 
 Pour utiliser la montre, il faut que la couleur sur le robot soit ... Après il faut pouvoir sélectionner une heure de base, pour faire cela, il suffit d’appuyer sur le bouton situé à droite du robot lorsqu’il est en face de nous. La couleur sous le robot indique sur quelle périodes nous sommes. Le rouge correspondant aux heures, le vert aux minutes et le bleu aux secondes. Quand on arrive aux secondes et qu’on appuie encore sur le bouton de droite, on revient aux heures, puis aux minutes et ainsi de suite. Pour incrémenter ou décrémenter, on doit appuyer respectivement sur le bouton avant et arrière. Pour chacune des sélections (heures, minutes et secondes) le cercle situé sur le dessus du thymio indique le nombre en binaire. Une fois qu’on a sélectionné le bon temps. On appuie sur le bouton de gauche qui va lancer le programme. Quand le programmeur a été lancé, il affiche l’heure sur le cercle. Toutes les 5 secondes, l’affichage change entre secondes, minutes et heures. Il y a de nouveau les couleur sous le robot qui indique à quel période nous sommes. Le rouge pour les heures, le vert pour les minutes et le bleu pour les secondes.
 
 ### Alarme
+
+Afin d'utiliser l'alarme, vous devez appuyer sur le bouton central de Thymio. La couleur correspondant à ce mode est le jaune. Dans cette section, il vous faut d'abord appuyer sur la touche droite afin de sélectionner les heures, les minutes ou les secondes. Les leds du bas vont s’allumer.
+
+Rouge = Heures
+Vert = Minutes
+Bleu = Secondes
+
+Pour incrémenter et décrémenter, on utilise les flèches avant et arrière. Afin d’enregistrer les valeurs souhaitées, nous devons appuyer sur la touche gauche.
+
+Une fois l’heure arrivée, le Thymio sonnera. Pour l’éteindre, il suffit de frapper le robot.
 
 ### Chrono
 
