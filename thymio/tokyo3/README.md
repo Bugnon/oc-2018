@@ -12,7 +12,7 @@ Pour utiliser la montre, il faut que la couleur sur le robot soit ... Après il 
 
 ### Chrono
 
-Pour utiliser le chronomètre, il faut sélectionné le mode avec la couleur bleu au dessus du robot. Puis, pour le lancer, il suffit d’appuyer sur le bouton de gauche lorsque on se place en face du robot. Il est possible de mettre le chronomètre sur pause en rappuyant sur le même bouton et de le remettre en marche en appuyant une fois encore sur le bouton de gauche. 
+Pour utiliser le chronomètre, il faut sélectionné le mode avec la couleur bleu au dessus du robot. Puis, pour le lancer, il suffit d’appuyer sur le bouton de gauche lorsque on se place en face du robot. Il est possible de mettre le chronomètre sur pause en rappuyant sur le même bouton et de le remettre en marche en appuyant une fois encore sur le bouton de gauche. L’affichage du temps écoulé est fait par les lumières du cercle situé sur le dessus du robot. Pour commencer, il affiche les secondes, les lumières dessous le robot sont alors bleu. Puis il affiche les minutes avec la couleur du dessous en rouge, et finalement il affiche les heures avec la couleur sous le robot en vert. Les changement se font toutes les 5 secondes et les nombre sont écrit en binaire. 
 
 ### Timer
 
