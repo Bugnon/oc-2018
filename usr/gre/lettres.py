@@ -175,7 +175,7 @@ def L():
     a.rt(90)
     a.fd(33)
     a.penup()
-    a.fd(30)
+    a.fd(10)
 
 def M():
     a.pendown()
