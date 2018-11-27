@@ -3,6 +3,8 @@ import turtle
 bob = turtle.Turtle()
 bob.penup()
 bob.pensize(3)
+bob.bk(500)
+bob.speed(9999)
 
 def all():
     A()
@@ -33,7 +35,6 @@ def all():
     Z()
 
 def A():
-    bob.bk(500)
     bob.pendown()
     bob.lt(70)
     bob.fd(70)
