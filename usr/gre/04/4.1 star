@@ -1,0 +1,36 @@
+import turtle
+import random
+
+turtle.bgcolor(0, 0, 0)
+bob = turtle.Turtle()
+bob.speed(0)
+
+def starbase(l, n):
+    for i in range(n):
+        bob.fd(l)
+        bob.bk(l)
+        bob.rt(360/n)
+    
+def star(l, n):
+
+    for i in range(n):
+        bob.rt(180-180/n)
+        bob.fd(l)
+        
+def star_sky(alpha, beta):
+    bob.speed(0)
+    
+    for i in range(alpha):
+        
+        x = random.randint(-300, 300)
+        y = random.randint(-300, 300)
+        a = random.randint(10, 40)
+        r = random.random()
+        v = random.random()
+        b = random.random()      
+        bob.color(r, v, b)
+        bob.penup()
+        bob.setposition(x, y)
+        bob.pendown()
+        starbase(a, beta)
+        
