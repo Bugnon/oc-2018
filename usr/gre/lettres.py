@@ -1,4 +1,6 @@
 import turtle
+print('J\'écris ce que vous voulez...\n\n')
+word = input('Ecris ton mot: ')
 a = turtle.Turtle()
 a.speed(9999)
 a.penup()
