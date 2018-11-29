@@ -1,0 +1,97 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="45788" name="thymio-II"># Chronomètre
+# Valentin Piquerez
+# 24.09.2018
+
+var c_h
+var c_m
+var c_s
+
+var c_h1
+var c_m1		# Variables pour le temps intermédiaire
+var c_s1
+
+var c_on
+
+
+timer.period[0] = 1000 # =1 sec
+
+#### CHRONO
+
+onevent timer0
+	if  c_on==1 then
+		c_s++
+		
+		when c_s==60 do
+			c_s=0
+			c_m++
+		end
+		
+		when  c_m==60 do
+			c_m=0
+			c_h++
+		end
+	
+	end
+	
+	
+#### COMMANDES
+
+onevent button.right
+	when  button.right==1 do
+	
+		if c_on==0 then
+			c_on=1
+			
+		elseif c_on==1 then
+			c_on=0
+		end
+	end
+	
+	
+#### TEMPS INTERMEDIAIRE
+
+onevent button.left
+	when button.left==1 do
+		c_s1=c_s
+		c_m1=c_m
+		c_h1=c_h
+	end
+
+#### RESET
+
+onevent button.forward
+	when button.forward==1 do
+		c_s=0
+		c_m=0
+		c_h=0
+		c_on=0
+		c_s1=0
+		c_m1=0
+		c_h1=0
+		
+	end
+
+
+
+
+
+
+</node>
+
+
+</network>

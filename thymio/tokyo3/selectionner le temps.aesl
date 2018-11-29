@@ -1,0 +1,217 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="11521" name="thymio-II"># file: Selectioneur de code
+# autor: Fabian Roulin
+# date: 22.09.2018
+# Ce module premet de sélectionner l'heure directement sur le thymio
+
+
+# déclaration des variables
+var i=0
+var heures=0
+var minutes=0
+var secondes=0
+
+var h
+var m
+var s
+# code pour sélectionner les heures
+		
+		
+	onevent button.center
+		i++
+		if i==8 then
+			i=2
+		end
+		# Si on veut afficher l'heure après :
+		
+		#if heures!=0 and minutes!=0 and secondes!=0 then
+		#	i=10
+		#end
+	
+	# code pour sélectionner les heures
+	onevent button.forward
+		if i==2 then
+			heures++
+			if heures==24 then
+				heures=0
+			end
+		end
+	# code pour sélectionner les minutes
+		if i==4 then
+			minutes++
+			if minutes==120 then
+				minutes=0
+			end
+		end
+	# code pour sélectionner les minutes
+		if i==6 then
+			secondes++
+			if secondes==120 then
+				secondes=0
+			end
+		end
+
+# code pour sélectionner les heures avec forward
+if i==2 then
+	call leds.prox.h(0,0,0,0,0,0,0,0)
+	if heures==0 then
+		call leds.circle(0,0,0,0,32,0,0,0)
+	end
+	if heures==2 then
+		call leds.circle(0,0,0,0,0,32,0,0)
+	end
+	if heures==4 then
+		call leds.circle(0,0,0,0,0,32,32,0)
+	end
+	if heures==6 then
+		call leds.circle(0,0,0,0,0,0,32,0)
+	end
+	if heures==8 then
+		call leds.circle(0,0,0,0,0,0,0,32)
+	end
+	if heures==10 then
+		call leds.circle(32,0,0,0,0,0,0,32)
+	end
+	if heures==12 then
+		call leds.circle(32,0,0,0,0,0,0,0)
+	end
+	if heures==14 then
+		call leds.circle(0,32,0,0,0,0,0,0)
+	end
+	if heures==16 then
+		call leds.circle(0,32,32,0,0,0,0,0)
+	end
+	if heures==18 then
+		call leds.circle(0,0,32,0,0,0,0,0)
+	end
+	if heures==20 then
+		call leds.circle(0,0,0,32,0,0,0,0)
+	end
+	if heures==22 then
+		call leds.circle(0,0,0,32,32,0,0,0)
+	end
+end
+# code pour sélectionner les minutes avec forward
+if i==4 then
+	if (minutes/2)%10==1 then
+		call leds.circle(0,0,0,0,0,32,0,0)
+	end
+	if (minutes/2)%10==2 then
+		call leds.circle(0,0,0,0,0,32,32,0)
+	end
+	if (minutes/2)%10==3 then
+		call leds.circle(0,0,0,0,0,0,32,0)
+	end
+	if (minutes/2)%10==4 then
+		call leds.circle(0,0,0,0,0,0,0,32)
+	end
+	if (minutes/2)%10==5 then
+		call leds.circle(32,0,0,0,0,0,0,32)
+	end
+	if (minutes/2)%10==6 then
+		call leds.circle(32,0,0,0,0,0,0,0)
+	end
+	if (minutes/2)%10==7 then
+		call leds.circle(0,32,0,0,0,0,0,0)
+	end
+	if (minutes/2)%10==8 then
+		call leds.circle(0,32,32,0,0,0,0,0)
+	end
+	if (minutes/2)%10==9 then
+		call leds.circle(0,0,32,0,0,0,0,0)
+	end
+	if (minutes/2)%10==0 then
+		call leds.circle(0,0,0,0,32,0,0,0)
+	end
+	if (minutes/2)/10==0 then
+		call leds.prox.h(0,0,0,0,0,0,0,0)
+	end
+	if (minutes/2)/10==1 then
+		call leds.prox.h(0,0,0,0,0,32,0,0)
+	end
+	if (minutes/2)/10==2 then
+		call leds.prox.h(0,0,0,0,32,32,0,0)
+	end
+	if (minutes/2)/10==3 then
+		call leds.prox.h(0,0,32,32,32,32,0,0)
+	end
+	if (minutes/2)/10==4 then
+		call leds.prox.h(0,32,32,32,32,32,0,0)
+	end
+	if (minutes/2)/10==5 then
+		call leds.prox.h(32,32,32,32,32,32,0,0)
+	end
+end
+# code pour sélectionner les secondes avec forward
+if i==6 then
+	if (secondes/2)%10==1 then
+		call leds.circle(0,0,0,0,0,32,0,0)
+	end
+	if (secondes/2)%10==2 then
+		call leds.circle(0,0,0,0,0,32,32,0)
+	end
+	if (secondes/2)%10==3 then
+		call leds.circle(0,0,0,0,0,0,32,0)
+	end
+	if (secondes/2)%10==4 then
+		call leds.circle(0,0,0,0,0,0,0,32)
+	end
+	if (secondes/2)%10==5 then
+		call leds.circle(32,0,0,0,0,0,0,32)
+	end
+	if (secondes/2)%10==6 then
+		call leds.circle(32,0,0,0,0,0,0,0)
+	end
+	if (secondes/2)%10==7 then
+		call leds.circle(0,32,0,0,0,0,0,0)
+	end
+	if (secondes/2)%10==8 then
+		call leds.circle(0,32,32,0,0,0,0,0)
+	end
+	if (secondes/2)%10==9 then
+		call leds.circle(0,0,32,0,0,0,0,0)
+	end
+	if (secondes/2)%10==0 then
+		call leds.circle(0,0,0,0,32,0,0,0)
+	end
+	if (secondes/2)/10==0 then
+		call leds.prox.h(0,0,0,0,0,0,0,0)
+	end
+	if (secondes/2)/10==1 then
+		call leds.prox.h(0,0,0,0,0,32,0,0)
+	end
+	if (secondes/2)/10==2 then
+		call leds.prox.h(0,0,0,0,32,32,0,0)
+	end
+	if (secondes/2)/10==3 then
+		call leds.prox.h(0,0,32,32,32,32,0,0)
+	end
+	if (secondes/2)/10==4 then
+		call leds.prox.h(0,32,32,32,32,32,0,0)
+	end
+	if (secondes/2)/10==5 then
+		call leds.prox.h(32,32,32,32,32,32,0,0)
+	end
+end
+
+
+h=heures/2
+m=minutes/2
+s=secondes/2</node>
+
+
+</network>
