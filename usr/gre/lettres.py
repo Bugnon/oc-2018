@@ -1,9 +1,15 @@
 import turtle
+
 print('J\'écris ce que vous voulez...\n\n')
+
 word = input('Ecris ton mot: ')
+
 a = turtle.Turtle()
+
 a.speed(9999)
+
 a.penup()
+
 length = len(word)
 
 
@@ -11,35 +17,35 @@ length = len(word)
 
 
 def A():
-	a.pendown()
-	a.lt(70)
-	a.fd(106)
-	a.rt(140)
-	a.fd(50)
-	a.rt(110)
-	a.fd(34)
-	a.bk(34)
-	a.lt(110)
-	a.fd(57)
-	a.lt(70)
-	a.penup()
-	a.fd(20)
-	
+    a.pendown()
+    a.lt(70)
+    a.fd(106)
+    a.rt(140)
+    a.fd(50)
+    a.rt(110)
+    a.fd(34)
+    a.bk(34)
+    a.lt(110)
+    a.fd(57)
+    a.lt(70)
+    a.penup()
+    a.fd(20)
+    
 def B():
-	a.pendown()
-	a.fd(20)
-	a.circle(25, 180)
-	a.fd(20)
-	a.bk(20)
-	a.rt(180)
-	a.circle(25, 180)
-	a.fd(20)
-	a.lt(90)
-	a.fd(100)
-	a.lt(90)
-	a.penup()
-	a.fd(75)
-	
+    a.pendown()
+    a.fd(20)
+    a.circle(25, 180)
+    a.fd(20)
+    a.bk(20)
+    a.rt(180)
+    a.circle(25, 180)
+    a.fd(20)
+    a.lt(90)
+    a.fd(100)
+    a.lt(90)
+    a.penup()
+    a.fd(75)
+    
 def C():
     a.fd(60)
     a.rt(180)
