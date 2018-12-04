@@ -1,8 +1,11 @@
 import turtle
 
 bob = turtle.Turtle()
-bob.speed(0)
+bob.speed(3)
+bob.penup()
+
 def A():
+    bob.pendown()
     bob.lt(60)
     bob.fd(200)
     bob.rt(120)
@@ -11,14 +14,14 @@ def A():
     bob.rt(120)
     bob.fd(100)
     bob.penup()
-    bob.setposition(0, 0)
-    bob.setheading(0)
-    bob.fd(300)
-    bob.pendown()
+    bob.bk(100)
+    bob.rt(-120)
+    bob.fd(100)
+    bob.rt(-60)
+    bob.fd(100)
+    bob.penup()
     
 def B():
-    bob.penup()
-    bob.setposition(0, 0)
     bob.pendown()
     bob.fd(25)
     bob.circle(60, 180)
@@ -29,13 +32,11 @@ def B():
     bob.fd(25)
     bob.lt(90)
     bob.fd(200)
-    bob.penup()
-    bob.setposition(0, 0)
     bob.setheading(0)
-    bob.fd(300)
-    bob.pendown()
+    bob.penup()
+    bob.fd(150)
 def C():
-    bob.circle(100, -200)
+    bob.circle(100, -180)
     bob.penup()
     bob.setposition(0, 0)
     bob.setheading(0)
