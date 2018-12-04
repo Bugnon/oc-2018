@@ -1,7 +1,14 @@
 import turtle
+print('J\'écris ce que vous voulez...\n\n')
+word = input('Ecris ton mot: ')
 a = turtle.Turtle()
 a.speed(9999)
 a.penup()
+length = len(word)
+
+
+
+
 
 def A():
 	a.pendown()
@@ -370,3 +377,57 @@ def Z():
     a.fd(100)
     a.lt(90)
     a.fd(30)
+    
+for c in word:
+    if c == 'a':
+        A()
+    elif c == 'b':
+        B()
+    elif c == 'c':
+        C()
+    elif c == 'd':
+        D()
+    elif c == 'e':
+        E()
+    elif c == 'f':
+        F()
+    elif c == 'g':
+        G()
+    elif c == 'h':
+        H()
+    elif c == 'i':
+        I()
+    elif c == 'j':
+        J()
+    elif c == 'k':
+        K()
+    elif c == 'l':
+        L()    
+    elif c == 'm':
+        M()
+    elif c == 'n':
+        N()
+    elif c == 'o':
+        O()
+    elif c == 'p':
+        P()
+    elif c == 'q':
+        Q()
+    elif c == 'r':
+        R()
+    elif c == 's':
+        S()
+    elif c == 't':
+        T()
+    elif c == 'u':
+        U()
+    elif c == 'v':
+        V()
+    elif c == 'w':
+        W()
+    elif c == 'x':
+        X()
+    elif c == 'y':
+        Y()
+    elif c == 'z':
+        Z()
