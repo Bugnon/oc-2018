@@ -1,0 +1,44 @@
+# File: 03_rgb.py
+# Author: Raphael Holzer
+# Date: 26. 11. 2018
+
+# from <module> import <object>
+from sense_hat import SenseHat
+<<<<<<< HEAD
+from time import sleep
+
+sense = SenseHat()
+
+red = (255, 0, 0)
+green = (0, 255, 0)
+blue = (0, 0, 255)
+magenta = (255, 0, 255)
+cyan = (0, 255, 255)
+yellow = (255, 255, 0)
+white = (255, 255, 255)
+black = (0, 0, 0)
+
+colors = (red, magenta, blue, cyan, green, yellow)
+msg = 'Bonjour, ici la Terre!'
+
+# cycle through the colours in the 'colors' list
+for col in colors :
+    sense.clear(col)
+    sleep(0.5)
+
+sense.show_message(msg, text_colour=cyan, back_colour=(125, 125, 0))
+sense.clear()
+=======
+from random import randint
+
+sense = SenseHat()
+red=(255, 0, 0)
+msg = 'Bonjour, ici la Terre!'
+while 0==0 is True:
+  r=randint(0, 255)
+  g=randint(0, 255)
+  b=randint(0, 255)
+  color=(r, g, b)
+  sense.show_message(msg, text_colour=color, back_colour=red)
+  sense.clear()
+>>>>>>> refs/remotes/origin/master
