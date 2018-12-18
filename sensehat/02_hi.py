@@ -9,10 +9,15 @@ from time import sleep
 # create a new SenseHat object
 sense = SenseHat()
 
-sense.show_letter('H')
-sleep(0.5)
+blue = (0, 0, 255)
+white = (255, 255, 255)
+red = (255, 0, 0)
+
+sense.show_letter('H', text_colour=blue, back_colour=white)
+
+sleep(5)
 sense.show_letter('i')
-sleep(0.5)
+sleep(5)
 
 # clear the LED display
 sense.clear()
