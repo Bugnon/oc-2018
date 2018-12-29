@@ -15,4 +15,4 @@ Le principe premier du jeu est que tous les blocs vont se déplacer dans la mesu
 ### Couleurs:
 
 Les couleurs pour le **2048** sont appliquées comme suit:
-![Cercle chromatique](cercle-chromatique.jpg "cercle chromatique")
+![Cercle chromatique](RGB色相環.png "cercle chromatique")
