@@ -16,3 +16,5 @@ Le principe premier du jeu est que tous les blocs vont se déplacer dans la mesu
 
 Les couleurs pour le **2048** sont appliquées comme suit:
 ![Cercle chromatique](RGB色相環.png "cercle chromatique")
+
+Le format des couleurs étant converti par la led du format RGB888 (8bits R, 8bits G, 8bits B) au formats RGB565 (5 pour R, 6 pour G, 5 pour B). Le blanc se tansforme de (255, 255, 255) en (248, 252, 248). Chaque niveau sera en effet descendu de manière à atteindre le seuil suivant divisible par 8 pour R et B, et par 2 pour G.
