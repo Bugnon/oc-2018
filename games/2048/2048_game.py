@@ -8,8 +8,27 @@ from random import randint
 
 sense=SenseHat()
 sense.clear()
+z= 0
 
 #-----Définition des fonctions-----
+
+black = (0, 0, 0)
+blue = (0, 0, 255)
+green = (0, 255, 0)
+
+colors = [black, blue, green]
+
+colors[1]
+
+L = [[0, 0, 0, 0],
+     [0, 0, 0, 0],
+     [0, 0, 0, 0],
+     [0, 0, 0, 0]
+     ]
+
+L[0][0] = 1
+
+print(L)
 
 def collision(pixel):# Définition redondante de la fonction permettant de monter en couleur (chiffre)
     pixelup = (0, 0, 0)
@@ -56,11 +75,14 @@ def new_block():
 def moved_up():
   for y in range(8): 
     for x in range(8): # Sur chaque pixel en prenantles pixels en ligne puis en colonne
-      if sense.get_pixel(x, y) != (0, 0, 0) and y > 0: # On controle que le pixel ne soit pas une case vide
-          while sense.get_pixel(x, y-1) == (0, 0, 0) and y>0: # Si la case est vide 
-              pixel=sense.get_pixel(x, y)
-              sense.set_pixel(x, y-1, pixel)
-              sense.set_pixel(x, y, 0, 0, 0)
+      if sense.get_pixel(x, y) != (0, 0, 0) and y > 1:# On controle que le pixel ne soit pas une case vide
+          global z
+          z = y
+          while sense.get_pixel(x, z-1) == [0, 0, 0] and z>1:# Si la case est vide 
+              pixel=sense.get_pixel(x, z)
+              sense.set_pixel(x, z-1, pixel)
+              sense.set_pixel(x, z, 0, 0, 0)
+              z=z-1
           if y != 0 :
               pixel_to_upgrade = sense.get_pixel(x, y-1)
               pixel_upgraded = collision(pixel_to_upgrade)
