@@ -9,6 +9,7 @@ from time import sleep
 # create a new SenseHat object
 sense = SenseHat()
 
+<<<<<<< HEAD
 blue = (0, 0, 255)
 red = (30,30,30)
 while True:
@@ -20,3 +21,12 @@ while True:
 
 # clear the LED display
 sense.clear()
+=======
+sense.show_letter('H')
+sleep(0.5)
+sense.show_letter('i')
+sleep(0.5)
+
+# clear the LED display
+sense.clear()
+>>>>>>> refs/remotes/origin/master
