@@ -23,7 +23,7 @@ msg = 'Bonjour, ici la Terre!'
 # cycle through the colours in the 'colors' list
 for col in colors :
     sense.clear(col)
-    sleep(0.2)
+    sleep(2)
 
 sense.show_message(msg, text_colour=cyan, back_colour=red)
 sense.clear()
