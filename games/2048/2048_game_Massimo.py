@@ -7,8 +7,28 @@ from sense_hat import SenseHat
 from random import randint
 
 sense=SenseHat()
+sense.clear()
+z= 0
 
 #-----Définition des fonctions-----
+
+black = (0, 0, 0)
+blue = (0, 0, 255)
+green = (0, 255, 0)
+
+colors = [black, blue, green]
+
+colors[1]
+
+L = [[0, 0, 0, 0],
+     [0, 0, 0, 0],
+     [0, 0, 0, 0],
+     [0, 0, 0, 0]
+     ]
+
+L[0][0] = 1
+
+print(L)
 
 def collision(pixel):# Définition redondante de la fonction permettant de monter en couleur (chiffre)
     pixelup = (0, 0, 0)
@@ -55,38 +75,38 @@ def new_block():
 def moved_up():
   for y in range(8): 
     for x in range(8): # Sur chaque pixel en prenantles pixels en ligne puis en colonne
-      if sense.get_pixel(x, y) != (0, 0, 0) and y > 0: # On controle que le pixel ne soit pas une case vide
-          while sense.get_pixel(x, y-1) == (0, 0, 0): # Si la case est vide 
-              pixel=sense.get_pixel(x, y)
-              sense.set_pixel(x, y-1, pixel)
-              sense.set_pixel(x, y, 0, 0, 0)
-          else:
+      if sense.get_pixel(x, y) != (0, 0, 0) and y > 1:# On controle que le pixel ne soit pas une case vide
+          global z
+          z = y
+          while sense.get_pixel(x, z-1) == [0, 0, 0] and z>1:# Si la case est vide 
+              pixel=sense.get_pixel(x, z)
+              sense.set_pixel(x, z-1, pixel)
+              sense.set_pixel(x, z, 0, 0, 0)
+              z=z-1
+          if y != 0 :
               pixel_to_upgrade = sense.get_pixel(x, y-1)
               pixel_upgraded = collision(pixel_to_upgrade)
               sense.set_pixel(x, y, 0, 0, 0)
               sense.set_pixel(x, y-1, pixel_upgraded)
   new_block()
+def moved_down():
+    pass
+  
 
+new_block()
+#-----Reactions du joystick-----
+running= True
 
-#-----Reactions du joystick-----             
- def pushed_up(event):
-    if event.action != ACTION_RELEASED:
-        moved_up()
-
-def pushed_down(event):
-    if event.action != ACTION_RELEASED:
-        moved_down()
-        
-def pushed_left(event):
-    if event.action != ACTION_RELEASED:
-        moved_left()
-
-def pushed_right(event):
-    if event.action != ACTION_RELEASED:
-        moved_right()
-        
-while True:
-  sense.stick.direction_up = pushed_up
-  sense.stick.direction_down = pushed_down
-  sense.stick.direction_left = pushed_left
-  sense.stick.direction_right = pushed_right
+while running:
+  for event in sense.stick.get_events():
+      if event.action == 'pressed':
+          if event.direction == 'up':
+              moved_up()
+          elif event.direction == 'down':
+              moved_down()
+          elif event.direction == 'right':
+              moved_right()
+          elif event.direction == 'left':
+              moved_left()
+          elif event.direction == 'middle':
+              pass
