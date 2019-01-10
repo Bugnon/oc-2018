@@ -27,7 +27,7 @@ y = 0
 sense.clear()
 sense.set_pixel(x, y, red)
 
-(x, y) = (2, 3) #on affiche le pixel colonne 2 ligne 3
+(x, y) = (6, 3)
 sense.set_pixel(x, y, blue)
 sleep(1)
 
@@ -38,17 +38,17 @@ for x in range(8):
         
 sleep(1)
 
-o = green
-x = black
+o = black
+x = red
 creeper = [
-    o, o, o, o, o, o, o, o,
-    o, o, o, o, o, o, o, o,
-    o, x, x, o, o, x, x, o,
-    o, x, x, o, o, x, x, o,
+    o, o, o, x, x, x, x, o,
+    o, o, o, x, x, x, x, o,
     o, o, o, x, x, o, o, o,
-    o, o, x, x, x, x, o, o,
-    o, o, x, x, x, x, o, o,
-    o, o, x, o, o, x, o, o] #remplace o par la couleur verte et x par noir
+    o, o, o, x, x, x, x, o,
+    o, o, o, x, x, x, x, o,
+    o, o, o, o, o, o, o, o,
+    o, o, o, o, o, o, o, o,
+    o, o, o, o, o, o, o, o]
 
 sense.set_pixels(creeper)
 sleep(2)

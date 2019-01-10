@@ -13,10 +13,10 @@ blue = (0, 0, 255)
 white = (255, 255, 255)
 red = (255, 0, 0)
 
-sense.show_letter('H', text_colour=blue, back_colour=white)
-
+sense.show_letter('H', text_colour=blue, back_colour=white
+                  )
 sleep(5)
-sense.show_letter('i')
+sense.show_letter('i', back_colour=red)
 sleep(5)
 
 # clear the LED display

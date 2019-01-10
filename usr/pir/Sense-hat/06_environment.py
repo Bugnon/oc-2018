@@ -22,5 +22,3 @@ while True:
     sense.show_message('t='+str(t), text_colour=red)
     sense.show_message('p='+str(p))
     sense.show_message('h='+str(h), text_colour=blue)
-    
-    
