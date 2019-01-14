@@ -1,15 +1,16 @@
 ## File: 2048_Game
 # Author: Massimo ... , Michael Greub
-# Date: 28
-.12.2018
+# Date: 28.12.2018
 
 # Importation des modules requis
 from sense_hat import SenseHat
 from random import randint
 from time import *
+from threading import Thread
 
 sense=SenseHat()
 sense.clear(0, 0, 0)
+size = 4
 
 
 #-----Définition des couleurs-----
@@ -32,18 +33,39 @@ white_13 = (255, 255, 255)
 colors = [black, blue_1, green_2, green_3, green_4, yellow_5, orange_6, red_7,\
           pink_8, pink_9, pink_10, blue_11, blue_12, white_13]
 
-L = [[0, 0, 0, 0],
-     [0, 0, 0, 0],
-     [0, 0, 0, 0],
-     [0, 0, 0, 0], 
+# ------Définition des matrices utilisées------
+
+
+L4 = [[0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0], 
+     ]
+L8 = [[0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
      ]
 
 #----- Définitionts des fonctions-----
 
-def set_pixels():
-    for x in range(4):
-        for y in range(4):
-            sense.set_pixel(x, y, colors[L[x][y]])
+def startup():
+    sense.clear()
+    sense.show_message('Choose your mode:',0.075)
+    sleep(0.2)
+    
+
+def set_pixels(a):
+    if a==8:
+        for x in range(4):
+           for y in range(4):
+              sense.set_pixel(x, y, colors[L[x][y]])
+   elif a==4:
+        
 
 def new_block():
     i=0
