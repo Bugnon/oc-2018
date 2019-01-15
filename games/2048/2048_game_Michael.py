@@ -77,6 +77,22 @@ def control_end(e):
             
             
 
+<<<<<<< HEAD
+=======
+def startup():
+    sense.clear()
+    sense.show_message('Choose your mode:',0.075)
+    sleep(0.2)
+    
+
+def set_pixels(a):
+    if a==8:
+        for x in range(4):
+           for y in range(4):
+              sense.set_pixel(x, y, colors[L[x][y]])
+   elif a==4:
+        
+>>>>>>> 3e290848daf26f4cc7ec427e202bcaa5d46b87d6
 
 
 #def set_pixels(a):
