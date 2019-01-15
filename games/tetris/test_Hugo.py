@@ -66,17 +66,25 @@ def S (x, y):
     sense.set_pixel(x, y-1, green)
     sense.set_pixel(x+1, y-1, green)
     
+sense.clear()
+
+shapes = [S(4, 7), Z(4, 7), J(4, 7), L(4, 7), T(4, 7), O(4, 7)]
+functions = [S, Z, J, L, T, O]
+
+choice(shapes)
+
+### JOYSTICK ###
+    
 while True:
     for event in sense.stick.get_events():
          if event.action == 'pressed' and event.direction == 'middle':
-            print('Je dois tourner la forme')
-         elif event.direction == 'up':
-            print('Ne fait rien')
+            print('Tourne')
+         elif event.direction == 'up' and event.action == 'pressed':
+            print('Rien')
          elif event.direction == 'down' and event.action == 'held':
-            print('La forme descend plus vite')
-         elif event.direction == 'left':
-            print('Va à gauche')
-         elif event.direction == 'right':
-            print('Va à droite')
-        
+            print('Descend')
+         elif event.direction == 'left' and event.action == 'pressed':
+            print('Gauche')
+         elif event.direction == 'right' and event.action == 'pressed':
+            print('Droite')
         
