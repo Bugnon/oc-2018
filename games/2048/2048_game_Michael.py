@@ -10,11 +10,11 @@ from threading import Thread
 
 sense=SenseHat()
 sense.clear(0, 0, 0)
-size = 4
+size = 8
 
 
 #-----Définition des couleurs-----
-
+message = (128, 124, 128)
 black = (0, 0, 0)
 blue_1 = (0, 255, 255)
 green_2 = (0, 255, 127)
@@ -29,9 +29,11 @@ pink_10 = (127, 0, 255)
 blue_11 = (0, 0, 255)
 blue_12 = (0, 127, 255)
 white_13 = (255, 255, 255)
+r = red_7
+o = black
 
 colors = [black, blue_1, green_2, green_3, green_4, yellow_5, orange_6, red_7,\
-          pink_8, pink_9, pink_10, blue_11, blue_12, white_13]
+          pink_8, pink_9, pink_10, blue_11, blue_12, white_13,]
 
 # ------Définition des matrices utilisées------
 
@@ -50,10 +52,23 @@ L8 = [[0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0]
      ]
+L_cross = [r, o, o, o, o, o, o, r,
+           o, r, o, o, o, o, r, o,
+           o, o, r, o, o, r, o, o,
+           o, o, o, r, r, o, o, o,
+           o, o, o, r, r, o, o, o,
+           o, o, r, o, o, r, o, o,
+           o, r, o, o, o, o, r, o,
+           r, o, o, o, o, o, o, r
+          ]
 
 #----- Définitionts des fonctions-----
 def control_end(e):
     end = True
+    if e == 8:
+        L = L8
+    else:
+        L = L4
     for x in range(e):
         for y in range(e):
             if L[x][y]==0:
@@ -62,37 +77,51 @@ def control_end(e):
         for y in range(e-2):
             x=x+1
             y=y+1
-            if L[x][y]==L[x+1][y+1]:
+            if L[x][y]==L[x+1][y+1] or L[x][y]==L[x+1][y-1] or L[x][y]==L[x-1][y+1]\
+            or L[x][y]==L[x-1][y-1]:
                 end = False
-            elif L[x][y]==L[x+1][y-1]:
-                end = False
-            elif L[x][y]==L[x-1][y+1]:
-                end = False
-            elif L[x][y]==L[x-1][y-1]:
-                end = False
-    if e==8:
-        pass
-                                                                         
-            
-            
-            
-
-<<<<<<< HEAD
-=======
-def startup():
-    sense.clear()
-    sense.show_message('Choose your mode:',0.075)
-    sleep(0.2)
+                break
+    for x in range(e-1):
+        if L[0][x] == L[0][x+1] or L[x][0] == L[x+1][0] or L[e-1][x] == L[e-1][x+1] \
+        or L[x][e-1] == L[x+1][e-1]:
+            end = False
+            break
+    if end == True:
+        r = red_7
+        o = black
+        sense.clear()
+        for i in range(5):
+            sense.set_pixels(L_cross)
+            sleep(0.1)
+            sense.clear()
+            sleep(0.1)
+        sense.set_pixels(L_cross)
+        sleep(1)
+        sense.clear()
+        score=0
+        for x in range(e):
+            for y in range(e):
+                score = score + 2**L[x][y]
+        sense.show_message('You lose... Your score is:',scroll_speed = 0.05, text_colour = message)
+        show = True
+        while show:
+            score = str(score)
+            string = score + 'pts'
+            sense.show_message(string, 0.05, text_colour = message)
+            sense.show_message('Press to end', scroll_speed = 0.05, text_colour = message)
+            for event in sense.stick.get_events():
+                if event.action == 'pressed':
+                    show = False
+        startup()
     
-
+                                                            
 def set_pixels(a):
     if a==8:
         for x in range(4):
            for y in range(4):
               sense.set_pixel(x, y, colors[L[x][y]])
-   elif a==4:
-        
->>>>>>> 3e290848daf26f4cc7ec427e202bcaa5d46b87d6
+    elif a==4:
+        pass
 
 
 #def set_pixels(a):
@@ -126,13 +155,14 @@ def new_block(e):
             if L[x][y] == 0:# On controle si ce pixel est vide
                 L[x][y]=1 # On défini un bloc de couleur correspondant au chiffre 2
                 r=r+1
+    control_end(e)
     set_pixels(e)
     print(L)
 
 def startup():
     global size
     sense.clear()
-    sense.show_message('Choose your mode:',0.15)
+    sense.show_message('Choose your mode:',0.1)
     sleep(0.2)
     run=True
     while run:
@@ -212,12 +242,8 @@ def moved_right(a):
                    L[x][y]=0
     new_block(a)
             
-
-    
-
-
-
-
+   
+control_end(8)
 #-----Reactions du joystick-----
 running= True
 
