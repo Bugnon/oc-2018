@@ -5,95 +5,245 @@
 # Importation des modules requis
 from sense_hat import SenseHat
 from random import randint
+from time import *
+from threading import Thread
 
 sense=SenseHat()
-sense.clear()
-z= 0
+sense.clear(0, 0, 0)
+size = 8
 
-#-----Définition des fonctions-----
 
+#-----Définition des couleurs-----
+message = (128, 124, 128)
 black = (0, 0, 0)
-blue = (0, 0, 255)
-green = (0, 255, 0)
+blue_1 = (0, 255, 255)
+green_2 = (0, 255, 127)
+green_3 = (0, 255, 0)
+green_4 = (127, 255, 0)
+yellow_5 = (255, 255, 0)
+orange_6 = (255, 127, 0)
+red_7 = (255, 0, 0)
+pink_8 = (255, 0, 127)
+pink_9 = (255, 0, 255)
+pink_10 = (127, 0, 255)
+blue_11 = (0, 0, 255)
+blue_12 = (0, 127, 255)
+white_13 = (255, 255, 255)
+r = red_7
+o = black
 
-colors = [black, blue, green]
+colors = [black, blue_1, green_2, green_3, green_4, yellow_5, orange_6, red_7,\
+          pink_8, pink_9, pink_10, blue_11, blue_12, white_13,]
 
-colors[1]
+# ------Définition des matrices utilisées------
 
-L = [[0, 0, 0, 0],
-     [0, 0, 0, 0],
-     [0, 0, 0, 0],
-     [0, 0, 0, 0]
+
+L4 = [[0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0], 
      ]
+L8 = [[0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+     ]
+L_cross = [r, o, o, o, o, o, o, r,
+           o, r, o, o, o, o, r, o,
+           o, o, r, o, o, r, o, o,
+           o, o, o, r, r, o, o, o,
+           o, o, o, r, r, o, o, o,
+           o, o, r, o, o, r, o, o,
+           o, r, o, o, o, o, r, o,
+           r, o, o, o, o, o, o, r
+          ]
 
-L[0][0] = 1
-
-print(L)
-
-def collision(pixel):# Définition redondante de la fonction permettant de monter en couleur (chiffre)
-    pixelup = (0, 0, 0)
-    if pixel == (0, 252, 248): # 2
-        pixelup = (0, 252, 124) # 4
-    elif pixel == (0, 252, 124): # 4
-        pixelup = (0, 252, 0) # 8
-    elif pixel == (0, 252, 0): # 8
-        pixelup = (124, 252, 0) # 16
-    elif pixel == (124, 252, 0): # 16
-        pixelup = (248, 252, 0) # 32
-    elif pixel == (248, 252, 0): # 32
-        pixelup = (248, 126, 0) # 64
-    elif pixel == (248, 126, 0): # 64
-        pixelup = (248, 0, 0) # 128
-    elif pixel == (248, 0, 0): # 128
-        pixelup = (248, 0, 124) # 256
-    elif pixel == (248, 0, 124): # 256
-        pixelup = (248, 0, 248) # 512
-    elif pixel == (248, 0, 248): # 512
-        pixelup = (124, 0, 248) # 1024
-    elif pixel == (124, 0, 248): # 1024
-        pixelup = (0, 0, 248) # 2048
-    elif pixel == (0, 0, 248): # 2048
-        pixelup = (0, 126, 248) # 4096
-    elif pixel == (0, 126, 248): # 4096
-        pixelup = (248, 252, 248) # 8192
-    elif pixel == (248, 252, 248): # 8192
-        victory
-    return pixelup
+#----- Définitionts des fonctions-----
+def control_end(e):
+    end = True
+    if e == 8:
+        L = L8
+    else:
+        L = L4
+    for x in range(e):
+        for y in range(e):
+            if L[x][y]==0:
+                end=False
+    for x in range(e-2):
+        for y in range(e-2):
+            x=x+1
+            y=y+1
+            if L[x][y]==L[x+1][y+1] or L[x][y]==L[x+1][y-1] or L[x][y]==L[x-1][y+1]\
+            or L[x][y]==L[x-1][y-1]:
+                end = False
+                break
+    for x in range(e-1):
+        if L[0][x] == L[0][x+1] or L[x][0] == L[x+1][0] or L[e-1][x] == L[e-1][x+1] \
+        or L[x][e-1] == L[x+1][e-1]:
+            end = False
+            break
+    if end == True:
+        r = red_7
+        o = black
+        sense.clear()
+        for i in range(5):
+            sense.set_pixels(L_cross)
+            sleep(0.1)
+            sense.clear()
+            sleep(0.1)
+        sense.set_pixels(L_cross)
+        sleep(1)
+        sense.clear()
+        score=0
+        for x in range(e):
+            for y in range(e):
+                score = score + 2**L[x][y]
+        sense.show_message('You lose... Your score is:',scroll_speed = 0.05, text_colour = message)
+        show = True
+        while show:
+            score = str(score)
+            string = score + 'pts'
+            sense.show_message(string, 0.05, text_colour = message)
+            sense.show_message('Press to end', scroll_speed = 0.05, text_colour = message)
+            for event in sense.stick.get_events():
+                if event.action == 'pressed':
+                    show = False
+        startup()
     
-    
-    
-def new_block():
-  i=0
-  while i < 2: #tant qu'on en a pas créé 2
-    x=randint(0, 7)# 
-    y=randint(0, 7)# On choisis aléatoirement une ligne et une colonne
-    if sense.get_pixel(x, y) == [0, 0, 0]:# On controle si ce pixel est vide
-      start = (0, 255, 248)
-      sense.set_pixel(x, y, start) # On défini un bloc de couleur correspondant au chiffre 2
-      i=i+1 # Si le bloc est créé on indente pour créé exactement 2 nouveaux pixels
+                                                            
+def set_pixels(a):
+    if a==8:
+        for x in range(4):
+           for y in range(4):
+              sense.set_pixel(x, y, colors[L[x][y]])
+    elif a==4:
+        pass
 
-def moved_up():
-  for y in range(8): 
-    for x in range(8): # Sur chaque pixel en prenantles pixels en ligne puis en colonne
-      if sense.get_pixel(x, y) != (0, 0, 0) and y > 1:# On controle que le pixel ne soit pas une case vide
-          global z
-          z = y
-          while sense.get_pixel(x, z-1) == [0, 0, 0] and z>1:# Si la case est vide 
-              pixel=sense.get_pixel(x, z)
-              sense.set_pixel(x, z-1, pixel)
-              sense.set_pixel(x, z, 0, 0, 0)
-              z=z-1
-          if y != 0 :
-              pixel_to_upgrade = sense.get_pixel(x, y-1)
-              pixel_upgraded = collision(pixel_to_upgrade)
-              sense.set_pixel(x, y, 0, 0, 0)
-              sense.set_pixel(x, y-1, pixel_upgraded)
-  new_block()
-def moved_down():
-    pass
+
+#def set_pixels(a):
+#    if a==8:
+#        for x in range(4):
+#           for y in range(4):
+#              sense.set_pixel(x, y, colors[L[x][y]])
+#   elif a==4:
+        
+
+def new_block(e):
+    i=0
+    for x in range(e):
+        for y in range(e):
+            if L[x][y]==0:
+                i=i+1
+    if i>1:
+        r=0
+        while r<2: #tant qu'on en a pas créé 2
+            x=randint(0, (e-1))# 
+            y=randint(0, (e-1))
+            print(x,y)# On choisis aléatoirement une ligne et une colonne
+            if L[x][y] == 0:# On controle si ce pixel est vide
+                L[x][y]=1 # On défini un bloc de couleur correspondant au chiffre 2
+                r=r+1# Si le bloc est créé on indente pour créé exactement 2 nouveaux pixels
+    elif i==1:
+        r=0
+        while r < 1: #tant qu'on en a pas créé 2
+            x=randint(0, (e-1))# 
+            y=randint(0, (e-1))# On choisis aléatoirement une ligne et une colonne
+            if L[x][y] == 0:# On controle si ce pixel est vide
+                L[x][y]=1 # On défini un bloc de couleur correspondant au chiffre 2
+                r=r+1
+    control_end(e)
+    set_pixels(e)
+    print(L)
+
+def startup():
+    global size
+    sense.clear()
+    sense.show_message('Choose your mode:',0.1)
+    sleep(0.2)
+    run=True
+    while run:
+        size = 4
+        sense.show_message('4X4', 0.1)
+        sleep(0.1)
+        for event in sense.stick.get_events():
+            if event.action == 'pressed':
+                run= False
+        if run == True:
+            size = 8
+            sense.show_message('8X8', 0.1)
+            sleep(0.1)
+            for event in sense.stick.get_events():
+                if event.action == 'pressed':
+                    run= False
+    new_block(size) 
+
+def moved_up(d):
+  for y in range(d): 
+    for x in range(d):# Sur chaque pixel en prenantles pixels en ligne puis en colonne
+        if L[x][y] > 0 and y>=1:# On controle que le pixel ne soit pas une case vide
+          while L[x][y-1] == 0 and y>=1:# Si la case est vide 
+              L[x][y-1]=L[x][y]
+              L[x][y]=0
+              y=y-1
+          if L[x][y-1]==L[x][y]:
+             L[x][y-1]=L[x][y-1]+1
+             L[x][y]=0
+  new_block(d)
   
+  
+def moved_down(b):
+    for z in range(b-1):
+        for x in range(b):
+            y=b-2-z
+            if L[x][y] > 0 and y<=(b-2):# On controle que le pixel ne soit pas une case vide
+                while y<=(b-2) and L[x][y+1] == 0:# Si la case est vide
+                   L[x][y+1]=L[x][y]
+                   L[x][y]=0
+                   y=y+1
+                if y<(b-1):
+                    if L[x][y+1]==L[x][y]:
+                       L[x][y+1]=L[x][y+1]+1
+                       L[x][y]=0
+    new_block(b)
+    
+   
+def moved_left(c):
+    for x in range(c):
+        for y in range(c):
+            if L[x][y] > 0:# On controle que le pixel ne soit pas une case vide
+                while x>0 and L[x-1][y] == 0:# Si la case est vide 
+                    L[x-1][y]=L[x][y]
+                    L[x][y]=0
+                    x=x-1
+                if L[x-1][y]==L[x][y]:
+                   L[x-1][y]=L[x-1][y]+1
+                   L[x][y]=0
+    new_block(c)
 
-new_block()
+def moved_right(a):
+    if a == 4:
+        L = L4
+    elif a == 8:
+        L = L8
+    for z in range(a-1):
+        x=a-2-z
+        for y in range(a):
+            if L[x][y] > 0:# On controle que le pixel ne soit pas une case vide
+                while x<(a-1) and L[x+1][y] == 0:# Si la case est vide 
+                    L[x+1][y]=L[x][y]
+                    L[x][y]=0
+                    x=x+1
+                if L[x+1][y]==L[x][y]:
+                   L[x+1][y]=L[x+1][y]+1
+                   L[x][y]=0
+    new_block(a)
+            
+   
+control_end(8)
 #-----Reactions du joystick-----
 running= True
 
@@ -101,12 +251,12 @@ while running:
   for event in sense.stick.get_events():
       if event.action == 'pressed':
           if event.direction == 'up':
-              moved_up()
+              moved_up(size)
           elif event.direction == 'down':
-              moved_down()
+              moved_down(size)
           elif event.direction == 'right':
-              moved_right()
+              moved_right(size)
           elif event.direction == 'left':
-              moved_left()
+              moved_left(size)
           elif event.direction == 'middle':
               pass

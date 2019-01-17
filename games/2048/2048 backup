@@ -61,8 +61,8 @@ def startup():
 
 def set_pixels(a):
     if a==8:
-        for x in range(8):
-           for y in range(8):
+        for x in range(4):
+           for y in range(4):
               sense.set_pixel(x, y, colors[L[x][y]])
    elif a==4:
         
@@ -202,4 +202,3 @@ while running:
               moved_left()
           elif event.direction == 'middle':
               pass
-
