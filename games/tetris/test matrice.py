@@ -21,7 +21,9 @@ sense=SenseHat()
 
 sense.clear(black)
 
-L=[[0, 1, 0], [0, 1, 0], [0, 1, 1]]
+I=[[0, 1, 0], [0, 1, 0], [0, 1, 0]]
+L=[[1, 0], [1, 1]]
+O=[[1, 1], [1, 1]]
 
 def matrix_print(M):
     n = len(M)
@@ -34,12 +36,23 @@ def matrix_print(M):
 
 
 
-def rotate_square_matrix_right_90(matrix):
+def rotate_90(matrix): #tourne la matrice carrée de 90 degrés vers la droite
     n = len(matrix)
+    for y in range(n):
+        for x in range(n):
+            if matrix[y][x]==1:
+                sense.set_pixel(x, y, black)
+    print(matrix)
     for layer in range((n + 1) // 2):
         for index in range(layer, n - 1 - layer, 1):
             matrix[layer][index], matrix[n - 1 - index][layer], \
                 matrix[index][n - 1 - layer], matrix[n - 1 - layer][n - 1 - index] = \
                 matrix[n - 1 - index][layer], matrix[n - 1 - layer][n - 1 - index], \
                 matrix[layer][index], matrix[index][n - 1 - layer]
+    for y in range(n):
+        for x in range(n):
+            if matrix[y][x]==1:
+                sense.set_pixel(x, y, red)
+    print(matrix)
+
     return matrix
