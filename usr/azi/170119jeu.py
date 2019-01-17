@@ -26,7 +26,7 @@ def show(state):
             sense.set_pixel(x, 7-y, colors[s])
         
 def cursor(p):
-    """move left/right and return when 'middle')"""
+    """move left/right and return when 'middle'"""
     x =0
     selection =True
     while selection:
