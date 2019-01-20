@@ -6,7 +6,6 @@
 from sense_hat import SenseHat
 from random import randint
 from time import *
-from threading import Thread
 
 sense=SenseHat()
 sense.clear(0, 0, 0)
@@ -52,6 +51,7 @@ L8 = [[0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0]
      ]
+
 L_cross = [r, o, o, o, o, o, o, r,
            o, r, o, o, o, o, r, o,
            o, o, r, o, o, r, o, o,
@@ -87,6 +87,7 @@ def control_end(e):
             end = False
             break
     if end == True:
+        sleep(1)
         r = red_7
         o = black
         sense.clear()
@@ -101,7 +102,9 @@ def control_end(e):
         score=0
         for x in range(e):
             for y in range(e):
-                score = score + 2**L[x][y]
+                if L[x][y]!=0:
+                    score = score + 2**L[x][y]
+                print(L[x][y], score)
         sense.show_message('You lose... Your score is:',scroll_speed = 0.05, text_colour = message)
         show = True
         while show:
@@ -117,85 +120,110 @@ def control_end(e):
                                                             
 def set_pixels(a):
     if a==8:
-        for x in range(4):
-           for y in range(4):
-              sense.set_pixel(x, y, colors[L[x][y]])
+        for x in range(8):
+            for y in range(8):
+                sense.set_pixel(x, y, colors[L8[x][y]])
     elif a==4:
-        pass
+       L8_affichage = [[L4[0][0], L4[0][0], L4[0][1], L4[0][1], L4[0][2], L4[0][2], L4[0][3], L4[0][3]],
+                       [L4[0][0], L4[0][0], L4[0][1], L4[0][1], L4[0][2], L4[0][2], L4[0][3], L4[0][3]],
+                       [L4[1][0], L4[1][0], L4[1][1], L4[1][1], L4[1][2], L4[1][2], L4[1][3], L4[1][3]],
+                       [L4[1][0], L4[1][0], L4[1][1], L4[1][1], L4[1][2], L4[1][2], L4[1][3], L4[1][3]],
+                       [L4[2][0], L4[2][0], L4[2][1], L4[2][1], L4[2][2], L4[2][2], L4[2][3], L4[2][3]],
+                       [L4[2][0], L4[2][0], L4[2][1], L4[2][1], L4[2][2], L4[2][2], L4[2][3], L4[2][3]],
+                       [L4[3][0], L4[3][0], L4[3][1], L4[3][1], L4[3][2], L4[3][2], L4[3][3], L4[3][3]],
+                       [L4[3][0], L4[3][0], L4[3][1], L4[3][1], L4[3][2], L4[3][2], L4[3][3], L4[3][3]]
+                      ]
+       print(L8_affichage)
+       for x in range(8):
+            for y in range(8):
+                 sense.set_pixel(x,y, colors[L8_affichage[x][y]])
 
 
-#def set_pixels(a):
-#    if a==8:
-#        for x in range(4):
-#           for y in range(4):
-#              sense.set_pixel(x, y, colors[L[x][y]])
-#   elif a==4:
+
+
         
 
 def new_block(e):
+    sleep(0.25)
     i=0
+    if e==4:
+        L=L4
+    elif e==8:
+        L=L8
     for x in range(e):
         for y in range(e):
             if L[x][y]==0:
                 i=i+1
     if i>1:
-        r=0
+        r=randint(0,1)
         while r<2: #tant qu'on en a pas créé 2
             x=randint(0, (e-1))# 
             y=randint(0, (e-1))
-            print(x,y)# On choisis aléatoirement une ligne et une colonne
+            # On choisis aléatoirement une ligne et une colonne
             if L[x][y] == 0:# On controle si ce pixel est vide
                 L[x][y]=1 # On défini un bloc de couleur correspondant au chiffre 2
                 r=r+1# Si le bloc est créé on indente pour créé exactement 2 nouveaux pixels
     elif i==1:
-        r=0
+        r=randint(0, 1)
         while r < 1: #tant qu'on en a pas créé 2
             x=randint(0, (e-1))# 
             y=randint(0, (e-1))# On choisis aléatoirement une ligne et une colonne
             if L[x][y] == 0:# On controle si ce pixel est vide
                 L[x][y]=1 # On défini un bloc de couleur correspondant au chiffre 2
                 r=r+1
-    control_end(e)
+    print(L4)
     set_pixels(e)
-    print(L)
+#    control_end(e)
 
 def startup():
     global size
     sense.clear()
-    sense.show_message('Choose your mode:',0.1)
+    sense.show_message('Choose your mode:',0.001)
+    modes= ['4X4', '8X8']
+    mode=[4, 8]
     sleep(0.2)
-    run=True
-    while run:
-        size = 4
-        sense.show_message('4X4', 0.1)
-        sleep(0.1)
+    selecting=True
+    i=0
+    while selecting:
+        sense.show_message(modes[i])
         for event in sense.stick.get_events():
             if event.action == 'pressed':
-                run= False
-        if run == True:
-            size = 8
-            sense.show_message('8X8', 0.1)
-            sleep(0.1)
-            for event in sense.stick.get_events():
-                if event.action == 'pressed':
-                    run= False
-    new_block(size) 
+                if event.direction == 'right' or event.direction == 'left':
+                    i = (i + 1) % 2
+                    sense.show_message(modes[i])
+                elif event.direction == 'middle':
+                    selecting = False
+                    size=mode[i]
+                
+    new_block(size)
+        
+        
+                
 
 def moved_up(d):
-  for y in range(d): 
-    for x in range(d):# Sur chaque pixel en prenantles pixels en ligne puis en colonne
-        if L[x][y] > 0 and y>=1:# On controle que le pixel ne soit pas une case vide
-          while L[x][y-1] == 0 and y>=1:# Si la case est vide 
-              L[x][y-1]=L[x][y]
-              L[x][y]=0
-              y=y-1
-          if L[x][y-1]==L[x][y]:
-             L[x][y-1]=L[x][y-1]+1
-             L[x][y]=0
-  new_block(d)
-  
-  
+    if d == 4:
+        L = L4
+    elif d == 8:
+        L = L8  
+    for y in range(d): 
+       for x in range(d):# Sur chaque pixel en prenantles pixels en ligne puis en colonne
+          if L[x][y] > 0 and y>=1:# On controle que le pixel ne soit pas une case vide
+             while L[x][y-1] == 0 and y>=1:# Si la case est vide 
+                L[x][y-1]=L[x][y]
+                L[x][y]=0
+                y=y-1
+             if L[x][y-1]==L[x][y]:
+                L[x][y-1]=L[x][y-1]+1
+                L[x][y]=0
+    set_pixels(d)
+    new_block(d)
+    
+
 def moved_down(b):
+    if b == 4:
+        L = L4
+    elif b == 8:
+        L = L8
     for z in range(b-1):
         for x in range(b):
             y=b-2-z
@@ -208,10 +236,15 @@ def moved_down(b):
                     if L[x][y+1]==L[x][y]:
                        L[x][y+1]=L[x][y+1]+1
                        L[x][y]=0
+    set_pixels(b)
     new_block(b)
     
    
 def moved_left(c):
+    if c == 4:
+        L = L4
+    elif c == 8:
+        L = L8
     for x in range(c):
         for y in range(c):
             if L[x][y] > 0:# On controle que le pixel ne soit pas une case vide
@@ -222,6 +255,7 @@ def moved_left(c):
                 if L[x-1][y]==L[x][y]:
                    L[x-1][y]=L[x-1][y]+1
                    L[x][y]=0
+    set_pixels(c)
     new_block(c)
 
 def moved_right(a):
@@ -237,13 +271,15 @@ def moved_right(a):
                     L[x+1][y]=L[x][y]
                     L[x][y]=0
                     x=x+1
-                if L[x+1][y]==L[x][y]:
-                   L[x+1][y]=L[x+1][y]+1
-                   L[x][y]=0
+                if x<(a-1):
+                    if L[x+1][y]==L[x][y]:
+                       L[x+1][y]=L[x+1][y]+1
+                       L[x][y]=0
+    set_pixels(a)
     new_block(a)
-            
-   
-control_end(8)
+
+startup()
+
 #-----Reactions du joystick-----
 running= True
 
