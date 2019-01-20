@@ -60,6 +60,24 @@ def matrix_print(M): ## Affiche une matrice
         for x in range(n):
             if M[y][x]==1:
                     sense.set_pixel(4+x+dx, y+dy, color)
+                    
+def matrix_print_down(M):
+    global dy
+    dy+=1
+    n=len(M)
+    for y in range(n): ## Supprime la forme précédente
+        for x in range(n):
+            if 0 <= 4+x+dx <= 7:
+                if M[y][x]==1:
+                    sense.set_pixel(4+x+dx, y+dy-1, black)
+            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 4+x+dx == -1:
+                if M[y][x]==1:
+                    sense.set_pixel(4+x+dx, y+dy-1, black)
+    for y in range(n):
+        for x in range(n):
+            if M[y][x]==1:
+                sense.set_pixel(4+x+dx, y+dy, color)
+
 
 def matrix_print_left(M): ## Fonction qui bouge la forme sur la gauche
     global dx
@@ -69,10 +87,10 @@ def matrix_print_left(M): ## Fonction qui bouge la forme sur la gauche
         for x in range(n):
             if 0 <= 4+x+dx <= 7:
                 if M[y][x]==1:
-                    sense.set_pixel(4+x+dx+1, y, black)
+                    sense.set_pixel(4+x+dx+1, y+dy, black)
             elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 4+x+dx == -1:
                 if M[y][x]==1:
-                    sense.set_pixel(4+x+dx+1, y, black)
+                    sense.set_pixel(4+x+dx+1, y+dy, black)
             else:
                 dx += 1              
     
@@ -80,10 +98,10 @@ def matrix_print_left(M): ## Fonction qui bouge la forme sur la gauche
         for x in range(n):
             if 0 <= 4+x+dx <= 7:
                 if M[y][x]==1:
-                    sense.set_pixel(4+x+dx, y, color)
+                    sense.set_pixel(4+x+dx, y+dy, color)
             elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 4+x+dx == -1:
                 if M[y][x]==1:
-                    sense.set_pixel(4+x+dx, y, color)
+                    sense.set_pixel(4+x+dx, y+dy, color)
 
 def matrix_print_right(M): ## Même principe que matrix_print_left mais à droite
     global dx
@@ -93,10 +111,10 @@ def matrix_print_right(M): ## Même principe que matrix_print_left mais à droit
         for x in range(n):
             if 0 <= 4+x+dx <= 7:
                 if M[y][x]==1:
-                    sense.set_pixel(4+x+dx-1, y, black)
+                    sense.set_pixel(4+x+dx-1, y+dy, black)
             elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 4+x+dx == 8:
                 if M[y][x]==1:
-                    sense.set_pixel(4+x+dx-1, y, black)
+                    sense.set_pixel(4+x+dx-1, y+dy, black)
             else:
                 dx -= 1
 
@@ -104,10 +122,10 @@ def matrix_print_right(M): ## Même principe que matrix_print_left mais à droit
         for x in range(n):
             if 0 <= 4+x+dx <= 7:
                 if M[y][x]==1:
-                    sense.set_pixel(4+x+dx, y, color)
+                    sense.set_pixel(4+x+dx, y+dy, color)
             elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 4+x+dx == 8:
                 if M[y][x]==1:
-                    sense.set_pixel(4+x+dx, y, color)
+                    sense.set_pixel(4+x+dx, y+dy, color)
 
 
 def rotate_90(matrix): # Tourne la matrice carrée de 90 degrés vers la droite (fonction empruntée sur internet)
@@ -145,8 +163,7 @@ while state == 1:
             else:
                 rotate_90(P)
          elif event.direction == 'down' and event.action == 'held':
-            print('Descend')
-            sleep(0.5)
+            matrix_print_down(P)
          elif event.direction == 'left' and event.action == 'pressed':
             matrix_print_left(P)
          elif event.direction == 'right' and event.action == 'pressed':
