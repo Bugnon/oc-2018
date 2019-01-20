@@ -67,17 +67,19 @@ def matrix_print_down(M):
     n=len(M)
     for y in range(n): ## Supprime la forme précédente
         for x in range(n):
-            if 0 <= 4+x+dx <= 7:
-                if M[y][x]==1:
-                    sense.set_pixel(4+x+dx, y+dy-1, black)
-            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 4+x+dx == -1:
-                if M[y][x]==1:
-                    sense.set_pixel(4+x+dx, y+dy-1, black)
+            if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 4+x+dx == -1 and y+dy==5:
+                break
+            elif 0 <= 4+x+dx <= 7:
+                if y+dy<7:
+                    if M[y][x]==1:
+                        sense.set_pixel(4+x+dx, y+dy-1, black)
     for y in range(n):
         for x in range(n):
-            if M[y][x]==1:
-                sense.set_pixel(4+x+dx, y+dy, color)
-
+            if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and y+dy==5:
+                break
+            elif y+dy<7:
+                if M[y][x]==1:
+                    sense.set_pixel(4+x+dx, y+dy, color)
 
 def matrix_print_left(M): ## Fonction qui bouge la forme sur la gauche
     global dx
