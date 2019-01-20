@@ -133,7 +133,7 @@ def rotate_90(matrix): # Tourne la matrice carrée de 90 degrés vers la droite 
     for y in range(n):
         for x in range(n):
             if matrix[y][x]==1:
-                sense.set_pixel(4+x+dx, y, black)
+                sense.set_pixel(4+x+dx, y+dy, black)
     for layer in range((n + 1) // 2):
         for index in range(layer, n - 1 - layer, 1):
             matrix[layer][index], matrix[n - 1 - index][layer], \
@@ -143,7 +143,7 @@ def rotate_90(matrix): # Tourne la matrice carrée de 90 degrés vers la droite 
     for y in range(n):
         for x in range(n):
             if matrix[y][x]==1:
-                sense.set_pixel(4+x+dx, y, color)
+                sense.set_pixel(4+x+dx, y+dy, color)
     return matrix
 
 sense.clear()
