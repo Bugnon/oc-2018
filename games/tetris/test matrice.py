@@ -56,3 +56,42 @@ def rotate_90(matrix): #tourne la matrice carrée de 90 degrés vers la droite
     print(matrix)
 
     return matrix
+
+
+g = (0, 255, 0) # Green
+b = (0, 0, 0) # Black
+
+test_pixels = [
+    g, g, g, g, g, g, g, g,
+    g, g, g, b, g, b, g, g,
+    b, b, g, b, b, b, b, b,
+    b, b, b, g, b, b, b, b,
+    b, b, b, b, g, b, b, b,
+    b, b, b, b, b, g, b, b,
+    g, g, g, g, g, g, g, g,
+    g, g, g, g, g, b, b, g
+]
+
+
+sense.set_pixels(test_pixels)
+
+
+#check si une ligne est pleine, la supprime et descend les lignes au-dessus.
+l=1
+score=0
+while l==1:
+    for i in range(8):
+        a=0
+        for j in range(8):
+            if sense.get_pixel(7-j, 7-i)!=[0, 0, 0]:
+                a+=1
+                if a==8:
+                    score+=1
+                    for k in range(8):
+                        sense.set_pixel(k, 7-i, black)
+                    for c in reversed(range(7-i)):
+                        for d in range(8):
+                            sense.set_pixel(d, c+1, (sense.get_pixel(d, c)))
+                            sense.set_pixel(d, c, black)
+
+
