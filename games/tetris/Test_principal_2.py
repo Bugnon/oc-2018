@@ -20,6 +20,10 @@ black = (0, 0, 0)
 
 color = (0, 0, 0)
 
+score = 0
+
+state = 0
+
 sense = SenseHat()
 
 ## Définition des formes dans la variables shapes = I, L et O
@@ -143,4 +147,19 @@ while True:
             matrix_print_left(P)
          elif event.direction == 'right' and event.action == 'pressed':
             matrix_print_right(P)
+            
+while state==0:
+    for i in range(8):
+        a=0
+        for j in range(8):
+            if sense.get_pixel(7-j, 7-i) != [0, 0, 0]:
+                a+=1
+                if a==8:
+                    score+=1
+                    for k in range(8):
+                        sense.set_pixel(k, 7-i, black)
+                    for c in reversed(range(7-i)):
+                        for d in range(8):
+                            sense.set_pixel(d, c+1, (sense.get_pixel(d, c)))
+                            sense.set_pixel(d, c, black)
         
