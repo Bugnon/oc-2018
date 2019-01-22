@@ -93,6 +93,7 @@ def control_end(e):
             break
     print('borders', end)
     if end == True:
+        set_pixels(e)
         sleep(3)
         r = red_7
         o = black
@@ -104,7 +105,8 @@ def control_end(e):
             sleep(0.1)
         sense.set_pixels(L_cross)
         sleep(1)
-        sense.clear()
+        set_pixels(e)
+        sleep(2)
         score=0
         for x in range(e):
             for y in range(e):
@@ -212,8 +214,8 @@ def moved_up(d):
         L = L4
     elif d == 8:
         L = L8  
-    for y in range(d): 
-       for x in range(d):# Sur chaque pixel en prenantles pixels en ligne puis en colonne
+    for x in range(d): 
+       for y in range(d):# Sur chaque pixel en prenantles pixels en ligne puis en colonne
           if L[x][y] > 0 and y>=1:# On controle que le pixel ne soit pas une case vide
              while L[x][y-1] == 0 and y>=1:# Si la case est vide 
                 L[x][y-1]=L[x][y]
@@ -231,18 +233,17 @@ def moved_down(b):
         L = L4
     elif b == 8:
         L = L8
-    for z in range(b-1):
-        for x in range(b):
+    for x in range(b):
+        for z in range(b-1):
             y=b-2-z
             if L[x][y] > 0 and y<=(b-2):# On controle que le pixel ne soit pas une case vide
                 while y<=(b-2) and L[x][y+1] == 0:# Si la case est vide
                    L[x][y+1]=L[x][y]
                    L[x][y]=0
                    y=y+1
-                if y<(b-1):
-                    if L[x][y+1]==L[x][y]:
-                       L[x][y+1]=L[x][y+1]+1
-                       L[x][y]=0
+                if y<(b-1) and L[x][y+1]==L[x][y]:
+                   L[x][y+1]=L[x][y+1]+1
+                   L[x][y]=0
     set_pixels(b)
     new_block(b)
     
@@ -252,8 +253,8 @@ def moved_left(c):
         L = L4
     elif c == 8:
         L = L8
-    for x in range(c):
-        for y in range(c):
+    for y in range(c):
+        for x in range(c):
             if L[x][y] > 0:# On controle que le pixel ne soit pas une case vide
                 while x>0 and L[x-1][y] == 0:# Si la case est vide 
                     L[x-1][y]=L[x][y]
@@ -270,18 +271,17 @@ def moved_right(a):
         L = L4
     elif a == 8:
         L = L8
-    for z in range(a-1):
-        x=a-2-z
-        for y in range(a):
-            if L[x][y] > 0:# On controle que le pixel ne soit pas une case vide
+    for y in range(a):
+        for z in range(a-1):
+            x=a-2-z
+            if L[x][y] > 0 and x<(a-1):# On controle que le pixel ne soit pas une case vide
                 while x<(a-1) and L[x+1][y] == 0:# Si la case est vide 
                     L[x+1][y]=L[x][y]
                     L[x][y]=0
                     x=x+1
-                if x<(a-1):
-                    if L[x+1][y]==L[x][y]:
-                       L[x+1][y]=L[x+1][y]+1
-                       L[x][y]=0
+                if x<(a-1) and L[x+1][y]==L[x][y]:
+                   L[x+1][y]=L[x+1][y]+1
+                   L[x][y]=0
     set_pixels(a)
     new_block(a)
 
