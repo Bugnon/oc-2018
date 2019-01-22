@@ -64,30 +64,36 @@ L_cross = [r, o, o, o, o, o, o, r,
 
 #----- Définitionts des fonctions-----
 def control_end(e):
+    """Returns True when the game is finished."""
     end = True
     if e == 8:
         L = L8
-    else:
+    elif e == 4:
         L = L4
+        
+    # check if there are empty cells        
     for x in range(e):
         for y in range(e):
             if L[x][y]==0:
                 end=False
-    for x in range(e-2):
-        for y in range(e-2):
-            x=x+1
-            y=y+1
-            if L[x][y]==L[x+1][y+1] or L[x][y]==L[x+1][y-1] or L[x][y]==L[x-1][y+1]\
-            or L[x][y]==L[x-1][y-1]:
+    
+    print('empty', end)
+    # check neighbors for center cells    
+    for x in range(1, e-1):
+        for y in range(1, e-1):
+            if L[x][y]==L[x][y+1] or L[x][y]==L[x+1][y] or L[x][y]==L[x-1][y]\
+            or L[x][y]==L[x][y-1]:
                 end = False
                 break
+    print('neighbors', end)
     for x in range(e-1):
         if L[0][x] == L[0][x+1] or L[x][0] == L[x+1][0] or L[e-1][x] == L[e-1][x+1] \
         or L[x][e-1] == L[x+1][e-1]:
             end = False
             break
+    print('borders', end)
     if end == True:
-        sleep(1)
+        sleep(3)
         r = red_7
         o = black
         sense.clear()
@@ -133,7 +139,7 @@ def set_pixels(a):
                        [L4[3][0], L4[3][0], L4[3][1], L4[3][1], L4[3][2], L4[3][2], L4[3][3], L4[3][3]],
                        [L4[3][0], L4[3][0], L4[3][1], L4[3][1], L4[3][2], L4[3][2], L4[3][3], L4[3][3]]
                       ]
-       print(L8_affichage)
+#       print(L8_affichage)
        for x in range(8):
             for y in range(8):
                  sense.set_pixel(x,y, colors[L8_affichage[x][y]])
@@ -171,9 +177,10 @@ def new_block(e):
             if L[x][y] == 0:# On controle si ce pixel est vide
                 L[x][y]=1 # On défini un bloc de couleur correspondant au chiffre 2
                 r=r+1
-    print(L4)
+#    print(L4)
+    control_end(e)
     set_pixels(e)
-#    control_end(e)
+    
 
 def startup():
     global size
