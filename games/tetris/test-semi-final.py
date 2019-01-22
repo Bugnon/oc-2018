@@ -25,7 +25,9 @@ score = 0 # Le nombre de lignes que le joueur aura réussi à faire disparaître
 state = 0 # State = 0 quand le jeu est en statique et state = 1 quand il est en dynamique (la forme descend)
 
 sense = SenseHat()
-
+dx = 0 # Variable de déplacement sur l'axe X
+dy = 0 # Variable de déplacement sur l'axe Y (+1 chaque seconde)
+dt = 1 # Variable delta du temps (temps entre chaque descente)
 ## Définition des formes dans des matrices
 
 sense.clear()
@@ -43,19 +45,10 @@ O=[[1, 1],
 
 shapes = (I, L, O)
 
-P = choice(shapes) ## Choisit une forme au hasard parmi les trois
-
-if P == L:
-    color = red
-elif P == I:
-    color = cyan
-else:
-    color = yellow
-
-dx = 0 # Variable de déplacement sur l'axe X
-dy = 0 # Variable de déplacement sur l'axe Y (+1 chaque seconde)
-
 def matrix_print(M): ## Affiche une matrice en haut au milieu
+    dx = 0 # Variable de déplacement sur l'axe X
+    dy = 0 # Variable de déplacement sur l'axe Y (+1 chaque seconde)
+    dt = 1 # Variable delta du temps (temps entre chaque descente)
     n = len(M)
     for y in range(n):
         for x in range(n):
@@ -155,11 +148,40 @@ def rotate_90(matrix): # Tourne la matrice carrée de 90 degrés vers la droite 
 
 sense.clear()
 
-matrix_print(P)
+state = 0 # Lance le moment où la forme commence à descendre (dymnaique)
 
-state=1 # Lance le moment où la forme commence à descendre
+t0 = time()
+
+a = 0
+
+while state==0:
+    for i in range(8):
+        a=0
+        for j in range(8):
+            if sense.get_pixel(7-j, 7-i) != [0, 0, 0]:
+                a+=1
+                if a==8:
+                    score+=1
+                    for k in range(8):
+                        sense.set_pixel(k, 7-i, black)
+                    for c in reversed(range(7-i)):
+                        for d in range(8):
+                            sense.set_pixel(d, c+1, (sense.get_pixel(d, c)))
+                            sense.set_pixel(d, c, black)
+    state=1
+    a=0
 
 while state == 1:
+    if a==0:
+        P = choice(shapes) ## Choisit une forme au hasard parmi les trois
+        matrix_print(P)
+        a=1
+    if P == L:
+        color = red
+    elif P == I:
+        color = cyan
+    else:
+        color = yellow
     for event in sense.stick.get_events():
          if event.action == 'pressed' and event.direction == 'middle':
             if P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
@@ -189,19 +211,8 @@ while state == 1:
         state=0
     elif P == L and dy == 6:
         state=0
-
-
-while state==0:
-    for i in range(8):
-        a=0
-        for j in range(8):
-            if sense.get_pixel(7-j, 7-i) != [0, 0, 0]:
-                a+=1
-                if a==8:
-                    score+=1
-                    for k in range(8):
-                        sense.set_pixel(k, 7-i, black)
-                    for c in reversed(range(7-i)):
-                        for d in range(8):
-                            sense.set_pixel(d, c+1, (sense.get_pixel(d, c)))
-                            sense.set_pixel(d, c, black)
+     
+    t = time()
+    if t > t0 + dt: 
+        matrix_print_down(P)
+        t0 = t
