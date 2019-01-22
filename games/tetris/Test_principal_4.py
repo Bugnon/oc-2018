@@ -90,6 +90,15 @@ def matrix_print_left(M): ## Fonction qui bouge la forme sur la gauche
     dx -= 1
     n = len(M)
     for y in range(n): ## Supprime la forme précédente
+        if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
+            if M[y][1]==1 and sense.get_pixel(4+dx+1, y+dy)!=[0, 0, 0]:
+                dx+=1
+                return ;
+        elif 0 <= 4+dx <= 7:
+            if M[y][0]==1 and sense.get_pixel(4+dx, y+dy)!=[0, 0, 0]:
+                dx+=1
+                return ;
+    for y in range(n): ## Supprime la forme précédente
         for x in range(n):
             if 0 <= 4+x+dx <= 7:
                 if M[y][x]==1:
@@ -113,6 +122,19 @@ def matrix_print_right(M): ## Même principe que matrix_print_left mais à droit
     global dx
     dx += 1
     n = len(M)
+    for y in range(n): ## Supprime la forme précédente
+        if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
+            if M[y][1]==1 and sense.get_pixel(4+dx+1, y+dy)!=[0, 0, 0]:
+                dx-=1
+                return ;
+        if M == [[0, 0, 0], [1, 1, 1], [0, 0, 0]]:
+            if M[y][2]==1 and sense.get_pixel(4+dx+2, y+dy)!=[0, 0, 0]:
+                dx-=1
+                return ;
+        elif 0 <= 4+dx <= 7:
+            if M[y][1]==1 and sense.get_pixel(4+dx+1, y+dy)!=[0, 0, 0]:
+                dx-=1
+                return ;
     for y in range(n):
         for x in range(n):
             if 0 <= 4+x+dx <= 7:
@@ -152,7 +174,9 @@ def rotate_90(matrix): # Tourne la matrice carrée de 90 degrés vers la droite 
                 sense.set_pixel(4+x+dx, y+dy, color)
     return matrix
 
-sense.clear()
+
+sense.set_pixel(1, 1, red)
+sense.set_pixel(7, 1, red)
 
 matrix_print(P)
 
@@ -164,6 +188,8 @@ while state == 1:
             if P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
                 if dx == -5 or dx == 2:
                     pass
+                elif sense.get_pixel(4+dx, dy+1)!=[0, 0, 0] or sense.get_pixel(4+dx+2, dy+1)!=[0, 0, 0]:
+                    pass
                 else:
                     rotate_90(P)
             else:
@@ -174,13 +200,6 @@ while state == 1:
             matrix_print_left(P)
          elif event.direction == 'right' and event.action == 'pressed':
             matrix_print_right(P)
-
-while state==1:
-   time.sleep(1)
-   matrix_print_down(P)
-   if dy == 6:
-       state = 0
-
 
 while state==0:
     for i in range(8):
