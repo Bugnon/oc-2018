@@ -24,7 +24,7 @@ colors = [black, blue_1, green_2, green_3, green_4, yellow_5, orange_6, red_7,\
           pink_8, pink_9, pink_10, blue_11, blue_12, white_13]
 
 
-L4 = [[1, 0, 0, 4],
+L4 = [[5, 6, 3, 4],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
       [3, 0, 0, 8], 

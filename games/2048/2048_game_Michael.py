@@ -30,9 +30,10 @@ blue_12 = (0, 127, 255)
 white_13 = (255, 255, 255)
 r = red_7
 o = black
+y = yellow_5
 
 colors = [black, blue_1, green_2, green_3, green_4, yellow_5, orange_6, red_7,\
-          pink_8, pink_9, pink_10, blue_11, blue_12, white_13,]
+          pink_8, pink_9, pink_10, blue_11, blue_12, white_13]
 
 # ------Définition des matrices utilisées------
 
@@ -61,8 +62,42 @@ L_cross = [r, o, o, o, o, o, o, r,
            o, r, o, o, o, o, r, o,
            r, o, o, o, o, o, o, r
           ]
+L_win = [ o, o, o, o, o, o, o, o,
+          o, y, y, y, y, y, y, o,
+          o, y, y, y, y, y, y, o,
+          o, y, y, y, y, y, y, o,
+          o, o, y, y, y, y, o, o,
+          o, o, o, y, y, o, o, o,
+          o, o, o, y, y, o, o, o,
+          o, y, y, y, y, y, y, o,
+        ]
 
 #----- Définitionts des fonctions-----
+    
+def victory():
+    global size
+    if size ==4:
+        L=L4
+    elif size== 8:
+        L=L8
+    sense.set_pixels(L_win)
+    sleep(10)
+    sense.show_message('Congratulations, you just reached the highest block. Your score is :', 0.05)
+    for x in range(size):
+            for y in range(size):
+                if L[x][y]!=0:
+                    score = score + 2**L[x][y]
+    while show:
+            score = str(score)
+            string = score + 'pts'
+            sense.show_message(string, 0.05, text_colour = message)
+            sense.show_message('Press to restart', scroll_speed = 0.05, text_colour = message)
+            for event in sense.stick.get_events():
+                if event.action == 'pressed':
+                    show = False
+    startup()
+
+
 def control_end(e):
     """Returns True when the game is finished."""
     end = True
@@ -186,6 +221,12 @@ def new_block(e):
 
 def startup():
     global size
+    for x in range(4):
+        for y in range(4):
+            L4[x][y] = 0
+    for x in range(8):
+        for y in range(8):
+            L8[x][y] = 0
     sense.clear()
     sense.show_message('Choose your mode:',0.001)
     modes= ['4X4', '8X8']
@@ -285,7 +326,7 @@ def moved_right(a):
     set_pixels(a)
     new_block(a)
 
-startup()
+victory()
 
 #-----Reactions du joystick-----
 running= True
