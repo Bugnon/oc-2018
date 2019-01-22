@@ -30,9 +30,10 @@ blue_12 = (0, 127, 255)
 white_13 = (255, 255, 255)
 r = red_7
 o = black
+y = yellow_5
 
 colors = [black, blue_1, green_2, green_3, green_4, yellow_5, orange_6, red_7,\
-          pink_8, pink_9, pink_10, blue_11, blue_12, white_13,]
+          pink_8, pink_9, pink_10, blue_11, blue_12, white_13]
 
 # ------Définition des matrices utilisées------
 
@@ -61,8 +62,42 @@ L_cross = [r, o, o, o, o, o, o, r,
            o, r, o, o, o, o, r, o,
            r, o, o, o, o, o, o, r
           ]
+L_win = [ o, o, o, o, o, o, o, o,
+          o, y, y, y, y, y, y, o,
+          o, y, y, y, y, y, y, o,
+          o, y, y, y, y, y, y, o,
+          o, o, y, y, y, y, o, o,
+          o, o, o, y, y, o, o, o,
+          o, o, o, y, y, o, o, o,
+          o, y, y, y, y, y, y, o,
+        ]
 
 #----- Définitionts des fonctions-----
+    
+def victory():
+    global size
+    if size ==4:
+        L=L4
+    elif size== 8:
+        L=L8
+    sense.set_pixels(L_win)
+    sleep(10)
+    sense.show_message('Congratulations, you just reached the highest block. Your score is :', 0.05)
+    for x in range(size):
+            for y in range(size):
+                if L[x][y]!=0:
+                    score = score + 2**L[x][y]
+    while show:
+            score = str(score)
+            string = score + 'pts'
+            sense.show_message(string, 0.05, text_colour = message)
+            sense.show_message('Press to restart', scroll_speed = 0.05, text_colour = message)
+            for event in sense.stick.get_events():
+                if event.action == 'pressed':
+                    show = False
+    startup()
+
+
 def control_end(e):
     """Returns True when the game is finished."""
     end = True
@@ -93,6 +128,7 @@ def control_end(e):
             break
     print('borders', end)
     if end == True:
+        set_pixels(e)
         sleep(3)
         r = red_7
         o = black
@@ -104,7 +140,8 @@ def control_end(e):
             sleep(0.1)
         sense.set_pixels(L_cross)
         sleep(1)
-        sense.clear()
+        set_pixels(e)
+        sleep(2)
         score=0
         for x in range(e):
             for y in range(e):
@@ -184,6 +221,12 @@ def new_block(e):
 
 def startup():
     global size
+    for x in range(4):
+        for y in range(4):
+            L4[x][y] = 0
+    for x in range(8):
+        for y in range(8):
+            L8[x][y] = 0
     sense.clear()
     sense.show_message('Choose your mode:',0.001)
     modes= ['4X4', '8X8']
@@ -212,8 +255,8 @@ def moved_up(d):
         L = L4
     elif d == 8:
         L = L8  
-    for y in range(d): 
-       for x in range(d):# Sur chaque pixel en prenantles pixels en ligne puis en colonne
+    for x in range(d): 
+       for y in range(d):# Sur chaque pixel en prenantles pixels en ligne puis en colonne
           if L[x][y] > 0 and y>=1:# On controle que le pixel ne soit pas une case vide
              while L[x][y-1] == 0 and y>=1:# Si la case est vide 
                 L[x][y-1]=L[x][y]
@@ -231,18 +274,17 @@ def moved_down(b):
         L = L4
     elif b == 8:
         L = L8
-    for z in range(b-1):
-        for x in range(b):
+    for x in range(b):
+        for z in range(b-1):
             y=b-2-z
             if L[x][y] > 0 and y<=(b-2):# On controle que le pixel ne soit pas une case vide
                 while y<=(b-2) and L[x][y+1] == 0:# Si la case est vide
                    L[x][y+1]=L[x][y]
                    L[x][y]=0
                    y=y+1
-                if y<(b-1):
-                    if L[x][y+1]==L[x][y]:
-                       L[x][y+1]=L[x][y+1]+1
-                       L[x][y]=0
+                if y<(b-1) and L[x][y+1]==L[x][y]:
+                   L[x][y+1]=L[x][y+1]+1
+                   L[x][y]=0
     set_pixels(b)
     new_block(b)
     
@@ -252,8 +294,8 @@ def moved_left(c):
         L = L4
     elif c == 8:
         L = L8
-    for x in range(c):
-        for y in range(c):
+    for y in range(c):
+        for x in range(c):
             if L[x][y] > 0:# On controle que le pixel ne soit pas une case vide
                 while x>0 and L[x-1][y] == 0:# Si la case est vide 
                     L[x-1][y]=L[x][y]
@@ -270,22 +312,21 @@ def moved_right(a):
         L = L4
     elif a == 8:
         L = L8
-    for z in range(a-1):
-        x=a-2-z
-        for y in range(a):
-            if L[x][y] > 0:# On controle que le pixel ne soit pas une case vide
+    for y in range(a):
+        for z in range(a-1):
+            x=a-2-z
+            if L[x][y] > 0 and x<(a-1):# On controle que le pixel ne soit pas une case vide
                 while x<(a-1) and L[x+1][y] == 0:# Si la case est vide 
                     L[x+1][y]=L[x][y]
                     L[x][y]=0
                     x=x+1
-                if x<(a-1):
-                    if L[x+1][y]==L[x][y]:
-                       L[x+1][y]=L[x+1][y]+1
-                       L[x][y]=0
+                if x<(a-1) and L[x+1][y]==L[x][y]:
+                   L[x+1][y]=L[x+1][y]+1
+                   L[x][y]=0
     set_pixels(a)
     new_block(a)
 
-startup()
+victory()
 
 #-----Reactions du joystick-----
 running= True

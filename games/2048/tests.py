@@ -24,10 +24,10 @@ colors = [black, blue_1, green_2, green_3, green_4, yellow_5, orange_6, red_7,\
           pink_8, pink_9, pink_10, blue_11, blue_12, white_13]
 
 
-L4 = [[0, 0, 0, 0],
+L4 = [[5, 6, 3, 4],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
-      [0, 0, 0, 0], 
+      [3, 0, 0, 8], 
      ]
 L8_affichage = [[L4[0][0], L4[0][0], L4[0][1], L4[0][1], L4[0][2], L4[0][2], L4[0][3], L4[0][3]],
                 [L4[0][0], L4[0][0], L4[0][1], L4[0][1], L4[0][2], L4[0][2], L4[0][3], L4[0][3]],
@@ -54,3 +54,4 @@ set_pixels(4)
 for y in range(200):
     x=randint(0, 2)
     print(x)
+print(L4[0][3])
