@@ -45,7 +45,8 @@ L4 = [[0, 0, 0, 0],
      ]
 L8 = [[0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
+  
+  [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
@@ -72,7 +73,8 @@ L_win = [ o, o, o, o, o, o, o, o,
           o, y, y, y, y, y, y, o,
         ]
 
-#----- Définitionts des fonctions-----
+#--
+--- Définitionts des fonctions-----
     
 def victory():
     global size
@@ -81,17 +83,19 @@ def victory():
     elif size== 8:
         L=L8
     sense.set_pixels(L_win)
-    sleep(10)
-    sense.show_message('Congratulations, you just reached the highest block. Your score is :', 0.05)
+    sleep(7.5)
+    score = 0
+    sense.show_message('Congratulations, you just reached the highest block. Your score is :', 0.05, message)
     for x in range(size):
             for y in range(size):
                 if L[x][y]!=0:
                     score = score + 2**L[x][y]
-    while show:
+    show = True
+    while sho w:
             score = str(score)
-            string = score + 'pts'
-            sense.show_message(string, 0.05, text_colour = message)
-            sense.show_message('Press to restart', scroll_speed = 0.05, text_colour = message)
+            string = score + ' pts'
+            sense.show_message(string, 0.075, message)
+            sense.show_message('Press to restart', 0.5, message)
             for event in sense.stick.get_events():
                 if event.action == 'pressed':
                     show = False
@@ -112,7 +116,7 @@ def control_end(e):
             if L[x][y]==0:
                 end=False
     
-    print('empty', end)
+##    print('empty', end)
     # check neighbors for center cells    
     for x in range(1, e-1):
         for y in range(1, e-1):
@@ -120,13 +124,13 @@ def control_end(e):
             or L[x][y]==L[x][y-1]:
                 end = False
                 break
-    print('neighbors', end)
+#    print('neighbors', end)
     for x in range(e-1):
         if L[0][x] == L[0][x+1] or L[x][0] == L[x+1][0] or L[e-1][x] == L[e-1][x+1] \
         or L[x][e-1] == L[x+1][e-1]:
             end = False
             break
-    print('borders', end)
+#    print('borders', end)
     if end == True:
         set_pixels(e)
         sleep(3)
@@ -139,8 +143,6 @@ def control_end(e):
             sense.clear()
             sleep(0.1)
         sense.set_pixels(L_cross)
-        sleep(1)
-        set_pixels(e)
         sleep(2)
         score=0
         for x in range(e):
@@ -148,13 +150,13 @@ def control_end(e):
                 if L[x][y]!=0:
                     score = score + 2**L[x][y]
                 print(L[x][y], score)
-        sense.show_message('You lose... Your score is:',scroll_speed = 0.05, text_colour = message)
+        sense.show_message('You lose. Your score is:', 0.05, message)
         show = True
         while show:
             score = str(score)
             string = score + 'pts'
-            sense.show_message(string, 0.05, text_colour = message)
-            sense.show_message('Press to end', scroll_speed = 0.05, text_colour = message)
+            sense.show_message(string, 0.075, message)
+            sense.show_message('Press to end', 0.05, message)
             for event in sense.stick.get_events():
                 if event.action == 'pressed':
                     show = False
@@ -290,10 +292,7 @@ def moved_down(b):
     
    
 def moved_left(c):
-    if c == 4:
-        L = L4
-    elif c == 8:
-        L = L8
+    L = L4 if n == 4 elif 
     for y in range(c):
         for x in range(c):
             if L[x][y] > 0:# On controle que le pixel ne soit pas une case vide
@@ -326,7 +325,7 @@ def moved_right(a):
     set_pixels(a)
     new_block(a)
 
-victory()
+startup()
 
 #-----Reactions du joystick-----
 running= True
