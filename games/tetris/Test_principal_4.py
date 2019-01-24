@@ -89,7 +89,7 @@ def matrix_print_left(M): ## Fonction qui bouge la forme sur la gauche
     global dx
     dx -= 1
     n = len(M)
-    for y in range(n): ## Supprime la forme précédente
+    for y in range(n): ## Stop la forme quand elle est contre une autre forme
         if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
             if M[y][1]==1 and sense.get_pixel(4+dx+1, y+dy)!=[0, 0, 0]:
                 dx+=1
@@ -188,7 +188,7 @@ while state == 1:
             if P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
                 if dx == -5 or dx == 2:
                     pass
-                elif sense.get_pixel(4+dx, dy+1)!=[0, 0, 0] or sense.get_pixel(4+dx+2, dy+1)!=[0, 0, 0]:
+                elif sense.get_pixel(4+dx, dy+1)!=[0, 0, 0] or sense.get_pixel(4+dx+2, dy+1)!=[0, 0, 0]: ##################
                     pass
                 else:
                     rotate_90(P)
