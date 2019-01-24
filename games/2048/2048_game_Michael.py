@@ -1,8 +1,6 @@
-"""
-File: 2048_Game
-Author: Massimo ... , Michael Greub
-Date: 28.12.2018
-"""
+## File: 2048_Game
+# Author: Massimo ... , Michael Greub
+# Date: 28.12.2018
 
 # Importation des modules requis
 from sense_hat import SenseHat
@@ -191,7 +189,7 @@ def set_pixels(a):
         
 
 def new_block(e):
-    sleep(0.25)
+    sleep(0.2)
     i=0
     if e==4:
         L=L4
