@@ -69,10 +69,6 @@ def matrix_print_down(M): ## Déplace la matrice vers le bas
     global dy
     dy+=1
     n=len(M)
-    for x in range(n):
-        if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
-            if M[x][2]==1 and sense.get_pixel(x+dx+3, y+dy+3) != [0, 0, 0]:
-                state=0
     for y in range(n): ## Supprime la matrice précédente
         for x in range(n):
             if 0 <= y+dy <= 7:
@@ -199,7 +195,7 @@ while game == 1:
                 if P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
                     if dx == -4 or dx == 3:
                         pass # Empêche de tourner la barre quand elle est verticale et dans un côté
-                    elif sense.get_pixel(4+dx, dy+1)!=[0, 0, 0] or sense.get_pixel(4+dx+2, dy+1)!=[0, 0, 0]:
+                    elif sense.get_pixel(3+dx, dy+1)!=[0, 0, 0] or sense.get_pixel(3+dx+2, dy+1)!=[0, 0, 0]:
                         pass
                     else:
                         rotate_90(P)
@@ -217,7 +213,7 @@ while game == 1:
              elif event.direction == 'right' and event.action == 'pressed':
                 matrix_print_right(P)
 
-        if P == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and dy == 7:
+        if P == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and dy == 6:
             state=0
         elif P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and dy == 5:
             state=0
@@ -226,7 +222,16 @@ while game == 1:
         elif P == L and dy == 6:
             state=0
     
-            
+        n=len(P)
+        for x in range(n):
+            if P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and dy < 5:
+                if sense.get_pixel(dx+4, dy+3) != [0, 0, 0]:
+                    state=0
+            elif dy < 6 and P != [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
+                if P[x][1]==1 and sense.get_pixel(x+dx+3, dy+2) != [0, 0, 0]:
+                    state=0
+                            
+        
         t = time()
         if t > t0 + dt:
             matrix_print_down(P)
