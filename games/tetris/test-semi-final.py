@@ -95,6 +95,15 @@ def matrix_print_left(M): ## Fonction qui bouge la matrice sur la gauche
     global dx
     dx -= 1
     n = len(M)
+    for y in range(n): ## Stop la forme quand elle est contre une autre forme
+        if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and -1 <= 3+dx <= 7:
+            if M[y][1]==1 and sense.get_pixel(3+dx+1, y+dy)!=[0, 0, 0]:
+                dx+=1
+                return ;
+        elif 0 <= 3+dx <= 7:
+            if M[y][0]==1 and sense.get_pixel(3+dx, y+dy)!=[0, 0, 0]:
+                dx+=1
+                return ;
     for y in range(n): ## Supprime la forme précédente
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
@@ -119,6 +128,19 @@ def matrix_print_right(M): ## Même principe que matrix_print_left mais à droit
     global dx
     dx += 1
     n = len(M)
+    for y in range(n): ## Empeche de continuer quand elle est en colision avec une forme 
+            if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and -1 <= 3+dx <= 6:
+                if M[y][1]==1 and sense.get_pixel(3+dx+1, y+dy)!=[0, 0, 0]:
+                    dx-=1
+                    return ;
+            if M == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and -1 <= 3+dx <= 5:
+                if M[y][2]==1 and sense.get_pixel(3+dx+2, y+dy)!=[0, 0, 0]:
+                    dx-=1
+                    return ;
+            elif 0 <= 3+dx <= 6:
+                if M[y][1]==1 and sense.get_pixel(3+dx+1, y+dy)!=[0, 0, 0]:
+                    dx-=1
+                    return ;
     for y in range(n):
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
@@ -171,7 +193,7 @@ while game == 1:
         for event in sense.stick.get_events():
              if event.action == 'pressed' and event.direction == 'middle':
                 if P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
-                    if dx == -5 or dx == 2:
+                    if dx == -4 or dx == 3:
                         pass # Empêche de tourner la barre quand elle est verticale et dans un côté
                     else:
                         rotate_90(P)
@@ -197,6 +219,8 @@ while game == 1:
             state=0
         elif P == L and dy == 6:
             state=0
+    
+    
             
         t = time()
         if t > t0 + dt:
@@ -231,6 +255,8 @@ while game == 1:
         else:
             color = yellow
             
+        t0=time()
+        
         matrix_print(P)
         
         state = 1
