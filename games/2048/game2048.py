@@ -2,12 +2,14 @@
 File: 2048_Game
 Author: Massimo ... , Michael Greub
 Date: 28.12.2018
+
+This is a game of 2048 to be played on the Raspberry SenseHAT.
 """
 
 # Importation des modules requis
 from sense_hat import SenseHat
 from random import randint
-from time import *
+from time import sleep
 
 sense=SenseHat()
 sense.clear(0, 0, 0)
@@ -291,13 +293,14 @@ def moved_down(b):
     new_block(b)
     
    
-def moved_left(c):
-    if c == 4:
+def moved_left(size):
+    """Reacts to the joystick pushed left."""
+    if size == 4:
         L = L4
-    elif c == 8:
+    elif size == 8:
         L = L8
-    for y in range(c):
-        for x in range(c):
+    for y in range(size):
+        for x in range(size):
             if L[x][y] > 0:# On controle que le pixel ne soit pas une case vide
                 while x>0 and L[x-1][y] == 0:# Si la case est vide 
                     L[x-1][y]=L[x][y]
@@ -306,43 +309,51 @@ def moved_left(c):
                 if L[x-1][y]==L[x][y]:
                    L[x-1][y]=L[x-1][y]+1
                    L[x][y]=0
-    set_pixels(c)
-    new_block(c)
+    set_pixels(size)
+    new_block(size)
 
-def moved_right(a):
-    if a == 4:
-        L = L4
-    elif a == 8:
-        L = L8
-    for y in range(a):
-        for z in range(a-1):
-            x=a-2-z
-            if L[x][y] > 0 and x<(a-1):# On controle que le pixel ne soit pas une case vide
-                while x<(a-1) and L[x+1][y] == 0:# Si la case est vide 
+def moved_right(n):
+    """Reacts to the joystick pushed right."""
+    L = L4 if n == 4 else L8
+##    if a == 4:
+##        L = L4
+##    elif a == 8:
+##        L = L8
+    for y in range(n):
+        for z in range(n-1):
+            x=n-2-z
+            if L[x][y] > 0 and x<(n-1):# On controle que le pixel ne soit pas une case vide
+                while x<(n-1) and L[x+1][y] == 0:# Si la case est vide 
                     L[x+1][y]=L[x][y]
                     L[x][y]=0
                     x=x+1
-                if x<(a-1) and L[x+1][y]==L[x][y]:
+                if x<(n-1) and L[x+1][y]==L[x][y]:
                    L[x+1][y]=L[x+1][y]+1
                    L[x][y]=0
-    set_pixels(a)
-    new_block(a)
+    set_pixels(n)
+    new_block(n)
 
-startup()
+def main():
+    """Main loop to play the game."""
+    startup()
 
-#-----Reactions du joystick-----
-running= True
+    #-----Reactions du joystick-----
+    running= True
 
-while running:
-  for event in sense.stick.get_events():
-      if event.action == 'pressed':
-          if event.direction == 'up':
-              moved_up(size)
-          elif event.direction == 'down':
-              moved_down(size)
-          elif event.direction == 'right':
-              moved_right(size)
-          elif event.direction == 'left':
-              moved_left(size)
-          elif event.direction == 'middle':
-              pass
+    while True:
+      for event in sense.stick.get_events():
+          if event.action == 'pressed':
+              if event.direction == 'up':
+                  moved_up(size)
+              elif event.direction == 'down':
+                  moved_down(size)
+              elif event.direction == 'right':
+                  moved_right(size)
+              elif event.direction == 'left':
+                  moved_left(size)
+              elif event.direction == 'middle':
+                  pass
+
+
+if __name__ == '__main__':
+    main()
