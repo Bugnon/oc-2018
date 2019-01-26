@@ -20,7 +20,7 @@ black = (0, 0, 0)
 
 color = (0, 0, 0) # Couleur de la forme qui descend
 
-score = 0 # Le nombre de lignes que le joueur aura réussi à faire disparaître
+score = 11 # Le nombre de lignes que le joueur aura réussi à faire disparaître
 
 state = 0 # State = 0 quand le jeu est en statique et state = 1 quand il est en dynamique (la forme descend)
 
@@ -45,6 +45,10 @@ shapes = (I, L, O)
 
 P = choice(shapes) ## Choisit une forme au hasard parmi les trois
 
+t0 = time()
+
+game = 1
+
 if P == L:
     color = red
 elif P == I:
@@ -59,12 +63,14 @@ dy = 0 # Variable de déplacement sur l'axe Y (+1 chaque seconde)
 dt = 1 # Temps entre chaque descente en seconde
 
 def matrix_print(M): ## Affiche une matrice en haut au milieu
+    global dx
+    global dy
     n = len(M)
     for y in range(n):
         for x in range(n):
             if M[y][x]==1:
-                    sense.set_pixel(3+x+dx, y+dy, color)
-                    
+                sense.set_pixel(3+x+dx, y+dy, color)
+
 def matrix_print_down(M): ## Déplace la matrice vers le bas
     global dy
     dy+=1
@@ -184,10 +190,6 @@ sense.clear()
 
 matrix_print(P)
 
-t0 = time()
-
-game = 1
-
 while game == 1:
     while state == 1:
         for event in sense.stick.get_events():
@@ -226,9 +228,13 @@ while game == 1:
         for x in range(n):
             if P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and dy < 5:
                 if sense.get_pixel(dx+4, dy+3) != [0, 0, 0]:
+                    if dy==0:
+                        game=0
                     state=0
             elif dy < 6 and P != [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
                 if P[x][1]==1 and sense.get_pixel(x+dx+3, dy+2) != [0, 0, 0]:
+                    if dy==0: # Si la forme est bloquée juste après être apparue
+                        game=0
                     state=0
                             
         
@@ -268,5 +274,10 @@ while game == 1:
         t0=time()
         
         matrix_print(P)
+
+        if game == 0:
+            sense.show_message('Game over ! Score :', scroll_speed=0.05)
+            sense.show_message(str(score), scroll_speed=0.2)
+        else:
+            state = 1
         
-        state = 1
