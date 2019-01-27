@@ -20,7 +20,7 @@ black = (0, 0, 0)
 
 color = (0, 0, 0) # Couleur de la forme qui descend
 
-score = 11 # Le nombre de lignes que le joueur aura réussi à faire disparaître
+score = 0 # Le nombre de lignes que le joueur aura réussi à faire disparaître
 
 state = 0 # State = 0 quand le jeu est en statique et state = 1 quand il est en dynamique (la forme descend)
 
@@ -72,29 +72,31 @@ def matrix_print(M): ## Affiche une matrice en haut au milieu
                 sense.set_pixel(3+x+dx, y+dy, color)
 
 def matrix_print_down(M): ## Déplace la matrice vers le bas
+    global state
     global dy
-    dy+=1
-    n=len(M)
-    for y in range(n): ## Supprime la matrice précédente
-        for x in range(n):
-            if 0 <= y+dy <= 7:
-                if M[y][x]==1:
-                    sense.set_pixel(3+x+dx, y+dy-1, black)
-            elif M == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and y+dy == 8: # Permet à la barre tournée horizontalement de descendre jusqu'en bas
-                if M[y][x]==1:
-                    sense.set_pixel(3+x+dx, y+dy-1, black)
-            else:
-                dy -= 1
-    for y in range(n): ## Affiche la nouvelle matrice descendue de 1
-        for x in range(n):
-            if 0 <= y+dy <= 7:   
-                if M[y][x]==1:
-                    sense.set_pixel(3+x+dx, y+dy, color)
-            elif M == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and y+dy == 8:
-                if M[y][x]==1:
-                    sense.set_pixel(3+x+dx, y+dy, color)
-            else:
-                state=0
+    if state==1:
+        dy+=1
+        n=len(M)
+        for y in range(n): ## Supprime la matrice précédente
+            for x in range(n):
+                if 0 <= y+dy <= 7:
+                    if M[y][x]==1:
+                        sense.set_pixel(3+x+dx, y+dy-1, black)
+                elif M == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and y+dy == 8: # Permet à la barre tournée horizontalement de descendre jusqu'en bas
+                    if M[y][x]==1:
+                        sense.set_pixel(3+x+dx, y+dy-1, black)
+                else:
+                    dy -= 1
+        for y in range(n): ## Affiche la nouvelle matrice descendue de 1
+            for x in range(n):
+                if 0 <= y+dy <= 7:   
+                    if M[y][x]==1:
+                        sense.set_pixel(3+x+dx, y+dy, color)
+                elif M == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and y+dy == 8:
+                    if M[y][x]==1:
+                        sense.set_pixel(3+x+dx, y+dy, color)
+                else:
+                    state=0
 
 
 def matrix_print_left(M): ## Fonction qui bouge la matrice sur la gauche
@@ -232,11 +234,19 @@ while game == 1:
                         game=0
                     state=0
             elif dy < 6 and P != [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
-                if P[x][1]==1 and sense.get_pixel(x+dx+3, dy+2) != [0, 0, 0]:
+                if P[1][x]==1 and sense.get_pixel(x+dx+3, dy+2) != [0, 0, 0]:
                     if dy==0: # Si la forme est bloquée juste après être apparue
                         game=0
                     state=0
-                            
+                    
+        Lcomplet=0
+        for x in range (n):
+            for y in range(n):
+                if P == [[0, 1],[1, 1]] or P == [[1, 0],[1, 1]] or P == [[1, 1],[0, 1]] or P == [[1, 1],[1, 0]]:
+                    if sense.get_pixel(x+dx+3, y+dy)!=[0, 0, 0]:
+                        Lcomplet+=1
+                    if Lcomplet==4:
+                        state=0
         
         t = time()
         if t > t0 + dt:
