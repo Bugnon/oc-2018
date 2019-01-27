@@ -145,7 +145,7 @@ def matrix_print_right(M): ## Même principe que matrix_print_left mais à droit
                 if M[y][1]==1 and sense.get_pixel(3+dx+1, y+dy)!=[0, 0, 0]:
                     dx-=1
                     return ;
-    for y in range(n):
+    for y in range(n): ## Supprime la forme
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
                 if M[y][x]==1:
@@ -156,7 +156,7 @@ def matrix_print_right(M): ## Même principe que matrix_print_left mais à droit
             else:
                 dx -= 1
 
-    for y in range(n):
+    for y in range(n): ##Affiche laf orme un pixel plus bas
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
                 if M[y][x]==1:
@@ -166,19 +166,19 @@ def matrix_print_right(M): ## Même principe que matrix_print_left mais à droit
                     sense.set_pixel(3+x+dx, y+dy, color)
 
 
-def rotate_90(matrix): # Tourne la matrice carrée de 90 degrés vers la droite (fonction en partie empruntée sur internet)
+def rotate_90(matrix): # Tourne la forme de 90 degrés vers la droite (fonction en partie empruntée sur internet)
     n = len(matrix)
-    for y in range(n):
+    for y in range(n): # Supprime la forme
         for x in range(n):
             if matrix[y][x]==1:
                 sense.set_pixel(3+x+dx, y+dy, black)
-    for layer in range((n + 1) // 2):
+    for layer in range((n + 1) // 2): # Tourne la matrice carrée de 90 degrés vers la droite
         for index in range(layer, n - 1 - layer, 1):
             matrix[layer][index], matrix[n - 1 - index][layer], \
                 matrix[index][n - 1 - layer], matrix[n - 1 - layer][n - 1 - index] = \
                 matrix[n - 1 - index][layer], matrix[n - 1 - layer][n - 1 - index], \
                 matrix[layer][index], matrix[index][n - 1 - layer]
-    for y in range(n):
+    for y in range(n): # Affiche la nouvelle forme à partir de la matrice tournée
         for x in range(n):
             if matrix[y][x]==1:
                 sense.set_pixel(3+x+dx, y+dy, color)
@@ -213,7 +213,7 @@ while game == 1:
              elif event.direction == 'right' and event.action == 'pressed':
                 matrix_print_right(P)
 
-        if P == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and dy == 6:
+        if P == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and dy == 6: # Si la forme est en bas, on passe en state=0
             state=0
         elif P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and dy == 5:
             state=0
@@ -223,7 +223,7 @@ while game == 1:
             state=0
     
         n=len(P)
-        for x in range(n):
+        for x in range(n): # Check si la forme peut descendre ou pas. Si elle ne peut pas descendre à son apparition, game over
             if P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and dy < 5:
                 if sense.get_pixel(dx+4, dy+3) != [0, 0, 0]:
                     if dy==0:
@@ -235,7 +235,7 @@ while game == 1:
                         game=0
                     state=0
                     
-        Lcomplet=0
+        Lcomplet=0 # Check si la forme L est complétée par un autre pixel, ce qui fait passer le jeu en state=0
         for x in range (n):
             for y in range(n):
                 if P == [[0, 1],[1, 1]] or P == [[1, 0],[1, 1]] or P == [[1, 1],[0, 1]] or P == [[1, 1],[1, 0]]:
@@ -244,14 +244,14 @@ while game == 1:
                     if Lcomplet==4:
                         state=0
         
-        t = time()
+        t = time() # Descend la forme chaque seconde
         if t > t0 + dt:
             matrix_print_down(P)
             t0 = t
 
     while state == 0:
         sleep(1)
-        for g in range(8):
+        for g in range(8): # Supprime les lignes complétées et incrémente le score de 1
             for i in range(8):
                 a = 0
                 for j in range(8):
@@ -265,9 +265,10 @@ while game == 1:
                                 for d in range(8):
                                     sense.set_pixel(d, c+1, (sense.get_pixel(d, c)))
                                     sense.set_pixel(d, c, black)
-        P = choice(shapes)
+                                    
+        P = choice(shapes) # Choisit une forme au hasard
         
-        dx = 0
+        dx = 0 # Remet les variables de position a 0
         dy = 0
         
         if P == L:
@@ -281,7 +282,7 @@ while game == 1:
         
         matrix_print(P)
 
-        if game == 0:
+        if game == 0: # Si la partie est terminée, on affiche le score
             sense.show_message('Game over ! Score :', scroll_speed=0.05)
             sense.show_message(str(score), scroll_speed=0.2)
         else:
