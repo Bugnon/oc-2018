@@ -6,74 +6,70 @@ from sense_hat import SenseHat
 from time import sleep, time
 from random import randint, choice
 
-## Définition des couleurs
+## Définition des variables classiques
 
 red = (255, 0, 0)
-green = (0, 255, 0)
-blue = (0, 0, 255)
-magenta = (255, 0, 255)
 cyan = (0, 255, 255)
 yellow = (255, 255, 0)
-orange = (255, 128, 0)
-white = (255, 255, 255)
 black = (0, 0, 0)
+
+sense = SenseHat()
+
+### Définition des variables propres à notre jeu ###
 
 color = (0, 0, 0) # Couleur de la forme qui descend
 
 score = 0 # Le nombre de lignes que le joueur aura réussi à faire disparaître
 
-state = 0 # State = 0 quand le jeu est en statique et state = 1 quand il est en dynamique (la forme descend)
+state = 1 # State = 0 quand le jeu est en statique (entre les apparitions de formes) et state = 1 quand il est en dynamique (la forme descend)
 
-sense = SenseHat()
+game = 1 # Si game = 1 alors le jeu contine sinon c'est game over
 
-## Définition des formes dans des matrices
+t0 = time() # Variable de temps qui nous servira pour la descente des formes
 
-sense.clear()
+dx = 0 # Variable de déplacement sur l'axe X
+dy = 0 # Variable de déplacement sur l'axe Y (+1 chaque seconde)
+dt = 1 # Temps entre chaque descente en seconde
+
+### Définition des formes dans des matrices ###
 
 # La barre verticale de 3 en cyan
 I=[[0, 1, 0],
    [0, 1, 0],
    [0, 1, 0]]
+
 # Le L en rouge
 L=[[1, 0],
    [1, 1]]
+
 # Le carré 2x2 en jaune
 O=[[1, 1],
    [1, 1]]
 
-shapes = (I, L, O)
+shapes = (I, L, O) # Variable contenant les 3 formes
 
-P = choice(shapes) ## Choisit une forme au hasard parmi les trois
+P = choice(shapes) # Choisit une forme au hasard parmi les trois et la stock dans la variable P
 
-t0 = time()
-
-game = 1
-
-if P == L:
+if P == L: # Assigne la couleur de la forme choisie à la variable color
     color = red
 elif P == I:
     color = cyan
 else:
     color = yellow
     
-state = 1
-
-dx = 0 # Variable de déplacement sur l'axe X
-dy = 0 # Variable de déplacement sur l'axe Y (+1 chaque seconde)
-dt = 1 # Temps entre chaque descente en seconde
+### Définition des fonctions ###
 
 def matrix_print(M): ## Affiche une matrice en haut au milieu
-    global dx
-    global dy
     n = len(M)
     for y in range(n):
         for x in range(n):
             if M[y][x]==1:
-                sense.set_pixel(3+x+dx, y+dy, color)
+                sense.set_pixel(3+x, y, color)
 
 def matrix_print_down(M): ## Déplace la matrice vers le bas
     global state
     global dy
+    global dx
     if state==1:
         dy+=1
         n=len(M)
