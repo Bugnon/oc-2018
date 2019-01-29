@@ -166,9 +166,9 @@ sense.clear()
 
 def main():
     global x, y, dx, dy
-    P = choice(shapes) ## Choisit une forme au hasard parmi les trois
+    P = choice(shapes) # Choisit une forme au hasard parmi les trois
     
-    t0 = time()
+    t0 = time() # Variable de temps qui nous servira pour la descente des formes
     game = 1
 
     if P == L:
