@@ -45,39 +45,40 @@ def cursor(p): #Sélection de la colonne ou laisser tomber le jeton
                 sense.set_pixel(i, 0, (0, 0, 0)) #Rend les pixels noirs après le passage du curseur
     return x #Renvoie la sélection de colonne x                         
 
-def putDown(x,p): #Fait tomber le jeton
-  if sense.get_pixel(x,2)==[0,0,248]: #Regarde si la colonne est bien vide (donc bleue) au dernier niveau
-    for y in range(7): #Trouve la position du dernier pixel libre
-      print(y)
-      print(sense.get_pixel(x,7-y))
-      if sense.get_pixel(x,7-y)==[0,0,248]: #Si le pixel est libre, alors
-        print('yayy')
-        sense.set_pixel(x, 7-y, colors[p])
-        checkConnect(x,7-y)
-        return
-  else:
-    cursor(p) #Relance la sélection pour le joueur
-  return
+def putDown(x,p):
+    """Fait tomber le pixel"""
+    if sense.get_pixel(x,2)==[0,0,248]: #Regarde si la colonne est bien vide (donc bleue) au dernier niveau
+        for y in range(7): #Trouve la position du dernier pixel libre
+            print(y)
+            print(sense.get_pixel(x,7-y))
+            if sense.get_pixel(x,7-y)==[0,0,248]: #Si le pixel est libre, alors
+                print('yayy')
+                sense.set_pixel(x, 7-y, colors[p])
+                checkConnect(x,7-y)
+                return
+    else:
+        cursor(p) #Relance la sélection pour le joueur
+    return
 
 def checkConnect(x,y):#Fonction de détection des puissance4
-  print(x,y)
-  print(sense.get_pixel(x,y))
-  #if sense.get_pixel(x,y)==[248, 0, 0]: #Regarde si le pixel gagnant est rouge
-      #score(1)
-  #elif sense.get_pixel(x,y)==[248, 252, 0]: #Regarde si
-      #score(2)
-  return
+    print(x,y)
+    print(sense.get_pixel(x,y))
+    #if sense.get_pixel(x,y)==[248, 0, 0]: #Regarde si le pixel gagnant est rouge
+        #score(1)
+    #elif sense.get_pixel(x,y)==[248, 252, 0]: #Regarde si le pixel gagnant est rouge
+        #score(2)
+    return
 
 def inGame(): #Fonction qui lance les tours
-  x =0 #0==p1 0==p2
-  show(state)
-  for i in range(42): #Nombre max de tour : 42 (Nombre de cases)
-    if x==0:
-      cursor(1) #Lance le tour du joueur p1
-      x=1
-    elif x==1:
-      cursor(2) #Lance le tour du joueur p2
-      x=0
+    x =0 #0==p1 0==p2
+    show(state)
+    for i in range(42): #Nombre max de tour : 42 (Nombre de cases)
+        if x==0:
+            cursor(1) #Lance le tour du joueur p1
+            x=1
+        elif x==1:
+            cursor(2) #Lance le tour du joueur p2
+            x=0
       
 def main():
     inGame()
