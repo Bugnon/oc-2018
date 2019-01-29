@@ -15,6 +15,8 @@ O = BLACK
 P1 = BLUE
 P2 = YELLOW
 colors = (O, P1, P2)
+score1 = 0
+score2 = 0
 
 def init():
     global state   #utilisable dans tout le code
@@ -60,7 +62,9 @@ def is_winning(p, state):  # cas gagnant
             state[0][0] == state[1][1] == state[2][2] == p or \
             state[0][2] == state[1][1] == state[2][0] == p    
 
-def is_draw(state): # Si il y en a qui sont à l'état 0
+def is_draw(state):
+    """"""
+# Si il y en a qui sont à l'état 0
     for i in state:
         for s in i:
             if s == 0:
@@ -68,6 +72,12 @@ def is_draw(state): # Si il y en a qui sont à l'état 0
     return True
      
 def play(p,board, state):
+    """Definition that ables us to play the game. It can make our cursor,
+        with the joystick, move within our board without leaving a trace behind it.
+        It makes our cursor appear in the middle of the board when starting the game
+        and when we start moving our cursor the color of it is divided by two,
+        like that we can diffirenciate when we are moving to when we decided where
+        to place our colored cursor."""
     (x, y) = (1, 1) # position initial du curseur 
     dirs = {'up':(0, -1), 'down':(0, 1),
             'right':(1, 0), 'left':(-1, 0)} # coordonées dx et dy
@@ -99,17 +109,30 @@ def play(p,board, state):
                     state[y][x] = p
                     show_board(board, state)
                     return
-                
+def show_score(p):
+    """Displays the score"""
+    global score1, score2
+    if p==1:
+        score1 +=1
+    elif p == 2:
+        score2 +=1
+    msg = 'player1='+str(score1)+' player2='+str(score2)
+    sense.show_message(msg)
+    
 def end_game(p):
-    """Display the result ask for continuation ot the game.
+    """Display the result ask for continuation to the game.
     If the player presses any button within 3 seconds, the function
     returns True, otherwise the function returns False."""
     if p == 0:
         sense.show_message("draw")
     else:
         sense.show_letter(str(p))
-        
     sleep(3)
+    show_score(p)
+    return continue_game()
+    
+def continue_game():
+    """Return True if player wants to continue."""
     sense.show_letter('?')
     sense.stick.get_events()
     t0 = time()

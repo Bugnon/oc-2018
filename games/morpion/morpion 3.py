@@ -94,7 +94,19 @@ def play(p,board, state):
                     show_board(board, state)
                     return
                 
+def show_score():
+    """Displays the score"""
+    global score1, score2
+    if p==1:
+        score1 +=1
+    elif p == 2:
+        score2 +=1
+    msg = 'player1='+str(score1)+' player2='+str(score2)
+    sense.show_message(msg)
+    
+    
 def end_game(p):
+    global running 
     if p == 0:
         sense.show_message("draw")
     else:
@@ -105,7 +117,11 @@ def end_game(p):
     
     while True:
         event = sense.stick.wait_for_event()
-        if event.action == "pressed":   # besoin d'une action pr réinit la partie
+        if event.action == "left":   # besoin d'une action pr réinit la partie
+            running = False
+            return
+        elif event.direction == 'right':
+            show_score(p)
             init()
             show_board(board, state)
             return
