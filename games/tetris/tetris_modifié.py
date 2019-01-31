@@ -59,7 +59,8 @@ def print_matrix(M):  # Print matrix at the top in the middle
         for x in range(n):
             if M[y][x] == 1:
                 sense.set_pixel(3+x, y, color)
-                
+
+
 def delete_matrix(M, dx, dy, n):
     for y in range(n):  # Set every pixel of the matrix black
             for x in range(n):
@@ -74,7 +75,7 @@ def delete_matrix(M, dx, dy, n):
 
 
 
-def print_matrix_down(M):  # Move matrix down
+def print_matrix_down(M):  # Move shape down for 1 tile
     global state
     global dy
     global dx
@@ -126,7 +127,8 @@ def print_matrix_left(M):  # Fonction qui bouge la matrice sur la gauche
             elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == -1:
                 if M[y][x] == 1:
                     sense.set_pixel(3+x+dx, y+dy, color)
-                    
+ 
+
 def print_matrix_right(M):  # Même principe que print_matrix_left mais à droite
     global dx
     dx += 1
@@ -165,6 +167,7 @@ def print_matrix_right(M):  # Même principe que print_matrix_left mais à droit
                     sense.set_pixel(3+x+dx, y+dy, color)
 
 
+
 def rotate_90(matrix):  # Tourne la forme de 90 degrés vers la droite (fonction en partie empruntée sur internet)
     n = len(matrix)
     for y in range(n):  # Supprime la forme
@@ -183,7 +186,10 @@ def rotate_90(matrix):  # Tourne la forme de 90 degrés vers la droite (fonction
                 sense.set_pixel(3+x+dx, y+dy, color)
     return matrix
 
+
 sense.clear()
+
+
 def main():
     global x, y, dx, dy
     P = choice(shapes)  # Choisit une forme au hasard parmi les trois
@@ -266,14 +272,15 @@ def main():
                         if Lcomplet == 4:
                             state = 0
             
-            t = time()  # Descend la forme chaque seconde
+            t = time()  # Every second, moves the shape one tile downward
             if t > t0 + dt:
                 print_matrix_down(P)
                 t0 = t
 
+
         while state == 0:
             sleep(1)
-            for g in range(8):  # Supprime les lignes complétées et incrémente le score de 1
+            for g in range(8):  # Delete completed lines and counts the score
                 for i in range(8):
                     a = 0
                     for j in range(8):
@@ -288,9 +295,9 @@ def main():
                                         sense.set_pixel(d, c+1, (sense.get_pixel(d, c)))
                                         sense.set_pixel(d, c, BLACK)
                                         
-            P = choice(shapes)  # Choisit une forme au hasard
+            P = choice(shapes)  # Pick randomly a shape for one round
             
-            dx = 0  # Remet les variables de position a 0
+            dx = 0  # Set back the position where we print the matrix to original settings
             dy = 0
             
             if P == L:
@@ -304,7 +311,7 @@ def main():
 
             print_matrix(P)
 
-            if game == 0:  # Si la partie est terminée, on affiche le score
+            if game == 0:  # When game is over, displays the score
                 sense.show_message('Game over ! Score :', scroll_speed=0.05)
                 sense.show_message(str(score), scroll_speed=0.2)
                 for i in range(3):
