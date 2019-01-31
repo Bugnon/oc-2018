@@ -125,17 +125,13 @@ def player_stage(niv):
         try_again(niv)
         
 def try_again(niv):
-    t = 0
+    wait = True
     sense.show_letter('?',text_colour=white)
-    if t < 5:
+    if wait = True:
         for event in sense.stick.get_events():
             if event.action == 'pressed':
                 start_level(niv)
             elif t == 5:
-                start_game()
-            else:        
-                sleep(1)
-                t = t+1
 
 def start_level(niv):
     patern_stage(niv)
