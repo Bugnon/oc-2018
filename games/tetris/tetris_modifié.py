@@ -16,31 +16,31 @@ state = 1  # When game is static: state = 0. When game is playing, state = 1.
 game = 1  # If game = 1, the game doesn't stop. If game = 0, it's game over.
 sense = SenseHat()
 
-dx = 0  # Variable de déplacement sur l'axe X
-dy = 0  # Variable de déplacement sur l'axe Y (+1 chaque seconde)
+dx = 0  # Variable to move left and right on x axis
+dy = 0  # Variable to move downwards on Y axis
 
-### Définition des formes dans des matrices ###
+### Shapes definition in matrixes ###
 
-# La barre verticale de 3 en CYAN
+# cyan horizontal or vertical bar
 I = [
     [0, 1, 0],
     [0, 1, 0],
     [0, 1, 0]
 ]
 
-# Le L en rouge
+# red L
 L = [
     [1, 0],
     [1, 1]
 ]
 
-# Le carré 2x2 en jaune
-O = [
+# 2x2 yellow square
+o = [
     [1, 1],
     [1, 1]
 ]
 
-shapes = (I, L, O)  # Variable contenant les 3 formes
+shapes = (I, L, o)  # List with the three shapes
     
 P = choice(shapes)
 
@@ -51,33 +51,38 @@ elif P == I:
 else:
     color = YELLOW
 
-### Définition des fonctions ###
+### Function definition ###
 
-def print_matrix(M):  # Affiche une matrice en haut au milieu
+def print_matrix(M):  # Print matrix at the top in the middle
     n = len(M)
     for y in range(n):
         for x in range(n):
             if M[y][x] == 1:
                 sense.set_pixel(3+x, y, color)
+                
+def delete_matrix(M, dx, dy, n):
+    for y in range(n):  # Set every pixel of the matrix black
+            for x in range(n):
+                if 0 <= y+dy <= 7:
+                    if M[y][x] == 1:
+                        sense.set_pixel(3+x+dx, y+dy-1, BLACK) 
+                elif M == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and y+dy == 8:  # Delete horisontal bar when it's at bottom.
+                    if M[y][x] == 1:
+                        sense.set_pixel(3+x+dx, y+dy-1, BLACK)
+                else:
+                    dy -= 1  # If it can't delete the shape, we put dy at same value as before
 
-def print_matrix_down(M):  # Déplace la matrice vers le bas
+
+
+def print_matrix_down(M):  # Move matrix down
     global state
     global dy
     global dx
     if state == 1:
-        dy += 1
+        dy += 1  # Move the matrix one tile downward
         n = len(M)
-        for y in range(n):  # Supprime la matrice précédente
-            for x in range(n):
-                if 0 <= y+dy <= 7:
-                    if M[y][x] == 1:
-                        sense.set_pixel(3+x+dx, y+dy-1, BLACK)
-                elif M == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and y+dy == 8:  # Permet à la barre tournée horizontalement de descendre jusqu'en bas
-                    if M[y][x] == 1:
-                        sense.set_pixel(3+x+dx, y+dy-1, BLACK)
-                else:
-                    dy -= 1
-        for y in range(n):  # Affiche la nouvelle matrice descendue de 1
+        delete_matrix(M, dx, dy, n)
+        for y in range(n):  # Print new matrix one tile downward
             for x in range(n):
                 if 0 <= y+dy <= 7:   
                     if M[y][x] == 1:
@@ -179,9 +184,6 @@ def rotate_90(matrix):  # Tourne la forme de 90 degrés vers la droite (fonction
     return matrix
 
 sense.clear()
-
-print_matrix(P)
-
 def main():
     global x, y, dx, dy
     P = choice(shapes)  # Choisit une forme au hasard parmi les trois
@@ -229,12 +231,15 @@ def main():
                     print_matrix_left(P)
                  elif event.direction == 'right' and event.action == 'pressed':
                     print_matrix_right(P)
+                 elif event.direction == 'up' and event.action == 'held':
+                     game = 0
+                     state = 0
 
             if P == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and dy == 6:  # Si la forme est en bas, on passe en state=0
                 state=0
             elif P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and dy == 5:
                 state=0
-            elif P == O and dy == 6:
+            elif P == o and dy == 6:
                 state=0
             elif P == L and dy == 6:
                 state=0
@@ -302,9 +307,15 @@ def main():
             if game == 0:  # Si la partie est terminée, on affiche le score
                 sense.show_message('Game over ! Score :', scroll_speed=0.05)
                 sense.show_message(str(score), scroll_speed=0.2)
+                for i in range(3):
+                    sense.show_message('Press middle button to play again', scroll_speed=0.05)
+                for event in sense.stick.get_events():
+                    if event.direction == 'middle' and event.action == 'pressed':
+                        sense.show_message('ALALALALA', scroll_speed=0.05)
             else:
                 state = 1
-        
+
+
 # Execute the main() function when the file is executed,
 # but do not execute when the module is imported as a module.
 print('module name =', __name__)
