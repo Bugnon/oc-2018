@@ -9,7 +9,8 @@ This is a game of 2048 to be played on the Raspberry SenseHAT.
 # Importation des modules requis
 from sense_hat import SenseHat
 from random import randint
-from time import sleep, time
+from time import sleep
+from time import time
 
 sense = SenseHat()
 sense.clear(0, 0, 0)
@@ -118,7 +119,8 @@ def Set_pixels(n):
             for y in range(8):
                 sense.set_pixel(x, y, colors[L8[x][y]])
     elif n==4:
-       L8_affichage = [[L4[0][0], L4[0][0], L4[0][1], L4[0][1], L4[0][2], L4[0][2], L4[0][3], L4[0][3]],
+        L8_affichage = [
+                       [L4[0][0], L4[0][0], L4[0][1], L4[0][1], L4[0][2], L4[0][2], L4[0][3], L4[0][3]],
                        [L4[0][0], L4[0][0], L4[0][1], L4[0][1], L4[0][2], L4[0][2], L4[0][3], L4[0][3]],
                        [L4[1][0], L4[1][0], L4[1][1], L4[1][1], L4[1][2], L4[1][2], L4[1][3], L4[1][3]],
                        [L4[1][0], L4[1][0], L4[1][1], L4[1][1], L4[1][2], L4[1][2], L4[1][3], L4[1][3]],
@@ -126,10 +128,10 @@ def Set_pixels(n):
                        [L4[2][0], L4[2][0], L4[2][1], L4[2][1], L4[2][2], L4[2][2], L4[2][3], L4[2][3]],
                        [L4[3][0], L4[3][0], L4[3][1], L4[3][1], L4[3][2], L4[3][2], L4[3][3], L4[3][3]],
                        [L4[3][0], L4[3][0], L4[3][1], L4[3][1], L4[3][2], L4[3][2], L4[3][3], L4[3][3]]
-                      ]
-       for x in range(8):
+                       ]
+        for x in range(8):
             for y in range(8):
-                 sense.set_pixel(x,y, colors[L8_affichage[x][y]])
+                sense.set_pixel(x,y, colors[L8_affichage[x][y]])
 
 
 
@@ -139,10 +141,7 @@ def Set_pixels(n):
 def New_block(n):
     sleep(0.25)
     i=0
-    if n==4:
-        L=L4
-    elif n==8:
-        L=L8
+    L = L4 if n == 4 else L8
     for x in range(n):
         for y in range(n):
             if L[x][y]==0:
@@ -164,26 +163,19 @@ def New_block(n):
             if L[x][y] == 0:# On controle si ce pixel est vide
                 L[x][y]=1 # On défini un bloc de couleur correspondant au chiffre 2
                 r=r+1
-#    print(L4)
     Control_end(n)
     Set_pixels(n)
-    
-
-
-        
-        
-                
 
 def Moved_up(n):
     L = L4 if n == 4 else L8 
     for x in range(n): 
-       for y in range(n):# Sur chaque pixel en prenantles pixels en ligne puis en colonne
-          if L[x][y] > 0 and y>=1:# On controle que le pixel ne soit pas une case vide
-             while L[x][y-1] == 0 and y>=1:# Si la case est vide 
+        for y in range(n):# Sur chaque pixel en prenantles pixels en ligne puis en colonne
+            if L[x][y] > 0 and y>=1:# On controle que le pixel ne soit pas une case vide
+                while L[x][y-1] == 0 and y>=1:# Si la case est vide 
                 L[x][y-1]=L[x][y]
                 L[x][y]=0
                 y=y-1
-             if L[x][y-1]==L[x][y]:
+            if L[x][y-1]==L[x][y]:
                 L[x][y-1]=L[x][y-1]+1
                 L[x][y]=0
     Set_pixels(n)
@@ -197,12 +189,12 @@ def Moved_down(n):
             y=n-2-z
             if L[x][y] > 0 and y<=(n-2):# On controle que le pixel ne soit pas une case vide
                 while y<=(n-2) and L[x][y+1] == 0:# Si la case est vide
-                   L[x][y+1]=L[x][y]
-                   L[x][y]=0
-                   y=y+1
+                    L[x][y+1]=L[x][y]
+                    L[x][y]=0
+                    y=y+1
                 if y<(n-1) and L[x][y+1]==L[x][y]:
-                   L[x][y+1]=L[x][y+1]+1
-                   L[x][y]=0
+                    L[x][y+1]=L[x][y+1]+1
+                    L[x][y]=0
     Set_pixels(n)
     New_block(n)
     
@@ -218,8 +210,8 @@ def Moved_left(n):
                     L[x][y]=0
                     x=x-1
                 if L[x-1][y]==L[x][y]:
-                   L[x-1][y]=L[x-1][y]+1
-                   L[x][y]=0
+                    L[x-1][y]=L[x-1][y]+1
+                    L[x][y]=0
     Set_pixels(n)
     New_block(n)
 
@@ -229,46 +221,42 @@ def Moved_right(n):
     for y in range(n):
         for z in range(n-1):
             x=n-2-z
-            if L[x][y] > 0 and x<(n-1):# On controle que le pixel ne soit pas une case vide
-                while x<(n-1) and L[x+1][y] == 0:# Si la case est vide 
+            if L[x][y] > 0 and x<(n-1):
+                while x<(n-1) and L[x+1][y] == 0:
                     L[x+1][y]=L[x][y]
                     L[x][y]=0
                     x=x+1
                 if x<(n-1) and L[x+1][y]==L[x][y]:
-                   L[x+1][y]=L[x+1][y]+1
-                   L[x][y]=0
+                    L[x+1][y]=L[x+1][y]+1
+                    L[x][y]=0
     Set_pixels(n)
     New_block(n)
 
 def Control_end(n):
     """Returns True when the game is finished."""
     end = True
-    if n == 8:
-        L = L8
-    elif n == 4:
-        L = L4
+    L = L4 if n == 4 else L8
         
     # check if there are empty cells        
     for x in range(n):
         for y in range(n):
             if L[x][y]==0:
                 end=False
-    
-    print('empty', end)
+     
     # check neighbors for center cells    
     for x in range(1, n-1):
         for y in range(1, n-1):
             if L[x][y]==L[x][y+1] or L[x][y]==L[x+1][y] or L[x][y]==L[x-1][y]\
-            or L[x][y]==L[x][y-1]:
+                or L[x][y]==L[x][y-1]:
                 end = False
                 break
-    print('neighbors', end)
+    # check neigbors for border cells
     for x in range(n-1):
         if L[0][x] == L[0][x+1] or L[x][0] == L[x+1][0] or L[n-1][x] == L[n-1][x+1] \
-        or L[x][n-1] == L[x+1][n-1]:
+            or L[x][n-1] == L[x+1][n-1]:
             end = False
             break
-    print('borders', end)
+
     if end == True:
         Set_pixels(n)
         sleep(3)
@@ -289,7 +277,6 @@ def Control_end(n):
             for y in range(n):
                 if L[x][y]!=0:
                     score = score + 2**L[x][y]
-                print(L[x][y], score)
         sense.show_message('You lose... Your score is:', 0.05, message)
         show = True
         while show:
@@ -322,28 +309,25 @@ def Exit():
                             main()
         
 def Victory(n):
-    if n ==4:
-        L=L4
-    elif n == 8:
-        L=L8
+    L = L4 if n == 4 else L8
     sense.set_pixels(L_win)
     sleep(10)
-    sense.show_message('Congratulations, you just reached the highest block. Your score is :', 0.05)
+    sense.show_message('Congratulations, you just reached the highest block. Your score is :', 0.05, message)
     for x in range(n):
-            for y in range(n):
-                if L[x][y]!=0:
-                    score = score + 2**L[x][y]
+        for y in range(n):
+            if L[x][y]!=0:
+                score = score + 2**L[x][y]
     while show:
-            score = str(score)
-            string = score + 'pts'
-            sense.show_message(string, 0.05, message)
-            sense.show_message('Press to restart', 0.05, message)
-            for event in sense.stick.get_events():
-                if event.action == 'pressed':
-                    show = False
+        score = str(score)
+        string = score + 'pts'
+        sense.show_message(string, 0.05, message)
+        sense.show_message('Press to restart', 0.05, message)
+        for event in sense.stick.get_events():
+            if event.action == 'pressed':
+                show = False
     main()
 
-    #-----Reactions du joystick-----
+#-----Reactions du joystick-----
     
 def main():
     Startup()
@@ -351,17 +335,17 @@ def main():
 
     while running:
         for event in sense.stick.get_events():
-             if event.action == 'pressed':
-                  if event.direction == 'up':
-                      Moved_up(size)
-                  elif event.direction == 'down':
-                      Moved_down(size)
-                  elif event.direction == 'right':
-                      Moved_right(size)
-                  elif event.direction == 'left':
-                      Moved_left(size)
-                  elif event.direction == 'middle':
-                      Exit()
+            if event.action == 'pressed':
+                if event.direction == 'up':
+                    Moved_up(size)
+                elif event.direction == 'down':
+                    Moved_down(size)
+                elif event.direction == 'right':
+                    Moved_right(size)
+                elif event.direction == 'left':
+                    Moved_left(size)
+                elif event.direction == 'middle':
+                    Exit()
 
 
 if __name__ == '__main__':
