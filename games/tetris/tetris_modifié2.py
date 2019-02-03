@@ -348,15 +348,15 @@ def main():
                 t0 = time()
                 active = True
                 while active: # Play again
+                    sense.show_letter('?')
                     for event in sense.stick.get_events():
-                        if event.action == 'pressed':
+                        if event.direction == 'middle' and event.action == 'pressed':
                             game = 1
                             active = False
                             sense.clear()
                             main()
-                    sense.show_letter('?')
                     t = time()
-                    if t > t0 + 4: # After 4 seconds if the player did nothing or press another button, leave the program
+                    if t > t0 + 3: # After 3 seconds if the player did nothing or press another button, leave the program
                         sense.clear()
                         return ;
             else:
