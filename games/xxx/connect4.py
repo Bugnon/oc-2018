@@ -26,8 +26,8 @@ def show(state):
             sense.set_pixel(x, 7-y, colors[s])
         
 def cursor(p): #Sélection de la colonne ou laisser tomber le jeton
-    x =0
-    selection =True #Tour en cours?
+    x = 0
+    selection = True #Tour en cours?
     while selection:
         for event in sense.stick.get_events():
             if event.action == 'pressed':
@@ -37,7 +37,7 @@ def cursor(p): #Sélection de la colonne ou laisser tomber le jeton
                     x =(x - 1) % 7
                 elif event.direction =='down': #Confirme la sélection
                     selection = False #Termine le tour
-                    putDown(x,p) #Appelle la fonction qui fait tomber le jeton
+                    put_down(x,p) #Appelle la fonction qui fait tomber le jeton
         for i in range(7): #Affiche le curseur au bon endroit
             if i ==x:
                 sense.set_pixel(i, 0, colors[p]) #Colorie le pixel de la bonne couleur            
@@ -45,14 +45,23 @@ def cursor(p): #Sélection de la colonne ou laisser tomber le jeton
                 sense.set_pixel(i, 0, (0, 0, 0)) #Rend les pixels noirs après le passage du curseur
     return x #Renvoie la sélection de colonne x                         
 
-def putDown(x,p):
+def put_down(x,p):
     """Fait tomber le pixel"""
     if sense.get_pixel(x,2)==[0,0,248]: #Regarde si la colonne est bien vide (donc bleue) au dernier niveau
         for y in range(7): #Trouve la position du dernier pixel libre
-            print(y)
+            print('y =', y)
             print(sense.get_pixel(x,7-y))
             if sense.get_pixel(x,7-y)==[0,0,248]: #Si le pixel est libre, alors
-                print('yayy')
+                print('Pixel Libre')
+                for z in range(7-y):
+                    sense.set_pixel(x, z, colors[p])
+                    sleep(0.03)
+                    if z != 1 and z != 0:
+                        sense.set_pixel(x, z, colors[0])
+                    else:
+                        sleep(0.01)
+                        sense.set_pixel(x, 1, [0,0,0])
+                    print('z', z)
                 sense.set_pixel(x, 7-y, colors[p])
                 checkConnect(x,7-y)
                 return
@@ -63,6 +72,7 @@ def putDown(x,p):
 def checkConnect(x,y):#Fonction de détection des puissance4
     print(x,y)
     print(sense.get_pixel(x,y))
+    print('State :', sense.get_pixels())
     #if sense.get_pixel(x,y)==[248, 0, 0]: #Regarde si le pixel gagnant est rouge
         #score(1)
     #elif sense.get_pixel(x,y)==[248, 252, 0]: #Regarde si le pixel gagnant est rouge
@@ -70,7 +80,7 @@ def checkConnect(x,y):#Fonction de détection des puissance4
     return
 
 def inGame(): #Fonction qui lance les tours
-    x =0 #0==p1 0==p2
+    x = 0 #0==p1 0==p2
     show(state)
     for i in range(42): #Nombre max de tour : 42 (Nombre de cases)
         if x==0:
@@ -79,7 +89,7 @@ def inGame(): #Fonction qui lance les tours
         elif x==1:
             cursor(2) #Lance le tour du joueur p2
             x=0
-      
+
 def main():
     inGame()
 
