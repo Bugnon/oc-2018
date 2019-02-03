@@ -18,6 +18,7 @@ sense = SenseHat()
 
 dx = 0  # Variable to move left and right on x axis
 dy = 0  # Variable to move downwards on Y axis
+dt = 1  # Time between each drop
 
 ### Shapes definition in matrixes ###
 
@@ -41,6 +42,8 @@ o = [
     ]
 
 shapes = (I, L, o)  # List with the three shapes
+
+score = 0  # The number of the completed lines
     
 P = choice(shapes)
 
@@ -53,6 +56,24 @@ else:
 
 ### Functions definition ###
 
+def delete_lines():
+    """ Delete completed lines avec counts the score. """
+    global score
+    for g in range(8):
+                for i in range(8):
+                    a = 0
+                    for j in range(8):
+                        if sense.get_pixel(7-j, 7-i) != [0, 0, 0]:
+                            a += 1
+                            if a == 8:
+                                score += 1 # Inscrease the score if the line is completed
+                                for k in range(8):
+                                    sense.set_pixel(k, 7-i, BLACK)
+                                for c in reversed(range(7-i)):
+                                    for d in range(8):
+                                        sense.set_pixel(d, c+1, (sense.get_pixel(d, c)))
+                                        sense.set_pixel(d, c, BLACK)
+
 def print_matrix(M):
     """ Print the tetris shape at the top in the middle. """
     n = len(M)
@@ -62,16 +83,17 @@ def print_matrix(M):
                 sense.set_pixel(3+x, y, color)
 
 
-def delete_matrix_when_down(M, dx, dy, n):
+def delete_matrix_when_down(M, dx, dy):
     """ Delete the actual shape when it's moving down. """
+    n = len(M)
     for y in range(n):  # Set every pixel of the matrix black
             for x in range(n):
                 if 0 <= y+dy <= 7:
                     if M[y][x] == 1:
-                        sense.set_pixel(3+x+dx, y+dy-1, BLACK) 
+                        sense.set_pixel(3+x+dx, y+dy, BLACK) 
                 elif M == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and y+dy == 8:  # Delete horizontal bar when it's at bottom.
                     if M[y][x] == 1:
-                        sense.set_pixel(3+x+dx, y+dy-1, BLACK)
+                        sense.set_pixel(3+x+dx, y+dy, BLACK)
                 else:
                     dy -= 1  # If it can't delete the shape, we put dy at same value as before
                 
@@ -81,7 +103,7 @@ def print_matrix_down(M):
     global dx, dy
     dy += 1  # Move the matrix one tile downward
     n = len(M)
-    delete_matrix_when_down(M, dx, dy, n)
+    delete_matrix_when_down(M, dx, dy-1)
     for y in range(n):  # Print new matrix one tile downward
         for x in range(n):
             if 0 <= y+dy <= 7:   
@@ -194,12 +216,9 @@ def print_matrix_right(M):
 
 def rotate_90(matrix):
     """ Turn the shape 90 degrees right. """
+    
+    delete_matrix_when_down(matrix, dx, dy)
     n = len(matrix)
-    for y in range(n):  # Delete the actual shape
-        for x in range(n):
-            if matrix[y][x] == 1:
-                sense.set_pixel(3+x+dx, y+dy, BLACK)
-                
     for layer in range((n + 1) // 2):  # Rotate the matrix (borrowed on internet)
         for index in range(layer, n-1-layer, 1):
             matrix[layer][index], matrix[n-1-index][layer], \
@@ -220,6 +239,7 @@ sense.clear()
 def main():
     """ The core of the game. """
     global x, y, dx, dy, color
+    
     P = choice(shapes)
     
     if P == L:
@@ -233,11 +253,7 @@ def main():
     
     game = 1
     
-    score = 0  # The number of the completed lines
-    
     state = 1
-
-    dt = 1  # Time between each drop
     
     print_matrix(P)
     
@@ -307,26 +323,10 @@ def main():
 
 
         while state == 0:
-            sleep(1)
-            for g in range(8):  # Delete completed lines and counts the score
-                for i in range(8):
-                    a = 0
-                    for j in range(8):
-                        if sense.get_pixel(7-j, 7-i) != [0, 0, 0]:
-                            a += 1
-                            if a == 8:
-                                score += 1
-                                for k in range(8):
-                                    sense.set_pixel(k, 7-i, BLACK)
-                                for c in reversed(range(7-i)):
-                                    for d in range(8):
-                                        sense.set_pixel(d, c+1, (sense.get_pixel(d, c)))
-                                        sense.set_pixel(d, c, BLACK)
+
+            delete_lines()
                                         
             P = choice(shapes)  # Pick randomly a shape for one round
-            
-            dx = 0  # Set back the position where we print the matrix to original settings
-            dy = 0
             
             if P == L:
                 color = RED
@@ -336,24 +336,29 @@ def main():
                 color = YELLOW
                 
             t0 = time()
+            
+            dx = 0  # Set back the position where we print the matrix to original settings
+            dy = 0
 
             print_matrix(P)
 
             if game == 0:  # When game is over, displays the score
                 sense.show_message('Game over ! Score :', scroll_speed=0.05)
                 sense.show_message(str(score), scroll_speed=0.2)
-                sense.show_message('Press middle button to play again', scroll_speed=0.04)
                 t0 = time()
                 active = True
                 while active: # Play again
                     for event in sense.stick.get_events():
-                        if event.direction == 'middle' and event.action == 'pressed':
+                        if event.action == 'pressed':
                             game = 1
                             active = False
+                            sense.clear()
                             main()
-                    if t > t0 + 3: # After 3 seconds if the player did nothing, leave the program
-                        return ;
+                    sense.show_letter('?')
                     t = time()
+                    if t > t0 + 4: # After 4 seconds if the player did nothing or press another button, leave the program
+                        sense.clear()
+                        return ;
             else:
                 state = 1
 
