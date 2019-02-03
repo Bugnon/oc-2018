@@ -62,8 +62,8 @@ def print_matrix(M):
                 sense.set_pixel(3+x, y, color)
 
 
-def delete_matrix(M, dx, dy, n):
-    """ Delete the actual shape. """
+def delete_matrix_when_down(M, dx, dy, n):
+    """ Delete the actual shape when it's moving down. """
     for y in range(n):  # Set every pixel of the matrix black
             for x in range(n):
                 if 0 <= y+dy <= 7:
@@ -74,15 +74,14 @@ def delete_matrix(M, dx, dy, n):
                         sense.set_pixel(3+x+dx, y+dy-1, BLACK)
                 else:
                     dy -= 1  # If it can't delete the shape, we put dy at same value as before
-
+                
 
 def print_matrix_down(M):
     """ Move shape down for 1 tile. """
     global state, dx, dy
-    if state == 1:
         dy += 1  # Move the matrix one tile downward
         n = len(M)
-        delete_matrix(M, dx, dy, n)
+        delete_matrix_when_down(M, dx, dy, n)
         for y in range(n):  # Print new matrix one tile downward
             for x in range(n):
                 if 0 <= y+dy <= 7:   
@@ -95,10 +94,24 @@ def print_matrix_down(M):
                     state = 0
 
 
+def delete_matrix_when_left_or_right(M, dx, dy, n, adjust):
+    for y in range(n):  # Set the pixel of the actual matrix to black (delete it)
+        for x in range(n):
+            if 0 <= 3+x+dx <= 7:
+                if M[y][x] == 1:
+                    sense.set_pixel(3+x+dx+adjust, y+dy, BLACK)
+            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == 3.5+4.5*adjust: # If the 'I' is vertical, it can move one more tile.
+                if M[y][x] == 1:
+                    sense.set_pixel(3+x+dx+adjust, y+dy, BLACK)
+            else:
+                dx += adjust
+                
+                
 def print_matrix_left(M):
     """ Move shape left for 1 tile. """
-    global dx
+    global dx, dy
     dx -= 1
+    adjust = -1
     n = len(M)
     for y in range(n):  # Stop the shape when it's against another one
         if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and -1 <= 3+dx <= 7:
@@ -109,17 +122,9 @@ def print_matrix_left(M):
             if M[y][0] == 1 and sense.get_pixel(3+dx, y+dy) != [0, 0, 0]:
                 dx += 1
                 return ;
-    for y in range(n):  # Set the pixel of the actual matrix to black (delete it)
-        for x in range(n):
-            if 0 <= 3+x+dx <= 7:
-                if M[y][x] == 1:
-                    sense.set_pixel(3+x+dx+1, y+dy, BLACK)
-            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == -1: # If the 'I' is vertical, it can move one more time.
-                if M[y][x] == 1:
-                    sense.set_pixel(3+x+dx+1, y+dy, BLACK)
-            else:
-                dx += 1              
-    
+            
+    delete_matrix_when_left_or_right(M, dx, dy, n, adjust)
+                
     for y in range(n):  # Print the new matrix one tile leftward
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
@@ -132,10 +137,11 @@ def print_matrix_left(M):
 
 def print_matrix_right(M):
     """ Move shape right for 1 tile. """
-    global dx
+    global dx, dy
     dx += 1
+    adjust = 1
     n = len(M)
-    for y in range(n):
+    for y in range(n):  # Stop the shape when it's against another one
             if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and -1 <= 3+dx <= 6:
                 if M[y][1] == 1 and sense.get_pixel(3+dx+1, y+dy) != [0, 0, 0]:
                     dx -= 1
@@ -148,18 +154,10 @@ def print_matrix_right(M):
                 if M[y][1] == 1 and sense.get_pixel(3+dx+1, y+dy) != [0, 0, 0]:
                     dx -= 1
                     return ;
-    for y in range(n):
-        for x in range(n):
-            if 0 <= 3+x+dx <= 7:
-                if M[y][x] == 1:
-                    sense.set_pixel(3+x+dx-1, y+dy, BLACK)
-            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == 8:
-                if M[y][x] == 1:
-                    sense.set_pixel(3+x+dx-1, y+dy, BLACK)
-            else:
-                dx -= 1
+                
+    delete_matrix_when_left_or_right(M, dx, dy, n, adjust)
 
-    for y in range(n):
+    for y in range(n):  # Print the new matrix one tile rightward
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
                 if M[y][x] == 1:
@@ -176,12 +174,14 @@ def rotate_90(matrix):
         for x in range(n):
             if matrix[y][x] == 1:
                 sense.set_pixel(3+x+dx, y+dy, BLACK)
+                
     for layer in range((n + 1) // 2):  # Rotate the matrix (borrowed on internet)
         for index in range(layer, n-1-layer, 1):
             matrix[layer][index], matrix[n-1-index][layer], \
                 matrix[index][n-1-layer], matrix[n-1-layer][n-1-index] = \
                 matrix[n-1-index][layer], matrix[n-1-layer][n-1-index], \
                 matrix[layer][index], matrix[index][n-1-layer]
+            
     for y in range(n):  # Print the new matrix
         for x in range(n):
             if matrix[y][x] == 1:
