@@ -4,6 +4,13 @@ Authors : Valentin Piquerez & Hugo Ducommun
 Date : January 2019
 """
 
+"""
+Move your shape with right/left button.
+Rotate it with the middle button.
+You have to complete a line to increase your score.
+Good luck !
+"""
+
 from sense_hat import SenseHat
 from time import sleep, time
 from random import randint, choice
