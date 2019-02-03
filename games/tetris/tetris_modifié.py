@@ -1,7 +1,7 @@
 """
-Dossier : Programme du jeu Tetris sur le SenseHat
-Auteurs : Valentin Piquerez & Hugo Ducommun
-Date : Janvier 2019
+File : Tetris game on the  of the Raspberry PI
+Authors : Valentin Piquerez & Hugo Ducommun
+Date : January 2019
 """
 
 from sense_hat import SenseHat
@@ -9,7 +9,7 @@ from time import sleep, time
 from random import randint, choice
 from gamelib import *
 
-### Définition des variables propres à notre jeu ###
+### Variables definition ###
 
 color = (0, 0, 0)
 state = 1  # When game is static: state = 0. When game is playing, state = 1.
@@ -26,19 +26,19 @@ I = [
     [0, 1, 0],
     [0, 1, 0],
     [0, 1, 0]
-]
+    ]
 
 # red L
 L = [
     [1, 0],
     [1, 1]
-]
+    ]
 
 # 2x2 yellow square
 o = [
     [1, 1],
     [1, 1]
-]
+    ]
 
 shapes = (I, L, o)  # List with the three shapes
     
@@ -51,9 +51,10 @@ elif P == I:
 else:
     color = YELLOW
 
-### Function definition ###
+### Functions definition ###
 
-def print_matrix(M):  # Print matrix at the top in the middle
+def print_matrix(M):
+    """ Print the tetris shape at the top in the middle. """
     n = len(M)
     for y in range(n):
         for x in range(n):
@@ -62,23 +63,22 @@ def print_matrix(M):  # Print matrix at the top in the middle
 
 
 def delete_matrix(M, dx, dy, n):
+    """ Delete the actual shape. """
     for y in range(n):  # Set every pixel of the matrix black
             for x in range(n):
                 if 0 <= y+dy <= 7:
                     if M[y][x] == 1:
                         sense.set_pixel(3+x+dx, y+dy-1, BLACK) 
-                elif M == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and y+dy == 8:  # Delete horisontal bar when it's at bottom.
+                elif M == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and y+dy == 8:  # Delete horizontal bar when it's at bottom.
                     if M[y][x] == 1:
                         sense.set_pixel(3+x+dx, y+dy-1, BLACK)
                 else:
                     dy -= 1  # If it can't delete the shape, we put dy at same value as before
 
 
-
-def print_matrix_down(M):  # Move shape down for 1 tile
-    global state
-    global dy
-    global dx
+def print_matrix_down(M):
+    """ Move shape down for 1 tile. """
+    global state, dx, dy
     if state == 1:
         dy += 1  # Move the matrix one tile downward
         n = len(M)
@@ -95,11 +95,12 @@ def print_matrix_down(M):  # Move shape down for 1 tile
                     state = 0
 
 
-def print_matrix_left(M):  # Fonction qui bouge la matrice sur la gauche
+def print_matrix_left(M):
+    """ Move shape left for 1 tile. """
     global dx
     dx -= 1
     n = len(M)
-    for y in range(n):  # Stop la forme quand elle est contre une autre forme
+    for y in range(n):  # Stop the shape when it's against another one
         if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and -1 <= 3+dx <= 7:
             if M[y][1] == 1 and sense.get_pixel(3+dx+1, y+dy)!=[0, 0, 0]:
                 dx += 1
@@ -108,18 +109,18 @@ def print_matrix_left(M):  # Fonction qui bouge la matrice sur la gauche
             if M[y][0] == 1 and sense.get_pixel(3+dx, y+dy) != [0, 0, 0]:
                 dx += 1
                 return ;
-    for y in range(n):  # Supprime la forme précédente
+    for y in range(n):  # Set the pixel of the actual matrix to black (delete it)
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
                 if M[y][x] == 1:
                     sense.set_pixel(3+x+dx+1, y+dy, BLACK)
-            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == -1: # Permet à la barre verticale d'aller sur les côtés
+            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == -1: # If the 'I' is vertical, it can move one more time.
                 if M[y][x] == 1:
                     sense.set_pixel(3+x+dx+1, y+dy, BLACK)
             else:
                 dx += 1              
     
-    for y in range(n):  # Affiche la nouvelle forme décalée à gauche
+    for y in range(n):  # Print the new matrix one tile leftward
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
                 if M[y][x] == 1:
@@ -129,11 +130,12 @@ def print_matrix_left(M):  # Fonction qui bouge la matrice sur la gauche
                     sense.set_pixel(3+x+dx, y+dy, color)
  
 
-def print_matrix_right(M):  # Même principe que print_matrix_left mais à droite
+def print_matrix_right(M):
+    """ Move shape right for 1 tile. """
     global dx
     dx += 1
     n = len(M)
-    for y in range(n):  # Empeche de continuer quand elle est en colision avec une forme 
+    for y in range(n):
             if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and -1 <= 3+dx <= 6:
                 if M[y][1] == 1 and sense.get_pixel(3+dx+1, y+dy) != [0, 0, 0]:
                     dx -= 1
@@ -146,7 +148,7 @@ def print_matrix_right(M):  # Même principe que print_matrix_left mais à droit
                 if M[y][1] == 1 and sense.get_pixel(3+dx+1, y+dy) != [0, 0, 0]:
                     dx -= 1
                     return ;
-    for y in range(n):  # Supprime la forme
+    for y in range(n):
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
                 if M[y][x] == 1:
@@ -157,7 +159,7 @@ def print_matrix_right(M):  # Même principe que print_matrix_left mais à droit
             else:
                 dx -= 1
 
-    for y in range(n):  #Affiche la forme un pixel plus bas
+    for y in range(n):
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
                 if M[y][x] == 1:
@@ -167,20 +169,20 @@ def print_matrix_right(M):  # Même principe que print_matrix_left mais à droit
                     sense.set_pixel(3+x+dx, y+dy, color)
 
 
-
-def rotate_90(matrix):  # Tourne la forme de 90 degrés vers la droite (fonction en partie empruntée sur internet)
+def rotate_90(matrix):
+    """ Turn the shape 90 degrees right. """
     n = len(matrix)
-    for y in range(n):  # Supprime la forme
+    for y in range(n):  # Delete the actual shape
         for x in range(n):
             if matrix[y][x] == 1:
                 sense.set_pixel(3+x+dx, y+dy, BLACK)
-    for layer in range((n + 1) // 2):  # Tourne la matrice carrée de 90 degrés vers la droite
+    for layer in range((n + 1) // 2):  # Rotate the matrix (borrowed on internet)
         for index in range(layer, n-1-layer, 1):
             matrix[layer][index], matrix[n-1-index][layer], \
                 matrix[index][n-1-layer], matrix[n-1-layer][n-1-index] = \
                 matrix[n-1-index][layer], matrix[n-1-layer][n-1-index], \
                 matrix[layer][index], matrix[index][n-1-layer]
-    for y in range(n):  # Affiche la nouvelle forme à partir de la matrice tournée
+    for y in range(n):  # Print the new matrix
         for x in range(n):
             if matrix[y][x] == 1:
                 sense.set_pixel(3+x+dx, y+dy, color)
@@ -191,42 +193,43 @@ sense.clear()
 
 
 def main():
-    global x, y, dx, dy
-    P = choice(shapes)  # Choisit une forme au hasard parmi les trois
+    """ The core of the game. """
+    global x, y, dx, dy, color
+    P = choice(shapes)
     
-    color = (0, 0, 0)
+    if P == L:
+        color = RED
+    elif P == I:
+        color = CYAN
+    else:
+        color = YELLOW
     
     t0 = time()
     
     game = 1
     
-    score = 0  # Le nombre de lignes que le joueur aura réussi à faire disparaître
+    score = 0  # The number of the completed lines
     
     state = 1
 
-    dt = 1  # Temps entre chaque descente en seconde
+    dt = 1  # Time between each drop
     
     print_matrix(P)
+    
     while game == 1:
         while state == 1:
-            if P == L:
-                color = RED
-            elif P == I:
-                color = CYAN
-            else:
-                color = YELLOW
             for event in sense.stick.get_events():
                  if event.action == 'pressed' and event.direction == 'middle':
                     if P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
                         if dx == -4 or dx == 3:
-                            pass  # Empêche de tourner la barre quand elle est verticale et dans un côté
+                            pass  # The vertical 'I' can not rotate when it's in the ribbs
                         elif sense.get_pixel(3+dx, dy+1) != [0, 0, 0] or sense.get_pixel(3+dx+2, dy+1) != [0, 0, 0]:
                             pass
                         else:
                             rotate_90(P)
                     elif P == [[0, 0, 0], [1, 1, 1], [0, 0, 0]]:
                         if dy == 6:
-                            pass  # Empêche de tourner la barre quand elle est horizontale et tout en bas
+                            pass  # The horizontal 'I' can not rotate when it's at the bottom
                         else:
                             rotate_90(P)
                     else:
@@ -241,7 +244,7 @@ def main():
                      game = 0
                      state = 0
 
-            if P == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and dy == 6:  # Si la forme est en bas, on passe en state=0
+            if P == [[0, 0, 0], [1, 1, 1], [0, 0, 0]] and dy == 6:  # If the shape is at the bottom we turn the game on static
                 state=0
             elif P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and dy == 5:
                 state=0
@@ -251,7 +254,7 @@ def main():
                 state=0
         
             n=len(P)
-            for x in range(n):  # Check si la forme peut descendre ou pas. Si elle ne peut pas descendre à son apparition, game over
+            for x in range(n):  # Check if the shape can drop
                 if P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and dy < 5:
                     if sense.get_pixel(dx+4, dy+3) != [0, 0, 0]:
                         if dy == 0:
@@ -259,11 +262,11 @@ def main():
                         state = 0
                 elif dy < 6 and P != [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
                     if P[1][x] == 1 and sense.get_pixel(x+dx+3, dy+2) != [0, 0, 0]:
-                        if dy == 0:  # Si la forme est bloquée juste après être apparue
+                        if dy == 0:  # If the shape is blocked just after spawning, game over
                             game = 0
                         state = 0
                         
-            Lcomplet = 0  # Check si la forme L est complétée par un autre pixel, ce qui fait passer le jeu en state=0
+            Lcomplet = 0  # Check if the shape 'L' is completed by another external pixel, if yes the game is set on static
             for x in range (n):
                 for y in range(n):
                     if P == [[1, 1],[0, 1]] or P == [[1, 1],[1, 0]]:
@@ -307,18 +310,25 @@ def main():
             else:
                 color = YELLOW
                 
-            t0=time()
+            t0 = time()
 
             print_matrix(P)
 
             if game == 0:  # When game is over, displays the score
                 sense.show_message('Game over ! Score :', scroll_speed=0.05)
                 sense.show_message(str(score), scroll_speed=0.2)
-                for i in range(3):
-                    sense.show_message('Press middle button to play again', scroll_speed=0.05)
-                for event in sense.stick.get_events():
-                    if event.direction == 'middle' and event.action == 'pressed':
-                        sense.show_message('ALALALALA', scroll_speed=0.05)
+                sense.show_message('Press middle button to play again', scroll_speed=0.04)
+                t0 = time()
+                active = True
+                while active: # Play again
+                    for event in sense.stick.get_events():
+                        if event.direction == 'middle' and event.action == 'pressed':
+                            game = 1
+                            active = False
+                            main()
+                    if t > t0 + 3: # After 3 seconds if the player did nothing, leave the program
+                        return ;
+                    t = time()
             else:
                 state = 1
 
