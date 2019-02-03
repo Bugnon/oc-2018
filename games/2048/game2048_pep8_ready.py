@@ -82,6 +82,7 @@ L_WIN = [ o, o, o, o, o, o, o, o,
 
     
 def startup():
+          """"""
     global size
     set_matrices_0()
     sense.clear()
@@ -178,6 +179,7 @@ def one_new_block(n):
             r = r + 1
             
 def moved_up(n):
+    """Reacts to the joystick pushed up."""
     print(L4)
     L = L4 if n == 4 else L8 
     for x in range(n): 
@@ -199,6 +201,7 @@ def move_pixel_up(n):
         L[x][y] = 0
         
 def moved_down(n):
+    """Reacts to the joystick pushed down."""
     L = L4 if n == 4 else L8
     for x in range(n):
         for z in range(n - 1):
@@ -272,6 +275,7 @@ def control_end(n):
         control_victory(n)
                     
 def check_empty_cells(n):
+    """Check if a cell is empty or not"""
     L = L4 if n == 4 else L8
     for x in range(n):
         for y in range(n):
@@ -279,6 +283,7 @@ def check_empty_cells(n):
                 end = False
 
 def check_neigbors_cells_for_center(n):
+    """Check the state of neighbours cells (only cells in the center)"""
     L = L4 if n == 4 else L8
     for x in range(1, n - 1):
         for y in range(1, n - 1):
@@ -288,6 +293,7 @@ def check_neigbors_cells_for_center(n):
                 break
             
 def check_neigbors_cells_for_border(n):
+    """Check the state of neighbours cells (only cells in the border)"""
     L = L4 if n == 4 else L8
     for y in range(n - 1):
         for x in range(n - 1):
@@ -297,6 +303,7 @@ def check_neigbors_cells_for_border(n):
                 break
             
 def end_animation(n):
+    """Show a message when the player loses the game and show the score"""
     loser_animation_part_1(n)
     score_calculator(n)
     sense.show_message('You lose... Your score is:', 0.075, MESSAGE)
@@ -305,6 +312,7 @@ def end_animation(n):
     main()
     
 def loser_animation_part_1(n):
+    """Animation of a red cross when the """
     set_pixels(n)
     sleep(3)
     r = red_7
@@ -313,6 +321,7 @@ def loser_animation_part_1(n):
     loser_animation_part_2(n)
     
 def loser_animation_part_2(n):
+    """Animation of a red cross when the game is over"""
     for i in range(5):
         sense.set_pixels(L_CROSS)
         sleep(0.1)
@@ -324,6 +333,7 @@ def loser_animation_part_2(n):
     sleep(2)
     
 def score_calculator(n):
+    """Calculate the score shown"""
     L = L4 if n == 4 else L8
     score = 0
     for x in range(n):
@@ -332,6 +342,7 @@ def score_calculator(n):
                 score = score + 2 ** L[x][y]
                 
 def show_score():
+    """Show the score"""
     while show:
         score = str(score)
         string = score + 'pts'
@@ -342,7 +353,7 @@ def show_score():
                 show = False
                 
 def exit():
-    """Wait 1 second..."""
+    """Use to exit the game"""
     t0 = time()
     while time() < t0 + 1:
         for event in sense.stick.get_events():
@@ -356,6 +367,7 @@ def exit():
                             main()
                             
 def control_victory(n):
+    """Control if the maximum is reached (14th block)"""
     L = L4 if n == 4 else L8
     for x in range(n):
         for y in range(n):
@@ -364,6 +376,7 @@ def control_victory(n):
                 victory(n)
         
 def victory(n):
+    """Show the message when the player wins""""
     sleep(9)
     score_calculator(n)
     sense.show_message('Congratulations, you just reached the highest block. Your score is :', 0.075, MESSAGE)
@@ -371,6 +384,7 @@ def victory(n):
     main()
     
 def joystick_direction():
+    """Definition of direction""""
     if event.direction == 'up':
         moved_up(size)
     elif event.direction == 'down':
@@ -385,6 +399,7 @@ def joystick_direction():
 #-----Reactions du joystick-----
     
 def main():
+    """Main menu"""
     startup()
     running = True
     while running:
