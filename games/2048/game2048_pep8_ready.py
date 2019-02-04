@@ -83,7 +83,6 @@ L_WIN = [ o, o, o, o, o, o, o, o,
 
     
 def startup():
-          """"""
     global size
     set_matrices_0()
     sense.clear()
@@ -213,7 +212,7 @@ def moved_down(n):
                 move_pixel_down(x, y, n)
     set_pixels(n)
     new_block(n)
-    
+
 def move_pixel_down(x, y, n):
     L = L4 if n == 4 else L8
     while y <= (n - 2) and L[x][y + 1] == 0:# Si la case est vide
@@ -279,11 +278,8 @@ def control_end(n):
         control_victory(n)
                     
 def check_empty_cells(n):
-<<<<<<< HEAD
     global end
-=======
     """Check if a cell is empty or not"""
->>>>>>> 343d0dc7d64f32f4d2582ca49e972a12d146274d
     L = L4 if n == 4 else L8
     for x in range(n):
         for y in range(n):
@@ -291,11 +287,8 @@ def check_empty_cells(n):
                 end = False
 
 def check_neigbors_cells_for_center(n):
-<<<<<<< HEAD
     global end
-=======
     """Check the state of neighbours cells (only cells in the center)"""
->>>>>>> 343d0dc7d64f32f4d2582ca49e972a12d146274d
     L = L4 if n == 4 else L8
     if end == True:
         for x in range(1, n - 1):
@@ -305,11 +298,8 @@ def check_neigbors_cells_for_center(n):
                     end = False
             
 def check_neigbors_cells_for_border(n):
-<<<<<<< HEAD
     global end
-=======
     """Check the state of neighbours cells (only cells in the border)"""
->>>>>>> 343d0dc7d64f32f4d2582ca49e972a12d146274d
     L = L4 if n == 4 else L8
     if end == True:
         for y in range(n - 1):
@@ -394,17 +384,15 @@ def control_victory(n):
     
         
 def victory(n):
-    """Show the message when the player wins""""
+    """Show the message when the player wins"""
     sleep(9)
     score_calculator(n)
     sense.show_message('Congratulations, you just reached the highest block. Your score is :', 0.075, MESSAGE)
     show_score
     main()
     
-<<<<<<< HEAD
-=======
 def joystick_direction():
-    """Definition of direction""""
+    """Definition of direction"""
     if event.direction == 'up':
         moved_up(size)
     elif event.direction == 'down':
@@ -416,7 +404,6 @@ def joystick_direction():
     elif event.direction == 'middle':
         exit()
     
->>>>>>> 343d0dc7d64f32f4d2582ca49e972a12d146274d
 #-----Reactions du joystick-----
     
 def main():
