@@ -1,5 +1,5 @@
 """
-File : Tetris game on the  of the Raspberry PI
+File : Tetris game on the Raspberry PI
 Authors : Valentin Piquerez & Hugo Ducommun
 Date : January 2019
 """
@@ -43,11 +43,11 @@ o = [
 
 shapes = (I, L, o)  # List with the three shapes
 
-score = 0  # The number of the completed lines
+score = 0  # The number of completed lines
     
 P = choice(shapes)
 
-if P == L:
+if P == L:  # Assign the right color tot he right shape
     color = RED
 elif P == I:
     color = CYAN
@@ -56,8 +56,19 @@ else:
 
 ### Functions definition ###
 
-def delete_lines():
-    """ Delete completed lines avec counts the score. """
+
+def delete_lines(i):
+    """ Delete completed lines and move every line above one tile downward. """
+    for k in range(8):
+        sense.set_pixel(k, 7-i, BLACK)
+    for c in reversed(range(7-i)):
+        for d in range(8):
+            sense.set_pixel(d, c+1, (sense.get_pixel(d, c)))
+            sense.set_pixel(d, c, BLACK)
+            
+
+def check_if_lines_are_completed():
+    """ Check if lines are completed to delete them and increase the score. """
     global score
     for g in range(8):
                 for i in range(8):
@@ -67,12 +78,8 @@ def delete_lines():
                             a += 1
                             if a == 8:
                                 score += 1 # Inscrease the score if the line is completed
-                                for k in range(8):
-                                    sense.set_pixel(k, 7-i, BLACK)
-                                for c in reversed(range(7-i)):
-                                    for d in range(8):
-                                        sense.set_pixel(d, c+1, (sense.get_pixel(d, c)))
-                                        sense.set_pixel(d, c, BLACK)
+                                delete_lines(i)
+
 
 def print_matrix(M):
     """ Print the tetris shape at the top in the middle. """
@@ -114,19 +121,6 @@ def print_matrix_down(M):
                     sense.set_pixel(3+x+dx, y+dy, color)
             else:
                 state = 0
-
-
-##def delete_matrix_when_left_or_right(M, dx, dy, n, adjust):
-##    for y in range(n):  # Set the pixel of the actual matrix to black (delete it)
-##        for x in range(n):
-##            if 0 <= 3+x+dx <= 7:
-##                if M[y][x] == 1:
-##                    sense.set_pixel(3+x+dx-adjust, y+dy, BLACK)
-##            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == 3.5+4.5*adjust: # If the 'I' is vertical, it can move one more tile.
-##                if M[y][x] == 1:
-##                    sense.set_pixel(3+x+dx-adjust, y+dy, BLACK)
-##            else:
-##                dx -= adjust
                 
                 
 def print_new_matix_when_left(M, dx, dy, n):
@@ -144,7 +138,6 @@ def print_matrix_left(M):
     """ Move shape left for 1 tile. """
     global dx, dy
     dx -= 1
-    adjust = -1
     n = len(M)
     for y in range(n):  # Stop the shape when it's against another one
         if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and -1 <= 3+dx <= 7:
@@ -156,17 +149,16 @@ def print_matrix_left(M):
                 dx += 1
                 return ;
             
-##    delete_matrix_when_left_or_right(M, dx, dy, n, adjust)
     for y in range(n):  # Set the pixel of the actual matrix to black (delete it)
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
                 if M[y][x] == 1:
-                    sense.set_pixel(3+x+dx-adjust, y+dy, BLACK)
-            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == 3.5+4.5*adjust: # If the 'I' is vertical, it can move one more tile.
+                    sense.set_pixel(3+x+dx+1, y+dy, BLACK)
+            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == -1: # If the 'I' is vertical, it can move one more tile.
                 if M[y][x] == 1:
-                    sense.set_pixel(3+x+dx-adjust, y+dy, BLACK)
+                    sense.set_pixel(3+x+dx+1, y+dy, BLACK)
             else:
-                dx -= adjust        
+                dx +=  1
     print_new_matix_when_left(M, dx, dy, n)
  
 
@@ -185,7 +177,6 @@ def print_matrix_right(M):
     """ Move shape right for 1 tile. """
     global dx, dy
     dx += 1
-    adjust = 1
     n = len(M)
     for y in range(n):  # Stop the shape when it's against another one
             if M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and -1 <= 3+dx <= 6:
@@ -201,22 +192,28 @@ def print_matrix_right(M):
                     dx -= 1
                     return ;
                 
-##    delete_matrix_when_left_or_right(M, dx, dy, n, adjust)
     for y in range(n):  # Set the pixel of the actual matrix to black (delete it)
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
                 if M[y][x] == 1:
-                    sense.set_pixel(3+x+dx-adjust, y+dy, BLACK)
-            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == 3.5+4.5*adjust: # If the 'I' is vertical, it can move one more tile.
+                    sense.set_pixel(3+x+dx-1, y+dy, BLACK)
+            elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == 8: # If the 'I' is vertical, it can move one more tile.
                 if M[y][x] == 1:
-                    sense.set_pixel(3+x+dx-adjust, y+dy, BLACK)
+                    sense.set_pixel(3+x+dx-1, y+dy, BLACK)
             else:
-                dx -= adjust            
+                dx -= 1            
     print_new_matix_when_right(M, dx, dy, n)
+    
+
+def print_rotated_matrix(n, matrix):
+    """ Print the matrix after the rotation. """
+    for y in range(n): 
+        for x in range(n):
+            if matrix[y][x] == 1:
+                sense.set_pixel(3+x+dx, y+dy, color)
 
 def rotate_90(matrix):
     """ Turn the shape 90 degrees right. """
-    
     delete_matrix_when_down(matrix, dx, dy)
     n = len(matrix)
     for layer in range((n + 1) // 2):  # Rotate the matrix (borrowed on internet)
@@ -225,11 +222,7 @@ def rotate_90(matrix):
                 matrix[index][n-1-layer], matrix[n-1-layer][n-1-index] = \
                 matrix[n-1-index][layer], matrix[n-1-layer][n-1-index], \
                 matrix[layer][index], matrix[index][n-1-layer]
-            
-    for y in range(n):  # Print the new matrix
-        for x in range(n):
-            if matrix[y][x] == 1:
-                sense.set_pixel(3+x+dx, y+dy, color)
+    print_rotated_matrix(n, matrix)
     return matrix
 
 
@@ -324,7 +317,7 @@ def main():
 
         while state == 0:
 
-            delete_lines()
+            check_if_lines_are_completed()
                                         
             P = choice(shapes)  # Pick randomly a shape for one round
             
