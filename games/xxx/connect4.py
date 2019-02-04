@@ -1,6 +1,7 @@
 """
 Connect 4
 The goal is to place 4 discs in a row
+Authors : Nissa and Terence
 """
 
 
@@ -31,11 +32,16 @@ def main():
     turns=0
     global gameOver
     global playerScore
+    global stopGame
+    print("main",gameOver,stopGame)
     if (playerScore[0]==2 or playerScore[1]==2 or stopGame==1) and repeat==0:
+        stopGame=0
+        gameOver=0
         return
     else:
         gameOver=0
-        if playerScore[0]!=0 or playerScore[1]!=0:
+        if playerScore[0]==2 or playerScore[1]==2 or stopGame==1:
+            stopGame=0
             playerScore=[0,0]
         show(state)
         turn()
@@ -67,7 +73,7 @@ def player_scored(p):
     if p != 0:
         playerScore[p-1]+=1
         sense.show_letter(str(playerScore[p-1]),colors[p])
-    if playerScore[0]==2 or playerScore[1]==2:
+    if playerScore[0]==2 or playerScore[1]==2 or stopGame==1:
         sleep(1.5)
         sense.clear(colors[p])
     sleep(1.5)
@@ -81,9 +87,9 @@ def select_column(p): #Sélection de la colonne ou laisser tomber le jeton
         for event in sense.stick.get_events():
             if event.action == 'pressed':
                 if event.direction == 'right': #Déplace le curseur à droite
-                    x =(x + 1) % 7
+                    x = (x + 1) % 7
                 elif event.direction == 'left': #Déplace le curseur à gauche
-                    x =(x - 1) % 7
+                    x = (x - 1) % 7
                 elif event.direction =='down': #Confirme la sélection
                     selection = False #Termine le tour
                     put_down(x,p) #Appelle la fonction qui fait tomber le jeton
@@ -194,6 +200,7 @@ def create_diagonal_downright_upleft(diagonal,x,y):
 # Execute the main() function when the file is executed,
 # but do not execute when the module is imported as a module.
 print('module name =', __name__)
+print(repeat)
 
 if __name__ == '__main__':
     main()
