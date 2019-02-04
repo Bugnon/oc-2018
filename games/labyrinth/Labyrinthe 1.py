@@ -112,6 +112,47 @@ lvl_name = []
 for i in range(len(levels)):
     lvl_name.append(str(i+1))
 
+#Main menu, the selection of the level.
+def main():
+    running = True
+    sense.show_message("Select the level",
+                       text_colour=WHITE, scroll_speed=0.05)
+    sleep(0.5)
+    lvl = 0 #(0 = level 1, 1 = level 2, etc.)
+    sense.show_letter(lvl_name[lvl],
+                      text_colour=WHITE)
+    while running:
+        for event in sense.stick.get_events():
+                if event.action == 'pressed':
+                    if event.direction == 'left':   #select a lower level.
+                        if lvl >= 1:
+                            lvl = lvl-1
+                            sense.show_letter(lvl_name[lvl],
+                                              text_colour=WHITE)
+                        else:
+                            pass
+                    elif event.direction == 'right':    #select a higher level.
+                        if lvl <= len(lvl_name)-2:
+                            lvl = lvl+1
+                            sense.show_letter(lvl_name[lvl],
+                                              text_colour=WHITE)
+                        else:
+                            pass
+                    elif event.direction == 'down':#turn off the game
+                        running = False
+                        sense.clear()
+                    elif event.direction == 'up':#turn off the game
+                        running = False
+                        sense.clear()
+                    elif event.direction == 'middle':#start the selected level
+                        running = False
+                        start_level(levels[lvl])
+                        
+#Brings together the 2 functions of the level game. There is 2 stages: Demonstration and Reproduction. 
+def start_level(niv):
+    patern_stage(niv)
+    player_stage(niv)
+      
 #Demonstration of the patern:
 def patern_stage(niv):
     for event in sense.stick.get_events():#IMPORTANT: reset the manipulation of the player. 
@@ -122,11 +163,11 @@ def patern_stage(niv):
     sense.clear(MINT)
     sleep(1)
     for step in range(dist):                            #It shows one by one the pixel of the selected level patern.
-        sense.set_pixel(niv[step][0],niv[step][1], PINK)#
-        sleep(0.5)                                      #
+        sense.set_pixel(niv[step][0],niv[step][1], PINK)
+        sleep(0.5)                                      
     sleep(1.5) #Time to memorizing
-    sense.clear(MINT)
-
+    sense.clear(MINT)  
+      
 #Reproduction by the player    
 def player_stage(niv):
     playing = True
@@ -167,7 +208,9 @@ def player_stage(niv):
                             text_colour=BLUE, scroll_speed=0.05)
         sleep(2)
         try_again(niv)  #cf. try_again() function
-        
+
+            
+            
 #Ask the player if he wants to try again or go back to level selection.
 def try_again(niv):
     wait = True
@@ -201,46 +244,5 @@ def try_again(niv):
                         main()
                 else: #If the player moves up or down, it goes back to main menu.
                     main()
-                            
-#Brings together the 2 functions of the level game.
-def start_level(niv):
-    patern_stage(niv)
-    player_stage(niv)
-
-#Main menu, the selection of the level.
-def main():
-    running = True
-    sense.show_message("Select the level",
-                       text_colour=WHITE, scroll_speed=0.05)
-    sleep(0.5)
-    lvl = 0 #(0 = level 1, 1 = level 2, etc.)
-    sense.show_letter(lvl_name[lvl],
-                      text_colour=WHITE)
-    while running:
-        for event in sense.stick.get_events():
-                if event.action == 'pressed':
-                    if event.direction == 'left':   #select a lower level.
-                        if lvl >= 1:
-                            lvl = lvl-1
-                            sense.show_letter(lvl_name[lvl],
-                                              text_colour=WHITE)
-                        else:
-                            pass
-                    elif event.direction == 'right':    #select a higher level.
-                        if lvl <= len(lvl_name)-2:
-                            lvl = lvl+1
-                            sense.show_letter(lvl_name[lvl],
-                                              text_colour=WHITE)
-                        else:
-                            pass
-                    elif event.direction == 'down':#turn off the game
-                        running = False
-                        sense.clear()
-                    elif event.direction == 'up':#turn off the game
-                        running = False
-                        sense.clear()
-                    elif event.direction == 'middle':#start the selected level
-                        running = False
-                        start_level(levels[lvl])
 
 main()
