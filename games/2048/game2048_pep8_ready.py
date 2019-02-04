@@ -37,6 +37,7 @@ WHITE_13 = (255, 255, 255)
 r = RED_7
 o = BLACK_0
 y = YELLOW_5
+end = True
 
 colors = [BLACK_0, BLUE_1, GREEN_2, GREEN_3, GREEN_4, YELLOW_5, ORANGE_6, RED_7,\
           PINK_8, PINK_9, PINK_10, BLUE_11, BLUE_12, WHITE_13,]
@@ -85,7 +86,7 @@ def startup():
     global size
     set_matrices_0()
     sense.clear()
-    sense.show_message('Choose your mode:',0.075, MESSAGE)
+    sense.show_message('Choose your mode:',0.001, MESSAGE)
     modes = ['4X4', '8X8']
     mode = [4, 8]
     sleep(0.2)
@@ -117,7 +118,7 @@ def selection_startup(selecting, modes, mode, i):
       
 def set_pixels(n):
     if n == 4:
-        set_pixel_4()
+        set_pixels_4()
     else:
         for x in range(8):
             for y in range(8):
@@ -140,22 +141,24 @@ def set_pixels_4():
 
 def new_block(n):
     sleep(0.25)
-    i = 0
-    number_empty_block(i, n)
+    i = number_empty_block(n)
+    print (i)
     if i > 1:
-        two_new_blocks()
+        two_new_blocks(n)
     elif i == 1:
-        one_new_block()
+        one_new_block(n)
     control_end(n)
     set_pixels(n)
     
-def number_empty_block(i, n):
+def number_empty_block(n):
     L = L4 if n == 4 else L8
+    i = 0
     for x in range(n):
         for y in range(n):
             if L[x][y] == 0:
                 i = i + 1
-    
+    return i
+
 def two_new_blocks(n):
     r = randint(0,1)
     L = L4 if n == 4 else L8
@@ -183,12 +186,12 @@ def moved_up(n):
     for x in range(n): 
         for y in range(n):# Sur chaque pixel en prenantles pixels en ligne puis en colonne
             if L[x][y] > 0 and y >= 1:# On controle que le pixel ne soit pas une case vide
-                move_pixel_up(n)
+                move_pixel_up(x, y, n)
     set_pixels(n)
     print(L4)
     new_block(n)
     
-def move_pixel_up(n):
+def move_pixel_up(x, y, n):
     L = L4 if n == 4 else L8
     while L[x][y - 1] == 0 and y >= 1:# Si la case est vide 
         L[x][y - 1] = L[x][y]
@@ -204,11 +207,11 @@ def moved_down(n):
         for z in range(n - 1):
             y = n - 2 - z
             if L[x][y] > 0 and y <= (n - 2):# On controle que le pixel ne soit pas une case vide
-                move_pixel_down(n)
+                move_pixel_down(x, y, n)
     set_pixels(n)
     new_block(n)
     
-def move_pixel_down(n):
+def move_pixel_down(x, y, n):
     L = L4 if n == 4 else L8
     while y <= (n - 2) and L[x][y + 1] == 0:# Si la case est vide
         L[x][y + 1] = L[x][y]
@@ -224,11 +227,11 @@ def moved_left(n):
     for y in range(n):
         for x in range(n):
             if L[x][y] > 0:# On controle que le pixel ne soit pas une case vide
-                move_pixel_left(n)
+                move_pixel_left(x, y, n)
     set_pixels(n)
     new_block(n)
 
-def move_pixel_left(n):
+def move_pixel_left(x, y, n):
     L = L4 if n == 4 else L8
     while x > 0 and L[x - 1][y] == 0:# Si la case est vide 
         L[x - 1][y] = L[x][y]
@@ -245,11 +248,11 @@ def moved_right(n):
         for z in range(n - 1):
             x = n - 2 - z
             if L[x][y] > 0 and x < (n - 1):
-                move_pixel_right(n)
+                move_pixel_right(x, y, n)
     set_pixels(n)
     new_block(n)
 
-def move_pixel_right(n):
+def move_pixel_right(x, y, n):
     L = L4 if n == 4 else L8
     while x < (n - 1) and L[x + 1][y] == 0:
         L[x + 1][y] = L[x][y]
@@ -261,6 +264,7 @@ def move_pixel_right(n):
 
 def control_end(n):
     """Returns True when the game is finished."""
+    global end
     end = True
     L = L4 if n == 4 else L8
     check_empty_cells(n)
@@ -272,6 +276,7 @@ def control_end(n):
         control_victory(n)
                     
 def check_empty_cells(n):
+    global end
     L = L4 if n == 4 else L8
     for x in range(n):
         for y in range(n):
@@ -279,22 +284,24 @@ def check_empty_cells(n):
                 end = False
 
 def check_neigbors_cells_for_center(n):
+    global end
     L = L4 if n == 4 else L8
-    for x in range(1, n - 1):
-        for y in range(1, n - 1):
-            if L[x][y] == L[x][y + 1] or L[x][y] == L[x + 1][y] \
-                or L[x][y] == L[x - 1][y] or L[x][y] == L[x][y - 1]:
-                end = False
-                break
+    if end == True:
+        for x in range(1, n - 1):
+            for y in range(1, n - 1):
+                if L[x][y] == L[x][y + 1] or L[x][y] == L[x + 1][y] \
+                    or L[x][y] == L[x - 1][y] or L[x][y] == L[x][y - 1]:
+                    end = False
             
 def check_neigbors_cells_for_border(n):
+    global end
     L = L4 if n == 4 else L8
-    for y in range(n - 1):
-        for x in range(n - 1):
-            if L[0][x] == L[0][x + 1] or L[x][0] == L[x + 1][0] \
-                or L[n - 1][x] == L[n - 1][x + 1] or L[x][n - 1] == L[x + 1][n - 1]:
-                end = False
-                break
+    if end == True:
+        for y in range(n - 1):
+            for x in range(n - 1):
+                if L[0][x] == L[0][x + 1] or L[x][0] == L[x + 1][0] \
+                    or L[n - 1][x] == L[n - 1][x + 1] or L[x][n - 1] == L[x + 1][n - 1]:
+                    end = False
             
 def end_animation(n):
     loser_animation_part_1(n)
@@ -307,8 +314,8 @@ def end_animation(n):
 def loser_animation_part_1(n):
     set_pixels(n)
     sleep(3)
-    r = red_7
-    o = black
+    r = RED_7
+    o = BLACK_0
     sense.clear()
     loser_animation_part_2(n)
     
@@ -362,6 +369,8 @@ def control_victory(n):
             if L[x][y] == 14:
                 sense.set_pixels(L_WIN)
                 victory(n)
+    set_pixels(n)
+    
         
 def victory(n):
     sleep(9)
@@ -369,18 +378,6 @@ def victory(n):
     sense.show_message('Congratulations, you just reached the highest block. Your score is :', 0.075, MESSAGE)
     show_score
     main()
-    
-def joystick_direction():
-    if event.direction == 'up':
-        moved_up(size)
-    elif event.direction == 'down':
-        moved_down(size)
-    elif event.direction == 'right':
-        moved_right(size)
-    elif event.direction == 'left':
-        moved_left(size)
-    elif event.direction == 'middle':
-        exit()
     
 #-----Reactions du joystick-----
     
@@ -390,7 +387,16 @@ def main():
     while running:
         for event in sense.stick.get_events():
             if event.action == 'pressed':
-                joystick_direction()
+                if event.direction == 'up':
+                    moved_up(size)
+                elif event.direction == 'down':
+                    moved_down(size)
+                elif event.direction == 'right':
+                    moved_right(size)
+                elif event.direction == 'left':
+                    moved_left(size)
+                elif event.direction == 'middle':
+                    exit()
 
 
 if __name__ == '__main__':
