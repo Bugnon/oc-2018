@@ -1,7 +1,11 @@
 """
+File: connect4.py
+Date: 2019.02.04
+
+Authors : Nissa and Terence
+
 Connect 4
 The goal is to place 4 discs in a row
-Authors : Nissa and Terence
 """
 
 
