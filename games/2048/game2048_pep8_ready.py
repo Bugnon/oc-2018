@@ -2,7 +2,7 @@
 File: 2048_Game
 Author: Massimo Stefani , Michael Greub
 Date: 28.12.2018
-
+ 
 This is a game of 2048 to be played on the Raspberry SenseHAT.
 """
 
