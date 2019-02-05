@@ -87,7 +87,7 @@ def check_if_lines_are_completed():
 
 
 def print_matrix(M):
-    """ Print the tetris shape at the top in the middle. """
+    """Print the tetris shape at the top in the middle."""
     n = len(M)
     for y in range(n):
         for x in range(n):
@@ -96,7 +96,7 @@ def print_matrix(M):
 
 
 def delete_matrix_when_down(M, dx, dy):
-    """ Delete the actual shape when it's moving down. """
+    """Delete the actual shape when it's moving down."""
     n = len(M)
     for y in range(n):  # Set every pixel of the matrix black
             for x in range(n):
@@ -111,7 +111,7 @@ def delete_matrix_when_down(M, dx, dy):
                 
 
 def print_matrix_down(M):
-    """ Move shape down for 1 tile. """
+    """Move shape down for 1 tile."""
     global dx, dy
     dy += 1  # Move the matrix one tile downward
     n = len(M)
@@ -129,7 +129,7 @@ def print_matrix_down(M):
                 
                 
 def print_new_matix_when_left(M, dx, dy, n):
-    """ Print a new matrix moved to the left. """
+    """Print a new matrix moved to the left."""
     for y in range(n):  # Print the new matrix one tile leftward
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
