@@ -114,7 +114,7 @@ def create_board(size, mines):
     for i in range(mines):
         new_pos = random.choice(available_pos)
         available_pos.remove(new_pos)
-        (row_id, col_id) = (new_pos % 9, new_pos // 9)
+        (row_id, col_id) = (new_pos % 7, new_pos // 7)
         board.place_mine(row_id, col_id)
     return board
 
@@ -148,8 +148,8 @@ def is_valid(move_input, board):
     return True
 
 def main():
-    SIZE = 10
-    MINES = 9
+    SIZE = 8
+    MINES =6
     board = create_board(SIZE, MINES)
     print(board)
     while board.is_playing and not board.is_solved:

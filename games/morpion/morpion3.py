@@ -100,9 +100,9 @@ def play(p,board, state):
 def show_score(p):
     """Displays the score."""
     global score1, score2
-    if p==1:
+    if p == 1:
         score1 += 1
-    elif p==2:
+    elif p == 2:
         score2 += 1
     msg = 'player1='+str(score1)+' player2='+str(score2)
     sense.show_message(msg)
@@ -146,4 +146,4 @@ while running:
 
                    
     
-    
+     
