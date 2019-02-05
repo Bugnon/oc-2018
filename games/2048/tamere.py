@@ -7,10 +7,9 @@ This is a game of 2048 to be played on the Raspberry SenseHAT.
 """
 
 # Importation des modules requis
-from sense_hat import SenseHat
+from sense_emu import SenseHat
 from random import randint
 from time import sleep
-from gamelib import *
 
 sense=SenseHat()
 sense.clear(0, 0, 0)
@@ -19,6 +18,7 @@ size = 8
 
 #-----Définition des couleurs-----
 message = (128, 124, 128)
+black = (0, 0, 0)
 blue_1 = (0, 255, 255)
 green_2 = (0, 255, 127)
 green_3 = (0, 255, 0)
@@ -33,10 +33,10 @@ blue_11 = (0, 0, 255)
 blue_12 = (0, 127, 255)
 white_13 = (255, 255, 255)
 r = red_7
-o = BLACK
+o = black
 y = yellow_5
 
-colors = [BLACK, blue_1, green_2, green_3, green_4, yellow_5, orange_6, red_7,\
+colors = [black, blue_1, green_2, green_3, green_4, yellow_5, orange_6, red_7,\
           pink_8, pink_9, pink_10, blue_11, blue_12, white_13]
 
 # ------Définition des matrices utilisées------
@@ -101,7 +101,21 @@ def victory():
                     show = False
     startup()
 
-
+def exit():
+    double_click = True
+    while double_click:
+        sleep(0.5)
+        for event in sense.stick.get_events():
+            if event.action == 'pressed' and event.direction == 'middle':
+                double_click = False
+                show_message = True
+                while show_message:
+                    sense.show_message('Press to return to the menu', scroll_speed = 0.05)
+                    for event in sense.stick.get_events():
+                        if event.action ==  'pressed':
+                            show_message = False
+                            main()
+        double_click = False    
 def control_end(e):
     """Returns True when the game is finished."""
     end = True
@@ -135,7 +149,7 @@ def control_end(e):
         set_pixels(e)
         sleep(3)
         r = red_7
-        o = BLACK
+        o = black
         sense.clear()
         for i in range(5):
             sense.set_pixels(L_cross)
@@ -340,9 +354,8 @@ def main():
     #-----Reactions du joystick-----
     running= True
 
-    while running:
+    while True:
       for event in sense.stick.get_events():
-          print(event, running)
           if event.action == 'pressed':
               if event.direction == 'up':
                   moved_up(size)
@@ -353,12 +366,9 @@ def main():
               elif event.direction == 'left':
                   moved_left(size)
               elif event.direction == 'middle':
-                  running = False
-    sense.clear()
+                  exit()
+                  pass
 
-# Execute the main() function when the file is executed,
-# but do not execute when the module is imported as a module.
-print('module name =', __name__)
 
 if __name__ == '__main__':
     main()
