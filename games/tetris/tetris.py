@@ -6,10 +6,11 @@ Date : January 2019
 Move your shape with right/left button.
 Rotate it with the middle button.
 Complete a line to increase your score.
+More infos : https://tetris.fandom.com/wiki/Tetris_Guideline
 Good luck !
 """
 
-from sense_emu import SenseHat
+from sense_hat import SenseHat
 from time import sleep, time
 from random import randint, choice
 from gamelib import *
@@ -24,6 +25,8 @@ sense = SenseHat()
 dx = 0  # Variable to move left and right on x axis
 dy = 0  # Variable to move downwards on Y axis
 dt = 1  # Time between each drop
+
+score = 0
 
 ### Shapes definition in matrixes ###
 
@@ -48,8 +51,6 @@ o = [
 
 shapes = (I, L, o)  # List with the three shapes
 
-score = 0  # The number of completed lines
-    
 P = choice(shapes)
 
 if P == L:  # Assign the right color tot he right shape
@@ -70,7 +71,6 @@ def delete_lines(i):
         for d in range(8):
             sense.set_pixel(d, c+1, (sense.get_pixel(d, c)))
             sense.set_pixel(d, c, BLACK)
-            
 
 def check_if_lines_are_completed():
     """ Check if lines are completed to delete them and increase the score. """
@@ -87,7 +87,7 @@ def check_if_lines_are_completed():
 
 
 def print_matrix(M):
-    """ Print the tetris shape at the top in the middle. """
+    """Print the tetris shape at the top in the middle."""
     n = len(M)
     for y in range(n):
         for x in range(n):
@@ -96,7 +96,7 @@ def print_matrix(M):
 
 
 def delete_matrix_when_down(M, dx, dy):
-    """ Delete the actual shape when it's moving down. """
+    """Delete the actual shape when it's moving down."""
     n = len(M)
     for y in range(n):  # Set every pixel of the matrix black
             for x in range(n):
@@ -109,9 +109,8 @@ def delete_matrix_when_down(M, dx, dy):
                 else:
                     dy -= 1  # If it can't delete the shape, we put dy at same value as before
                 
-
 def print_matrix_down(M):
-    """ Move shape down for 1 tile. """
+    """Move shape down for 1 tile."""
     global dx, dy
     dy += 1  # Move the matrix one tile downward
     n = len(M)
@@ -126,10 +125,9 @@ def print_matrix_down(M):
                     sense.set_pixel(3+x+dx, y+dy, color)
             else:
                 state = 0
-                
-                
+ 
 def print_new_matix_when_left(M, dx, dy, n):
-    """ Print a new matrix moved to the left. """
+    """Print a new matrix moved to the left."""
     for y in range(n):  # Print the new matrix one tile leftward
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
@@ -138,8 +136,7 @@ def print_new_matix_when_left(M, dx, dy, n):
             elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == -1:
                 if M[y][x] == 1:
                     sense.set_pixel(3+x+dx, y+dy, color)
-                    
-    
+
 def print_matrix_left(M):
     """ Move shape left for 1 tile. """
     global dx, dy
@@ -154,7 +151,7 @@ def print_matrix_left(M):
             if M[y][0] == 1 and sense.get_pixel(3+dx, y+dy) != [0, 0, 0]:
                 dx += 1
                 return ;
-            
+
     for y in range(n):  # Set the pixel of the actual matrix to black (delete it)
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
@@ -166,7 +163,6 @@ def print_matrix_left(M):
             else:
                 dx +=  1
     print_new_matix_when_left(M, dx, dy, n)
- 
 
 def print_new_matix_when_right(M, dx, dy, n):
     """ Print a new matrix moved to the right. """
@@ -178,8 +174,7 @@ def print_new_matix_when_right(M, dx, dy, n):
             elif M == [[0, 1, 0], [0, 1, 0], [0, 1, 0]] and 3+x+dx == 8:
                 if M[y][x] == 1:
                     sense.set_pixel(3+x+dx, y+dy, color)
-                    
-                    
+
 def print_matrix_right(M):
     """ Move shape right for 1 tile. """
     global dx, dy
@@ -198,7 +193,7 @@ def print_matrix_right(M):
                 if M[y][1] == 1 and sense.get_pixel(3+dx+1, y+dy) != [0, 0, 0]:
                     dx -= 1
                     return ;
-                
+
     for y in range(n):  # Set the pixel of the actual matrix to black (delete it)
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
@@ -210,7 +205,6 @@ def print_matrix_right(M):
             else:
                 dx -= 1            
     print_new_matix_when_right(M, dx, dy, n)
-    
 
 def print_rotated_matrix(n, matrix):
     """ Print the matrix after the rotation. """
@@ -232,13 +226,11 @@ def rotate_90(matrix):
     print_rotated_matrix(n, matrix)
     return matrix
 
-
-sense.clear()
-
-
 def main():
     """ The core of the game. """
-    global x, y, dx, dy, color
+    global x, y, dx, dy, color, score
+    
+    sense.clear()
     
     P = choice(shapes)
     
@@ -260,7 +252,7 @@ def main():
     while game == 1:
         while state == 1:
             for event in sense.stick.get_events():
-                 if event.action == 'pressed' and event.direction == 'middle':
+                if event.action == 'pressed' and event.direction == 'middle':
                     if P == [[0, 1, 0], [0, 1, 0], [0, 1, 0]]:
                         if dx == -4 or dx == 3:
                             pass  # The vertical 'I' can not rotate when it's in the ribbs
@@ -354,6 +346,7 @@ def main():
                             game = 1
                             active = False
                             sense.clear()
+                            score = 0
                             main()
                     t = time()
                     if t > t0 + 3: # After 3 seconds if the player did nothing or press another button, leave the program
