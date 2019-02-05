@@ -2,6 +2,9 @@
 # par Pierre et Jeremy
 # 08.01.19
 # 3M03
+"""
+Labyrinthe is a game for one player that has to reproduce differents pattern
+"""
 
 from sense_hat import SenseHat
 from time import sleep, time
@@ -114,6 +117,11 @@ for i in range(len(levels)):
 
 #Main menu, the selection of the level.
 def main():
+    """
+    Definition that allows the player to select his/her level using the joystick to the right or the left 
+    after a short message that invites him/her to choose. 
+    To stop the game, the player has to use the joystick to the top or to the bottom.
+    """
     running = True
     sense.show_message("Select the level",
                        text_colour=WHITE, scroll_speed=0.05)
@@ -150,11 +158,13 @@ def main():
                         
 #Brings together the 2 functions of the level game. There is 2 stages: Demonstration and Reproduction. 
 def start_level(niv):
+    """ Allows to execute the levels in the propper order."""
     patern_stage(niv)
     player_stage(niv)
       
 #Demonstration of the patern:
 def patern_stage(niv):
+    """ Definition that execute the pattern that the player must reproduce."""
     for event in sense.stick.get_events():#IMPORTANT: reset the manipulation of the player. 
         pass                              #If not, can fail the level without starting it.
     dist = len(niv)
@@ -170,6 +180,7 @@ def patern_stage(niv):
       
 #Reproduction by the player    
 def player_stage(niv):
+    """ Allows the player to reproduce the pattern that has been shown.""" 
     playing = True
     a = niv[0][0]    
     b = niv[0][1]    
@@ -213,6 +224,7 @@ def player_stage(niv):
             
 #Ask the player if he wants to try again or go back to level selection.
 def try_again(niv):
+    """ Allows the player if he loses to try again the stage."""
     wait = True
     answer = 0 #(0 = Yes , 1 = No)
     sense.show_message('Try again?',
