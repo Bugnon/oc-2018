@@ -15,7 +15,7 @@ This module imports 6 SenseHAT game modules :
 from sense_hat import SenseHat
 from gamelib import *
 import morpionfinal
-import game2048_pep8_ready
+import game2048
 import mines
 import tetris
 import connect4
