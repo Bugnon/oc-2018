@@ -11,7 +11,7 @@ from sense_hat import SenseHat
 from random import randint
 from time import sleep
 from time import time
-
+import games
 sense = SenseHat()
 sense.clear(0, 0, 0)
 size = 8
@@ -81,12 +81,16 @@ L_WIN = [ o, o, o, o, o, o, o, o,
 
 #----- Définitionts des fonctions-----
 
-    
+def before_startup():
+    '''Prepare matrixes, SenseHat and events to be ready for a complete startup'''
+    set_matrices_0()
+    sense.clear()
+    for event in sense.stick.get_events():
+        break
+    startup() 
 def startup():
     """Starts the game"""
     global size
-    set_matrices_0()
-    sense.clear()
     sense.show_message('Choose your mode:',0.1, MESSAGE)
     modes = ['4X4', '8X8']
     mode = [4, 8]
@@ -379,11 +383,11 @@ def exit():
             if event.action == 'pressed' and event.direction == 'middle':
                 show_message = True
                 while show_message:
-                    sense.show_message('Press to return to the menu', 0.075, MESSAGE)
+                    sense.show_message('Press to return to menu', 0.075, MESSAGE)
                     for event in sense.stick.get_events():
                         if event.action ==  'pressed':
                             show_message = False
-                            main()
+                            games.main()
                             
 def control_victory(n):
     """Control if the maximum is reached (14th block)"""
@@ -409,7 +413,7 @@ def victory(n):
     
 def main():
     """Main menu"""
-    startup()
+    before_startup()
     running = True
     while running:
         for event in sense.stick.get_events():
