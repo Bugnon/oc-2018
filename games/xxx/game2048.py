@@ -97,7 +97,7 @@ def startup():
     new_block(size)
 
 def set_matrices_0():
-    """Setting matrixes"""
+    """Setting matrixes to 0"""
     for x in range(4):
         for y in range(4):
             L4[x][y] = 0
@@ -120,7 +120,7 @@ def selection_startup(selecting, modes, mode, i):
                     size = mode[i]
       
 def set_pixels(n):
-    """Game is played normaly in a 8x8 mode"""
+    """Game is shown in 8x8"""
     if n == 4:
         set_pixels_4()
     else:
@@ -157,7 +157,7 @@ def new_block(n):
     set_pixels(n)
     
 def number_empty_block(n):
-    """Number of empty block"""
+    """Count the number of empty block"""
     L = L4 if n == 4 else L8
     i = 0
     for x in range(n):
@@ -202,7 +202,7 @@ def moved_up(n):
     new_block(n)
     
 def move_pixel_up(x, y, n):
-    """Move up the pixel in the matrix"""
+    """Move the pixel in the matrix up"""
     L = L4 if n == 4 else L8
     while L[x][y - 1] == 0 and y >= 1:# Si la case est vide 
         L[x][y - 1] = L[x][y]
@@ -224,7 +224,7 @@ def moved_down(n):
     new_block(n)
 
 def move_pixel_down(x, y, n):
-    """Move down the pixel in the matrix"""
+    """Move the pixel in the matrix down"""
     L = L4 if n == 4 else L8
     while y <= (n - 2) and L[x][y + 1] == 0:# Si la case est vide
         L[x][y + 1] = L[x][y]
@@ -245,7 +245,7 @@ def moved_left(n):
     new_block(n)
 
 def move_pixel_left(x, y, n):
-    """Move left the pixel in the matrix"""
+    """Move the pixel in the matrix left"""
     L = L4 if n == 4 else L8
     while x > 0 and L[x - 1][y] == 0:# Si la case est vide 
         L[x - 1][y] = L[x][y]
@@ -267,7 +267,7 @@ def moved_right(n):
     new_block(n)
 
 def move_pixel_right(x, y, n):
-    """Move right the pixel in the matrix"""
+    """Move the pixel in the matrix right"""
     L = L4 if n == 4 else L8
     while x < (n - 1) and L[x + 1][y] == 0:
         L[x + 1][y] = L[x][y]
@@ -278,7 +278,7 @@ def move_pixel_right(x, y, n):
         L[x][y] = 0
 
 def control_end(n):
-    """Returns True when the game is finished."""
+    """Returns True when the player looses."""
     global end
     end = True
     L = L4 if n == 4 else L8
@@ -291,8 +291,8 @@ def control_end(n):
         control_victory(n)
                     
 def check_empty_cells(n):
+    """Check if if there is an empty cell or not. Return True if there is no empty cell"""
     global end
-    """Check if a cell is empty or not"""
     L = L4 if n == 4 else L8
     for x in range(n):
         for y in range(n):
@@ -331,7 +331,7 @@ def end_animation(n):
     main()
     
 def loser_animation_part_1(n):
-    """First animation of a game lost"""
+    """First part of the animation of a lost game"""
     set_pixels(n)
     sleep(3)
     r = RED_7
@@ -361,7 +361,7 @@ def score_calculator(n):
                 score = score + 2 ** L[x][y]
                 
 def show_score():
-    """Show the score"""
+    """Display the score"""
     while show:
         score = str(score)
         string = score + 'pts'
@@ -403,19 +403,7 @@ def victory(n):
     sense.show_message('Congratulations, you just reached the highest block. Your score is :', 0.075, MESSAGE)
     show_score
     main()
-    
-def joystick_direction():
-    """Definition of direction"""
-    if event.direction == 'up':
-        moved_up(size)
-    elif event.direction == 'down':
-        moved_down(size)
-    elif event.direction == 'right':
-        moved_right(size)
-    elif event.direction == 'left':
-        moved_left(size)
-    elif event.direction == 'middle':
-        exit()
+
     
 #-----Reactions du joystick-----
     
