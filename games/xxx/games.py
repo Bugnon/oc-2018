@@ -52,7 +52,7 @@ def main():
                 sense.show_message(games[i], text_colour=GREEN)
                 
             elif event.direction == 'middle':
-                games[i]()
+                functions[i]()
         
         sense.stick.get_events()        
         sense.show_letter(str(i), text_colour=RED)
