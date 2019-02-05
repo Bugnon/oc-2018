@@ -33,7 +33,7 @@ def main():
     sense = SenseHat()
     
     games = ['morpion', '2048', 'mines', 'connect4', 'tetris', 'labyrinth']
-    functions = [morpionfinal.main, game2048_pep8_ready.main, mines.main, connect4.main,
+    functions = [morpionfinal.main, game2048.main, mines.main, connect4.main,
                  tetris.main, labyrinth.main]
     i = 0
     n = len(games)
