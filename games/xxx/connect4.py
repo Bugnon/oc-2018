@@ -27,9 +27,6 @@ stopGame = 0  # =1 makes main() stop the game
 fourYellow = [[248, 252, 0]] * 4
 fourRed = [[248, 0, 0]] * 4
 
-# Creates a list of 8*8 blank pixels for the default display
-state = [[0] * 8] * 7
-
 # Puts BLUE, RED and YELLOW from gamelib into a list
 colors = (BLUE, RED, YELLOW)
 
