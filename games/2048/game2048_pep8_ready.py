@@ -83,10 +83,11 @@ L_WIN = [ o, o, o, o, o, o, o, o,
 
     
 def startup():
+    """Starts the game"""
     global size
     set_matrices_0()
     sense.clear()
-    sense.show_message('Choose your mode:',0.001, MESSAGE)
+    sense.show_message('Choose your mode:',0.1, MESSAGE)
     modes = ['4X4', '8X8']
     mode = [4, 8]
     sleep(0.2)
@@ -96,6 +97,7 @@ def startup():
     new_block(size)
 
 def set_matrices_0():
+    """Setting matrixes"""
     for x in range(4):
         for y in range(4):
             L4[x][y] = 0
@@ -104,6 +106,7 @@ def set_matrices_0():
             L8[x][y] = 0
 
 def selection_startup(selecting, modes, mode, i):
+    """Navigation to select the mode"""
     global size
     while selecting:
         sense.show_message(modes[i], 0.1, MESSAGE)
@@ -117,6 +120,7 @@ def selection_startup(selecting, modes, mode, i):
                     size = mode[i]
       
 def set_pixels(n):
+    """Game is played normaly in a 8x8 mode"""
     if n == 4:
         set_pixels_4()
     else:
@@ -125,6 +129,7 @@ def set_pixels(n):
                 sense.set_pixel(x, y, colors[L8[x][y]])
     
 def set_pixels_4():
+        """Game is shown in 4x4. 1 pixel = 4 pixels"""
         L8_affichage = [
                        [L4[0][0], L4[0][0], L4[0][1], L4[0][1], L4[0][2], L4[0][2], L4[0][3], L4[0][3]],
                        [L4[0][0], L4[0][0], L4[0][1], L4[0][1], L4[0][2], L4[0][2], L4[0][3], L4[0][3]],
@@ -140,6 +145,7 @@ def set_pixels_4():
                 sense.set_pixel(x,y, colors[L8_affichage[x][y]])
 
 def new_block(n):
+    """Create a new block"""
     sleep(0.25)
     i = number_empty_block(n)
     print (i)
@@ -151,6 +157,7 @@ def new_block(n):
     set_pixels(n)
     
 def number_empty_block(n):
+    """Number of empty block"""
     L = L4 if n == 4 else L8
     i = 0
     for x in range(n):
@@ -160,6 +167,7 @@ def number_empty_block(n):
     return i
 
 def two_new_blocks(n):
+    """Add two new blocks"""
     r = randint(0,1)
     L = L4 if n == 4 else L8
     while r < 2: #tant qu'on en a pas créé 2
@@ -171,6 +179,7 @@ def two_new_blocks(n):
            r = r + 1# Si le bloc est créé on indente pour créé exactement 2 nouveaux pixels
            
 def one_new_block(n):
+    """Add only one block"""
     r = randint(0, 1)
     L = L4 if n == 4 else L8
     while r < 1: #tant qu'on en a pas créé 2
@@ -193,6 +202,7 @@ def moved_up(n):
     new_block(n)
     
 def move_pixel_up(x, y, n):
+    """Move up the pixel in the matrix"""
     L = L4 if n == 4 else L8
     while L[x][y - 1] == 0 and y >= 1:# Si la case est vide 
         L[x][y - 1] = L[x][y]
@@ -214,6 +224,7 @@ def moved_down(n):
     new_block(n)
 
 def move_pixel_down(x, y, n):
+    """Move down the pixel in the matrix"""
     L = L4 if n == 4 else L8
     while y <= (n - 2) and L[x][y + 1] == 0:# Si la case est vide
         L[x][y + 1] = L[x][y]
@@ -234,6 +245,7 @@ def moved_left(n):
     new_block(n)
 
 def move_pixel_left(x, y, n):
+    """Move left the pixel in the matrix"""
     L = L4 if n == 4 else L8
     while x > 0 and L[x - 1][y] == 0:# Si la case est vide 
         L[x - 1][y] = L[x][y]
@@ -255,6 +267,7 @@ def moved_right(n):
     new_block(n)
 
 def move_pixel_right(x, y, n):
+    """Move right the pixel in the matrix"""
     L = L4 if n == 4 else L8
     while x < (n - 1) and L[x + 1][y] == 0:
         L[x + 1][y] = L[x][y]
@@ -318,7 +331,7 @@ def end_animation(n):
     main()
     
 def loser_animation_part_1(n):
-    """Animation of a red cross when the """
+    """First animation of a game lost"""
     set_pixels(n)
     sleep(3)
     r = RED_7
