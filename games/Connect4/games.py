@@ -32,8 +32,8 @@ def main():
     active = True
     sense = SenseHat()
     
-    games = ['morpion', '2048', 'mines', 'connect4', 'tetris', 'labyrinth']
-    functions = [morpionfinal.main, game2048.main, mines.main, connect4.main,
+    games = ['morption', '2048', 'mines', 'connect4', 'tetris', 'labyrinth']
+    functions = [morpion.main, game2048.main, mines.main, connect4.main,
                  tetris.main, labyrinth.main]
     i = 0
     n = len(games)
@@ -49,11 +49,10 @@ def main():
             elif event.direction == 'left':
                 i = (i-1) % n
             elif event.direction == 'up':
-                sense.show_message(games[i], text_colour=GREEN)   
+                sense.show_message(games[i], text_colour=GREEN)
+                
             elif event.direction == 'middle':
                 functions[i]()
-            elif event.direct == 'down':
-                active = False
         
         sense.stick.get_events()        
         sense.show_letter(str(i), text_colour=RED)

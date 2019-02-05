@@ -6,6 +6,7 @@ Date : January 2019
 Move your shape with right/left button.
 Rotate it with the middle button.
 Complete a line to increase your score.
+More infos : https://tetris.fandom.com/wiki/Tetris_Guideline
 Good luck !
 """
 
@@ -24,6 +25,8 @@ sense = SenseHat()
 dx = 0  # Variable to move left and right on x axis
 dy = 0  # Variable to move downwards on Y axis
 dt = 1  # Time between each drop
+
+score = 0
 
 ### Shapes definition in matrixes ###
 
@@ -47,8 +50,6 @@ o = [
     ]
 
 shapes = (I, L, o)  # List with the three shapes
-
-score = 0  # The number of completed lines
     
 P = choice(shapes)
 
@@ -87,7 +88,7 @@ def check_if_lines_are_completed():
 
 
 def print_matrix(M):
-    """ Print the tetris shape at the top in the middle. """
+    """Print the tetris shape at the top in the middle."""
     n = len(M)
     for y in range(n):
         for x in range(n):
@@ -96,7 +97,7 @@ def print_matrix(M):
 
 
 def delete_matrix_when_down(M, dx, dy):
-    """ Delete the actual shape when it's moving down. """
+    """Delete the actual shape when it's moving down."""
     n = len(M)
     for y in range(n):  # Set every pixel of the matrix black
             for x in range(n):
@@ -111,7 +112,7 @@ def delete_matrix_when_down(M, dx, dy):
                 
 
 def print_matrix_down(M):
-    """ Move shape down for 1 tile. """
+    """Move shape down for 1 tile."""
     global dx, dy
     dy += 1  # Move the matrix one tile downward
     n = len(M)
@@ -129,7 +130,7 @@ def print_matrix_down(M):
                 
                 
 def print_new_matix_when_left(M, dx, dy, n):
-    """ Print a new matrix moved to the left. """
+    """Print a new matrix moved to the left."""
     for y in range(n):  # Print the new matrix one tile leftward
         for x in range(n):
             if 0 <= 3+x+dx <= 7:
@@ -233,12 +234,11 @@ def rotate_90(matrix):
     return matrix
 
 
-sense.clear()
-
-
 def main():
     """ The core of the game. """
-    global x, y, dx, dy, color
+    global x, y, dx, dy, color, score
+    
+    sense.clear()
     
     P = choice(shapes)
     
@@ -354,6 +354,7 @@ def main():
                             game = 1
                             active = False
                             sense.clear()
+                            score = 0
                             main()
                     t = time()
                     if t > t0 + 3: # After 3 seconds if the player did nothing or press another button, leave the program
