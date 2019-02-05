@@ -15,7 +15,7 @@ This module imports 6 SenseHAT game modules :
 from sense_hat import SenseHat
 from gamelib import *
 import morpionfinal
-import game2048
+import game2048_pep8_ready
 import mines
 import tetris
 import connect4
@@ -32,8 +32,8 @@ def main():
     active = True
     sense = SenseHat()
     
-    games = ['morption', '2048', 'mines', 'connect4', 'tetris', 'labyrinth']
-    functions = [morpion.main, game2048.main, mines.main, connect4.main,
+    games = ['morpion', '2048', 'mines', 'connect4', 'tetris', 'labyrinth']
+    functions = [morpionfinal.main, game2048_pep8_ready.main, mines.main, connect4.main,
                  tetris.main, labyrinth.main]
     i = 0
     n = len(games)
@@ -52,7 +52,7 @@ def main():
                 sense.show_message(games[i], text_colour=GREEN)
                 
             elif event.direction == 'middle':
-                games[i]()
+                functions[i]()
         
         sense.stick.get_events()        
         sense.show_letter(str(i), text_colour=RED)
