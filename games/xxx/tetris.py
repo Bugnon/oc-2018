@@ -6,6 +6,7 @@ Date : January 2019
 Move your shape with right/left button.
 Rotate it with the middle button.
 Complete a line to increase your score.
+More infos : https://tetris.fandom.com/wiki/Tetris_Guideline
 Good luck !
 """
 
@@ -24,6 +25,8 @@ sense = SenseHat()
 dx = 0  # Variable to move left and right on x axis
 dy = 0  # Variable to move downwards on Y axis
 dt = 1  # Time between each drop
+
+score = 0
 
 ### Shapes definition in matrixes ###
 
@@ -47,8 +50,6 @@ o = [
     ]
 
 shapes = (I, L, o)  # List with the three shapes
-
-score = 0  # The number of completed lines
     
 P = choice(shapes)
 
@@ -233,12 +234,11 @@ def rotate_90(matrix):
     return matrix
 
 
-sense.clear()
-
-
 def main():
     """ The core of the game. """
-    global x, y, dx, dy, color
+    global x, y, dx, dy, color, score
+    
+    sense.clear()
     
     P = choice(shapes)
     
@@ -354,6 +354,7 @@ def main():
                             game = 1
                             active = False
                             sense.clear()
+                            score = 0
                             main()
                     t = time()
                     if t > t0 + 3: # After 3 seconds if the player did nothing or press another button, leave the program
