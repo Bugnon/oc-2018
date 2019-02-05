@@ -10,6 +10,7 @@ The goal is to align 3 symbols in a line, column or diagonal.
 from sense_hat import SenseHat
 from time import sleep, time
 from gamelib import *
+from sense_emu import SenseHat
 
 sense = SenseHat()
 
@@ -171,7 +172,7 @@ def main():
     show_board(board, state)
     player = 1
     playing = True
-    
+
     while playing:
         play(player, board, state)
         if is_winning(player, state):

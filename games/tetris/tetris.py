@@ -9,7 +9,7 @@ Complete a line to increase your score.
 Good luck !
 """
 
-from sense_hat import SenseHat
+from sense_emu import SenseHat
 from time import sleep, time
 from random import randint, choice
 from gamelib import *

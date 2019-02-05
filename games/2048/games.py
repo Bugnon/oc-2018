@@ -49,11 +49,10 @@ def main():
             elif event.direction == 'left':
                 i = (i-1) % n
             elif event.direction == 'up':
-                sense.show_message(games[i], text_colour=GREEN)   
+                sense.show_message(games[i], text_colour=GREEN)
+                
             elif event.direction == 'middle':
                 functions[i]()
-            elif event.direct == 'down':
-                active = False
         
         sense.stick.get_events()        
         sense.show_letter(str(i), text_colour=RED)
