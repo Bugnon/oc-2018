@@ -194,62 +194,62 @@ def color_case(list):
 def check_case(x,y):
     global list_checked
     
-    if ((x+1)*10 + y) not in list_checked:
-        if count_bombs_around(x+1,y) == 0 and -1<(x+1)<8 and -1<y<8:
-            list_checked.append((x+1)*10+y)
-            check_case(x+1,y)
+    if ((x + 1)*10 + y) not in list_checked:
+        if count_bombs_around(x + 1,y) == 0 and -1 < (x + 1) < 8 and -1 < y < 8:
+            list_checked.append((x + 1)*10 + y)
+            check_case(x + 1,y)
         else:
-            list_checked.append((x+1)*10+y)
+            list_checked.append((x + 1)*10 + y)
  
     
-    if ((x+1)*10 + y+1) not in list_checked:
-        if count_bombs_around(x+1,y+1) == 0 and -1<(x+1)<8 and -1<(y+1)<8:
-            list_checked.append((x+1)*10+(y+1))
-            check_case(x+1,y+1)
+    if ((x + 1)*10 + y + 1) not in list_checked:
+        if count_bombs_around(x + 1,y + 1) == 0 and -1 < (x + 1) < 8 and -1 < (y + 1) < 8:
+            list_checked.append((x + 1) * 10 + (y + 1))
+            check_case(x + 1,y + 1)
         else:
-            list_checked.append((x+1)*10+(y+1))
+            list_checked.append((x + 1) * 10 + (y + 1))
     
-    if ((x)*10 + y+1) not in list_checked:
-        if count_bombs_around(x,y+1) == 0 and -1<x<8 and -1<(y+1)<8:
-            list_checked.append(x*10+(y+1))
-            check_case(x,y+1)
+    if (x * 10 + y + 1) not in list_checked:
+        if count_bombs_around(x,y + 1) == 0 and -1 < x < 8 and -1 < (y + 1) < 8:
+            list_checked.append(x * 10 + (y + 1))
+            check_case(x,y + 1)
         else:
-            list_checked.append(x*10+(y+1))
+            list_checked.append(x * 10 + (y + 1))
             
-    if ((x-1)*10 + y+1) not in list_checked:
-        if count_bombs_around(x-1,y+1) == 0 and -1<(x-1)<8 and -1<(y+1)<8:
-            list_checked.append((x-1)*10+(y+1))
-            check_case(x-1,y+1)
+    if ((x - 1) * 10 + y + 1) not in list_checked:
+        if count_bombs_around(x - 1,y + 1) == 0 and -1 < (x - 1)<8 and -1 < (y + 1)<8:
+            list_checked.append((x - 1) * 10 + (y + 1))
+            check_case(x - 1,y + 1)
         else:
-            list_checked.append((x-1)*10+(y+1))
+            list_checked.append((x - 1) * 10 + (y + 1))
         
-    if ((x-1)*10 + y) not in list_checked:
-        if count_bombs_around(x-1,y) == 0 and -1<(x-1)<8 and -1<y<8:
-            list_checked.append((x-1)*10+y)
-            check_case(x-1,y)
+    if ((x - 1) * 10 + y) not in list_checked:
+        if count_bombs_around(x - 1,y) == 0 and -1 < (x - 1) < 8 and -1 < y < 8:
+            list_checked.append((x - 1) * 10 + y)
+            check_case(x - 1,y)
         else:
-            list_checked.append((x-1)*10+y)
+            list_checked.append((x - 1) * 10 + y)
         
-    if ((x-1)*10 + y-1) not in list_checked:
-        if count_bombs_around(x-1,y-1) == 0 and -1<(x-1)<8 and -1<(y-1)<8:
-            list_checked.append((x-1)*10+(y-1))
-            check_case(x-1,y-1)
+    if ((x - 1) * 10 + y - 1) not in list_checked:
+        if count_bombs_around(x - 1,y - 1) == 0 and -1 < (x - 1)< 8 and -1 < (y - 1) < 8:
+            list_checked.append((x - 1) * 10 + (y - 1))
+            check_case(x - 1,y - 1)
         else:
-            list_checked.append((x-1)*10+(y-1))
+            list_checked.append((x - 1) * 10 + (y - 1))
         
-    if ((x)*10 + y-1) not in list_checked:
-        if count_bombs_around(x,y-1) == 0 and -1<x<8 and -1<(y-1)<8:
+    if (x * 10 + y - 1) not in list_checked:
+        if count_bombs_around(x,y - 1) == 0 and -1 < x < 8 and -1 < (y - 1) < 8:
+            list_checked.append(x * 10 + (y - 1))
+            check_case(x,y - 1)
+        else:
             list_checked.append(x*10+(y-1))
-            check_case(x,y-1)
-        else:
-            list_checked.append(x*10+(y-1))
         
-    if ((x+1)*10 + y-1) not in list_checked:
-        if count_bombs_around(x+1,y-1) == 0 and -1<(x+1)<8 and -1<(y-1)<8:
-            list_checked.append((x+1)*10+(y-1))
-            check_case(x+1,y-1)
+    if ((x + 1) * 10 + y - 1) not in list_checked:
+        if count_bombs_around(x + 1,y - 1) == 0 and -1 < (x + 1) < 8 and -1 < (y - 1) < 8:
+            list_checked.append((x + 1) * 10 + (y - 1))
+            check_case(x + 1,y - 1)
         else:
-            list_checked.append((x+1)*10+(y-1))
+            list_checked.append((x + 1) * 10 + (y - 1))
             
     return list_checked;
 
@@ -383,3 +383,10 @@ while game:
                         x = x + 1
                     elif event.direction == 'left' and x > 0:
                         x = x - 1
+                        
+
+if __name__ == '__main__':
+    
+    main()
+if __name__ == '__main__':
+    main()
