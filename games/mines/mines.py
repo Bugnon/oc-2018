@@ -194,62 +194,62 @@ def color_case(list):
 def check_case(x,y):
     global list_checked
     
-    if ((x+1)*10 + y) not in list_checked:
-        if count_bombs_around(x+1,y) == 0 and -1<(x+1)<8 and -1<y<8:
-            list_checked.append((x+1)*10+y)
-            check_case(x+1,y)
+    if ((x + 1)*10 + y) not in list_checked:
+        if count_bombs_around(x + 1,y) == 0 and -1 < (x + 1) < 8 and -1 < y < 8:
+            list_checked.append((x + 1)*10 + y)
+            check_case(x + 1,y)
         else:
-            list_checked.append((x+1)*10+y)
+            list_checked.append((x + 1)*10 + y)
  
     
-    if ((x+1)*10 + y+1) not in list_checked:
-        if count_bombs_around(x+1,y+1) == 0 and -1<(x+1)<8 and -1<(y+1)<8:
-            list_checked.append((x+1)*10+(y+1))
-            check_case(x+1,y+1)
+    if ((x + 1)*10 + y + 1) not in list_checked:
+        if count_bombs_around(x + 1,y + 1) == 0 and -1 < (x + 1) < 8 and -1 < (y + 1) < 8:
+            list_checked.append((x + 1) * 10 + (y + 1))
+            check_case(x + 1,y + 1)
         else:
-            list_checked.append((x+1)*10+(y+1))
+            list_checked.append((x + 1) * 10 + (y + 1))
     
-    if ((x)*10 + y+1) not in list_checked:
-        if count_bombs_around(x,y+1) == 0 and -1<x<8 and -1<(y+1)<8:
-            list_checked.append(x*10+(y+1))
-            check_case(x,y+1)
+    if (x * 10 + y + 1) not in list_checked:
+        if count_bombs_around(x,y + 1) == 0 and -1 < x < 8 and -1 < (y + 1) < 8:
+            list_checked.append(x * 10 + (y + 1))
+            check_case(x,y + 1)
         else:
-            list_checked.append(x*10+(y+1))
+            list_checked.append(x * 10 + (y + 1))
             
-    if ((x-1)*10 + y+1) not in list_checked:
-        if count_bombs_around(x-1,y+1) == 0 and -1<(x-1)<8 and -1<(y+1)<8:
-            list_checked.append((x-1)*10+(y+1))
-            check_case(x-1,y+1)
+    if ((x - 1) * 10 + y + 1) not in list_checked:
+        if count_bombs_around(x - 1,y + 1) == 0 and -1 < (x - 1)<8 and -1 < (y + 1)<8:
+            list_checked.append((x - 1) * 10 + (y + 1))
+            check_case(x - 1,y + 1)
         else:
-            list_checked.append((x-1)*10+(y+1))
+            list_checked.append((x - 1) * 10 + (y + 1))
         
-    if ((x-1)*10 + y) not in list_checked:
-        if count_bombs_around(x-1,y) == 0 and -1<(x-1)<8 and -1<y<8:
-            list_checked.append((x-1)*10+y)
-            check_case(x-1,y)
+    if ((x - 1) * 10 + y) not in list_checked:
+        if count_bombs_around(x - 1,y) == 0 and -1 < (x - 1) < 8 and -1 < y < 8:
+            list_checked.append((x - 1) * 10 + y)
+            check_case(x - 1,y)
         else:
-            list_checked.append((x-1)*10+y)
+            list_checked.append((x - 1) * 10 + y)
         
-    if ((x-1)*10 + y-1) not in list_checked:
-        if count_bombs_around(x-1,y-1) == 0 and -1<(x-1)<8 and -1<(y-1)<8:
-            list_checked.append((x-1)*10+(y-1))
-            check_case(x-1,y-1)
+    if ((x - 1) * 10 + y - 1) not in list_checked:
+        if count_bombs_around(x - 1,y - 1) == 0 and -1 < (x - 1)< 8 and -1 < (y - 1) < 8:
+            list_checked.append((x - 1) * 10 + (y - 1))
+            check_case(x - 1,y - 1)
         else:
-            list_checked.append((x-1)*10+(y-1))
+            list_checked.append((x - 1) * 10 + (y - 1))
         
-    if ((x)*10 + y-1) not in list_checked:
-        if count_bombs_around(x,y-1) == 0 and -1<x<8 and -1<(y-1)<8:
+    if (x * 10 + y - 1) not in list_checked:
+        if count_bombs_around(x,y - 1) == 0 and -1 < x < 8 and -1 < (y - 1) < 8:
+            list_checked.append(x * 10 + (y - 1))
+            check_case(x,y - 1)
+        else:
             list_checked.append(x*10+(y-1))
-            check_case(x,y-1)
-        else:
-            list_checked.append(x*10+(y-1))
         
-    if ((x+1)*10 + y-1) not in list_checked:
-        if count_bombs_around(x+1,y-1) == 0 and -1<(x+1)<8 and -1<(y-1)<8:
-            list_checked.append((x+1)*10+(y-1))
-            check_case(x+1,y-1)
+    if ((x + 1) * 10 + y - 1) not in list_checked:
+        if count_bombs_around(x + 1,y - 1) == 0 and -1 < (x + 1) < 8 and -1 < (y - 1) < 8:
+            list_checked.append((x + 1) * 10 + (y - 1))
+            check_case(x + 1,y - 1)
         else:
-            list_checked.append((x+1)*10+(y-1))
+            list_checked.append((x + 1) * 10 + (y - 1))
             
     return list_checked;
 
@@ -294,8 +294,7 @@ def end_game():
         sense.show_message("You won")
         # We restart the game:
         new_game(nb_bombs)
-        
-    
+
 # Function that performs the action on the selected cell:
 def use_case(x,y):
 
@@ -304,24 +303,26 @@ def use_case(x,y):
     xy = x * 10 + y
     
     if sense.get_pixel(x,y) == [88,92,104]:
+        # We check if it is a bomb :
         if xy in List_bomb and xy not in list_flag:
             sense.clear(255,0,0)
             sleep(5)
             # We restart the game:
             new_game(nb_bombs)
         else:
+            # If there is no bomb around, we start the spread :
             if count_bombs_around(x,y) == 0:
                 list_case_checked = check_case(x,y)
             else:
                 xy = x * 10 + y
                 list_case_checked = [xy]
-            # Quand la propagation est terminée on met toutes les cases propagées avec de la couleur.
+            # After the end of the spread, we set a color to all the boxes
             color_case(list_case_checked)
-            # A la fin de use_case on remet la liste à zéro pour la prochaine utilisation :
+            # At the end of use_case we reset the list for the next use :
             list_checked = []           
                 
             # At the end of use_case we check if the game is over
-            end_game()                 
+            end_game()            
 
 #############################################
 #            Start of the game              #
@@ -334,8 +335,7 @@ new_game(nb_bombs)
 while game:
     while running:
         for event in sense.stick.get_events():         
-            if event.action == 'held' and event.direction == 'middle':
-                
+            if event.action == 'held' and event.direction == 'middle':   
                 xy_flag = x * 10 + y
                 if xy_flag not in list_flag:
                     list_flag.append(xy_flag)
@@ -344,33 +344,22 @@ while game:
                      list_flag.remove(xy_flag)
                     
             if event.action == 'pressed':
-                
                 sense.set_pixel(x,y,old_color)
-                if event.direction == 'down' and y < 7:
-                    
+                if event.direction == 'down' and y < 7: 
                     y = y + 1
-                    old_color = sense.get_pixel(x,y)
-                        
+                    old_color = sense.get_pixel(x,y)     
                 elif event.direction == 'up' and y > 0:
-                    
                     y = y - 1
-                    old_color = sense.get_pixel(x,y)
-                        
+                    old_color = sense.get_pixel(x,y)    
                 elif event.direction == 'right' and x < 7:
-                    
                     x = x + 1
-                    old_color = sense.get_pixel(x,y)
-                        
+                    old_color = sense.get_pixel(x,y)  
                 elif event.direction == 'left' and x > 0:
-                    
                     x = x - 1
-                    old_color = sense.get_pixel(x,y)
-                        
+                    old_color = sense.get_pixel(x,y) 
                 elif event.direction == 'middle':
-                    
                     use_case(x,y)
                     running = False
-                
                     
         if running == True:        
             # On crée le clignotement :
@@ -386,22 +375,18 @@ while game:
                 if event.direction == 'down' or event.direction == 'up' or event.direction == 'right' or event.direction == 'left':
                     
                     running = True
-                    
                     if event.direction == 'down' and y < 7:
-                        
                         y = y + 1
-                        
                     elif event.direction == 'up' and y > 0:
-                    
                         y = y - 1
-                        
                     elif event.direction == 'right' and x < 7:
-                    
                         x = x + 1
-                        
                     elif event.direction == 'left' and x > 0:
-                    
                         x = x - 1
                         
-                        
 
+if __name__ == '__main__':
+    
+    main()
+if __name__ == '__main__':
+    main()
