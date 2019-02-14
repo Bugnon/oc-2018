@@ -2,7 +2,7 @@
 File: 2048_Game
 Author: Massimo Stefani , Michael Greub
 Date: 28.12.2018
- 
+
 This is a game of 2048 to be played on the Raspberry SenseHAT.
 """
 
@@ -17,7 +17,7 @@ sense.clear(0, 0, 0)
 size = 8
 
 
-#-----Définition des couleurs-----
+# -----Définition des couleurs-----
 
 MESSAGE = (128, 124, 128)
 BLACK_0 = (0, 0, 0)
@@ -39,8 +39,8 @@ o = BLACK_0
 y = YELLOW_5
 end = True
 
-colors = [BLACK_0, BLUE_1, GREEN_2, GREEN_3, GREEN_4, YELLOW_5, ORANGE_6, RED_7,\
-          PINK_8, PINK_9, PINK_10, BLUE_11, BLUE_12, WHITE_13,]
+colors = [BLACK_0, BLUE_1, GREEN_2, GREEN_3, GREEN_4, YELLOW_5, ORANGE_6,
+          RED_7, PINK_8, PINK_9, PINK_10, BLUE_11, BLUE_12, WHITE_13]
 
 # ------Définition des matrices utilisées------
 
@@ -48,8 +48,8 @@ colors = [BLACK_0, BLUE_1, GREEN_2, GREEN_3, GREEN_4, YELLOW_5, ORANGE_6, RED_7,
 L4 = [[0, 0, 0, 0],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
-      [0, 0, 0, 0], 
-     ]
+      [0, 0, 0, 0],
+      ]
 L8 = [[0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
@@ -58,7 +58,7 @@ L8 = [[0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0]
-     ]
+      ]
 
 L_CROSS = [r, o, o, o, o, o, o, r,
            o, r, o, o, o, o, r, o,
@@ -68,33 +68,34 @@ L_CROSS = [r, o, o, o, o, o, o, r,
            o, o, r, o, o, r, o, o,
            o, r, o, o, o, o, r, o,
            r, o, o, o, o, o, o, r
-          ]
-L_WIN = [ o, o, o, o, o, o, o, o,
-          o, y, y, y, y, y, y, o,
-          o, y, y, y, y, y, y, o,
-          o, y, y, y, y, y, y, o,
-          o, o, y, y, y, y, o, o,
-          o, o, o, y, y, o, o, o,
-          o, o, o, y, y, o, o, o,
-          o, y, y, y, y, y, y, o,
-        ]
+           ]
+L_WIN = [o, o, o, o, o, o, o, o,
+         o, y, y, y, y, y, y, o,
+         o, y, y, y, y, y, y, o,
+         o, y, y, y, y, y, y, o,
+         o, o, y, y, y, y, o, o,
+         o, o, o, y, y, o, o, o,
+         o, o, o, y, y, o, o, o,
+         o, y, y, y, y, y, y, o,
+         ]
 
-#----- Définitionts des fonctions-----
+# ----- Définitionts des fonctions-----
 
-    
+
 def startup():
     """Starts the game"""
     global size
     set_matrices_0()
     sense.clear()
-    sense.show_message('Choose your mode:',0.1, MESSAGE)
+    sense.show_message('Choose your mode:', 0.1, MESSAGE)
     modes = ['4X4', '8X8']
     mode = [4, 8]
     sleep(0.2)
     selecting = True
     i = 0
-    selection_startup(selecting, modes, mode, i)               
+    selection_startup(selecting, modes, mode, i)
     new_block(size)
+
 
 def set_matrices_0():
     """Setting matrixes"""
@@ -104,6 +105,7 @@ def set_matrices_0():
     for x in range(8):
         for y in range(8):
             L8[x][y] = 0
+
 
 def selection_startup(selecting, modes, mode, i):
     """Navigation to select the mode"""
@@ -118,7 +120,8 @@ def selection_startup(selecting, modes, mode, i):
                 elif event.direction == 'middle':
                     selecting = False
                     size = mode[i]
-      
+
+
 def set_pixels(n):
     """Game is played normaly in a 8x8 mode"""
     if n == 4:
@@ -127,22 +130,20 @@ def set_pixels(n):
         for x in range(8):
             for y in range(8):
                 sense.set_pixel(x, y, colors[L8[x][y]])
-    
+
+
 def set_pixels_4():
         """Game is shown in 4x4. 1 pixel = 4 pixels"""
-        L8_affichage = [
-                       [L4[0][0], L4[0][0], L4[0][1], L4[0][1], L4[0][2], L4[0][2], L4[0][3], L4[0][3]],
-                       [L4[0][0], L4[0][0], L4[0][1], L4[0][1], L4[0][2], L4[0][2], L4[0][3], L4[0][3]],
-                       [L4[1][0], L4[1][0], L4[1][1], L4[1][1], L4[1][2], L4[1][2], L4[1][3], L4[1][3]],
-                       [L4[1][0], L4[1][0], L4[1][1], L4[1][1], L4[1][2], L4[1][2], L4[1][3], L4[1][3]],
-                       [L4[2][0], L4[2][0], L4[2][1], L4[2][1], L4[2][2], L4[2][2], L4[2][3], L4[2][3]],
-                       [L4[2][0], L4[2][0], L4[2][1], L4[2][1], L4[2][2], L4[2][2], L4[2][3], L4[2][3]],
-                       [L4[3][0], L4[3][0], L4[3][1], L4[3][1], L4[3][2], L4[3][2], L4[3][3], L4[3][3]],
-                       [L4[3][0], L4[3][0], L4[3][1], L4[3][1], L4[3][2], L4[3][2], L4[3][3], L4[3][3]]
-                       ]
+        L8_affichage = []
+        for i in range(8):
+            line = []
+            for j in range(8):
+                line.append(L4[i//2][j//2])
+            L8_affichage.append(line)
         for x in range(8):
             for y in range(8):
-                sense.set_pixel(x,y, colors[L8_affichage[x][y]])
+                sense.set_pixel(x, y, colors[L8_affichage[x][y]])
+
 
 def new_block(n):
     """Create a new block"""
@@ -155,7 +156,8 @@ def new_block(n):
         one_new_block(n)
     control_end(n)
     set_pixels(n)
-    
+
+
 def number_empty_block(n):
     """Number of empty block"""
     L = L4 if n == 4 else L8
@@ -166,36 +168,43 @@ def number_empty_block(n):
                 i = i + 1
     return i
 
+
 def two_new_blocks(n):
     """Add two new blocks"""
-    r = randint(0,1)
+    r = randint(0, 1)
     L = L4 if n == 4 else L8
-    while r < 2: #tant qu'on en a pas créé 2
-        x = randint(0, (n - 1))# 
+    while r < 2:  # Tant qu'on en a pas créé 2
+        x = randint(0, (n - 1))
         y = randint(0, (n - 1))
         # On choisis aléatoirement une ligne et une colonne
-        if L[x][y] == 0:# On controle si ce pixel est vide
-           L[x][y] = 1 # On défini un bloc de couleur correspondant au chiffre 2
-           r = r + 1# Si le bloc est créé on indente pour créé exactement 2 nouveaux pixels
-           
+        if L[x][y] == 0:  # On controle si ce pixel est vide
+            L[x][y] = 1
+            # On défini un bloc de couleur correspondant au chiffre 2
+            r = r + 1
+# Si le bloc est créé on indente pour créé exactement 2 nouveaux pixels
+
+
 def one_new_block(n):
     """Add only one block"""
     r = randint(0, 1)
     L = L4 if n == 4 else L8
-    while r < 1: #tant qu'on en a pas créé 2
-        x = randint(0, (n - 1))# 
-        y = randint(0, (n - 1))# On choisis aléatoirement une ligne et une colonne
-        if L[x][y] == 0:# On controle si ce pixel est vide
-            L[x][y] = 1 # On défini un bloc de couleur correspondant au chiffre 2
+    while r < 1:  # Tant qu'on en a pas créé 2
+        x = randint(0, (n - 1))
+        y = randint(0, (n - 1))
+        # On choisis aléatoirement une ligne et une colonne
+        if L[x][y] == 0:  # On controle si ce pixel est vide
+            L[x][y] = 1
+            # On défini un bloc de couleur correspondant au chiffre 2
             r = r + 1
-            
+
+
 def moved_up(n):
     """Reacts to the joystick pushed up."""
     print(L4)
-    L = L4 if n == 4 else L8 
-    for x in range(n): 
-        for y in range(n):# Sur chaque pixel en prenantles pixels en ligne puis en colonne
-            if L[x][y] > 0 and y >= 1:# On controle que le pixel ne soit pas une case vide
+    L = L4 if n == 4 else L8
+    for x in range(n):
+        for y in range(n):  # Sur chaque pixel en prenantles pixels en ligne puis en colonne
+            if L[x][y] > 0 and y >= 1:  # On controle que le pixel ne soit pas une case vide
                 move_pixel_up(x, y, n)
     set_pixels(n)
     print(L4)
@@ -440,3 +449,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
