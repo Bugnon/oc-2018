@@ -1,0 +1,51 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="58594" name="thymio-II"># file: TokyoWatchDemo
+# auteur: Raphael Holzer
+# date: 20-9-2018
+
+# watch
+var sec
+var min
+var hr
+
+# alarm
+var a_sec
+var a_min
+var a_hr
+
+# chronometer
+var c_sec
+var c_min
+var c_hr
+
+# timer
+var t_sec
+var t_min
+var t_hr
+
+
+timer.period[0] = 1000
+
+onevent timer0
+  sec++
+  if  sec==60 then
+  	sec=0
+  	min++
+  end</node>
+
+
+</network>

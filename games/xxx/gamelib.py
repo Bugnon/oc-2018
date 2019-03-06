@@ -20,6 +20,10 @@ ORANGE = (255, 128, 0)
 GRAY = (90,94,107)
 CORAIL = (231, 62, 1)
 BORDEAU = (91, 60, 19)
+<<<<<<< HEAD
+=======
+LIME = (220, 255, 0)
+>>>>>>> d7109e730d9f15aa4366100c361c0832936ee66f
 WHITE = (255, 255, 255)
 
 
@@ -27,7 +31,11 @@ def main():
     """Test function to display all available colors."""
     sense = SenseHat()
     colors = (BLACK, LEMON, PINK, RED, MINT, BLUE, GREEN, MAGENTA, CYAN, YELLOW,
+<<<<<<< HEAD
               ORANGE, GRAY, CORAIL, BORDEAU, WHITE)
+=======
+              ORANGE, GRAY, CORAIL, BORDEAU, LIME, WHITE)
+>>>>>>> d7109e730d9f15aa4366100c361c0832936ee66f
     n = len(colors)
     print(n, 'colors')
     for x in range(8):
