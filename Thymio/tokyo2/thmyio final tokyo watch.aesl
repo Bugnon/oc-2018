@@ -1,0 +1,330 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="46529" name="thymio-II"># projet: Tokyo Watch
+# Auteur: Valentin, Mirko, Michael
+# Date : 21.09.2018 - 27.09.2018
+ 
+#Définition des variables
+
+# variables pour les états
+var mode = 10
+
+#Pour Montre:
+var h = 0 #heure
+var m = 0 #minute
+var s = 0 #seconde
+
+#Chronomètre:
+var c_h = 0 #heure
+var c_m = 0 #minute
+var c_s = 0
+var c_h1 = 0 #heure
+var c_m1 = 0 #minute
+var c_s1 = 0
+var c_on = 0 #seconde
+
+#Alarme:
+var a_h = 0 #heure
+var a_m = 0 #minutes
+var alarm = 0
+
+#Timer:
+var t_h = 0 #heure
+var t_m = 0 #heure
+var t_s = 0 #seconde
+var start_timer = 0
+timer.period[0] = 992  #Définitoin de notre seconde en milli-seconde
+timer.period[1] = 300
+
+#* Définition des différents mode
+10 = affichage classique de l'horloge
+11 = (horloge) modification de l'heure
+12 = (horloge) modification des minutes
+13 = (horloge) modification des secondes
+30 = timer affichage classique
+32 = (timer) modification minutes
+33 = (timer) modification secondes
+40 = affichage alarme
+41 = réglages heure alarme
+42 = réglages minutes alarme
+*#
+
+
+#*
+Réglages
+*#
+
+onevent timer1
+	if button.center == 1 then
+		if mode == 30 then
+			mode = 40
+			call leds.top (0, 0, 32)
+			
+		elseif mode ==40 then
+				mode = 10
+				call leds.top (0, 0, 0)
+				
+		elseif mode ==10 then
+		call leds.top (32, 0, 0)
+				mode = 20
+						
+		elseif mode ==20 then
+				mode = 30
+				call leds.top (0, 32, 0)
+		end
+		
+	elseif button.left==1 then
+	
+		if start_timer==0 and mode == 30 then 	
+			start_timer=1
+		
+		elseif start_timer==1 and mode == 30 then
+			start_timer=0
+		elseif  alarm == 0 and mode == 40 then
+			alarm=1
+		elseif  alarm == 1 and mode == 40 then
+			alarm=0
+		elseif c_on==0 and mode ==20 then
+			c_on=1
+			
+		elseif c_on==1 and mode ==20 then
+			c_on=0
+		end		
+
+	elseif button.backward==1 then
+	
+	 	if mode==11 then
+	 		h++
+	 		if h>23 then
+				h = 0
+			end
+	 	elseif mode==12 then
+	 		m++
+	 		if m>59 then
+				m = 0
+			end
+	 	elseif mode==13 then
+	 		s=0
+	 	elseif mode ==32 then 
+			t_s++
+			if t_s>59 then
+				t_s = 0
+			end	
+		elseif mode ==33 then
+			t_m++
+			if t_m>59 then
+				t_m = 0
+			end
+			elseif  mode ==41 then
+			a_h++
+	 		if a_h>23 then
+				a_h = 0
+			end
+		elseif mode==42 then
+			a_m++
+	 		if a_m>59 then
+				a_m = 0
+			end
+	 	end
+	 	 	
+	elseif button.forward==1 then
+	
+	 	if mode==11 then
+	 		h--
+	 		if h&lt;1 then
+				h = 23
+			end	
+	 	elseif mode==12 then
+	 		m--
+	 		if m&lt;1 then
+				m = 59
+			end	
+	 	elseif mode==13 then
+	 		s=0
+	 	elseif mode==33 then 
+			t_s--
+			if t_s&lt;1 then
+				t_s = 59
+			end	
+		elseif mode == 32 then
+			t_m--
+			if t_m&lt;1 then
+				t_m = 59
+			end
+		elseif  mode ==41 then
+			a_h--
+	 		if a_h&lt;1 then
+				a_h = 23
+			end
+		elseif mode==42 then
+			a_m--
+	 		if a_m&lt;1 then
+				a_m = 23
+			end
+		end
+
+	elseif button.right==1 then
+		if mode==10 then
+			call leds.top(32, 32, 0)
+			mode=11 #heure
+		
+		elseif mode==11 then
+			call leds.top(0, 32, 32)
+			mode=12 #minute
+			
+		elseif mode==12 then
+			call leds.top(32, 0, 32)
+			mode=13 #seconde
+			
+		elseif  mode==13 then
+			call leds.top(0, 0, 0)
+			mode=10
+			
+		elseif  mode==30 then
+			mode=33#reglages minutes timer
+			call leds.top(0, 32, 32) 
+			
+		elseif  mode==33 then
+			mode=32
+			call leds.top(32, 0, 32) #reglages secondes timer
+			
+		elseif mode==32 then
+			mode=30
+			call leds.top (0, 32, 0)
+			
+		elseif  mode==40 then
+			mode=41
+			call leds.top(32, 32, 0) 
+			
+		elseif  mode==41 then
+			mode=42
+			call leds.top(0, 32, 32) 
+			
+		elseif mode==42 then
+			mode=40
+			call leds.top (0, 32, 32)
+		elseif mode ==20	then
+			mode = 21
+			c_s=c_s1
+			c_m=c_m1
+			c_h=c_h1
+		elseif mode ==21	then
+			mode =20
+		end
+		
+	end
+	#*
+ Affichage
+ *########
+ onevent timer0
+ 
+if mode>9 and  mode&lt;14 then
+	call leds.circle( 0, 0, (m&amp;1)*32, (m&amp;2)*16, (m&amp;4)*8, (m&amp;8)*4, (m&amp;16)*2, (m&amp;32)) 
+	call leds.prox.h((s&amp;32), (s&amp;16)*2, (s&amp;8)*4, (s&amp;4)*8, (s&amp;2)*16 , (s&amp;1)*32, 0, 0)
+	call leds.buttons ((h&amp;8)*4, (h&amp;1)*32, (h&amp;2)*16, (h&amp;4)*8)
+	call leds.prox.v((h&amp;16)*2, (h&amp;16)*2)
+	
+elseif mode&lt;30 and mode >33 then
+	call leds.circle( 0, 0, (t_m&amp;1)*32, (t_m&amp;2)*16, (t_m&amp;4)*8, (t_m&amp;8)*4, (t_m&amp;16)*2, (t_m&amp;32)) 
+	call leds.prox.h((t_s&amp;32), (t_s&amp;16)*2, (t_s&amp;8)*4, (t_s&amp;4)*8, (t_s&amp;2)*16 , (t_s&amp;1)*32, 0, 0)
+	
+elseif  mode &lt;40 and mode>42 then
+	call leds.circle( 0, 0, (a_m&amp;1)*32, (a_m&amp;2)*16, (a_m&amp;4)*8, (a_m&amp;8)*4, (a_m&amp;16)*2, (a_m&amp;32)) 
+	call leds.buttons ((a_h&amp;8)*4, (a_h&amp;1)*32, (a_h&amp;2)*16, (a_h&amp;4)*8)
+	call leds.prox.v((a_h&amp;16)*2, (a_h&amp;16)*2)
+elseif  mode ==20 then
+	call leds.prox.h((c_s&amp;32), (c_s&amp;16)*2, (c_s&amp;8)*4, (c_s&amp;4)*8, (c_s&amp;2)*16 , (c_s&amp;1)*32, 0, 0)
+	call leds.circle( 0, 0, (c_m&amp;1)*32, (c_m&amp;2)*16, (c_m&amp;4)*8, (c_m&amp;8)*4, (c_m&amp;16)*2, (c_m&amp;32)) 
+	call leds.buttons ((c_h&amp;8)*4, (c_h&amp;1)*32, (c_h&amp;2)*16, (c_h&amp;4)*8)
+	call leds.prox.v((c_h&amp;16)*2, (c_h&amp;16)*2)
+elseif  mode==21 then
+	call leds.prox.h((c_s1&amp;32), (c_s1&amp;16)*2, (c_s1&amp;8)*4, (c_s1&amp;4)*8, (c_s1&amp;2)*16 , (c_s1&amp;1)*32, 0, 0)
+	call leds.circle( 0, 0, (c_m1&amp;1)*32, (c_m1&amp;2)*16, (c_m1&amp;4)*8, (c_m1&amp;8)*4, (c_m1&amp;16)*2, (c_m1&amp;32)) 
+	call leds.buttons ((c_h1&amp;8)*4, (c_h1&amp;1)*32, (c_h1&amp;2)*16, (c_h1&amp;4)*8)
+	call leds.prox.v((c_h1&amp;16)*2, (c_h1&amp;16)*2)
+end
+
+
+#*
+Code
+*####
+
+#Début du code de l'horloge
+
+#incrementer seconde
+	s++
+	if s>59 then
+		m++
+		s=0
+	end
+	
+	if m>59 then
+		h++ #Incrémenter heure
+		m=0
+	end
+	
+	if h>23 then
+		h=0 #reset de l'heure après 24 heures
+	end
+
+#Début du code du compte à rebours
+
+	if start_timer==1 then
+		t_s--
+	end
+	
+	if  t_s==0 and t_m==0 and start_timer==1 then
+
+		call sound.play(4000)	
+		start_timer =0
+		
+	elseif t_s==0 and t_m>0 then 
+		t_s = 59
+		t_m--
+	end
+	 
+# code du chrono
+	if  c_on==1 then
+		c_s++
+		
+		if c_s>59 then
+			c_s=0
+			c_m++
+		end
+		
+		if  c_m>59 then
+			c_m=0
+			c_h++
+		end
+		if c_h>23 then
+			c_h=0
+		end
+	end
+
+#code  de l'alarme
+	if  a_m==m and a_h==h and alarm == 1 then
+		call sound.play(4000)
+	end
+	
+	onevent tap
+		call sound.freq(1, 1)
+		alarm = 0
+	
+	
+</node>
+
+
+</network>

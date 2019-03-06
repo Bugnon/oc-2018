@@ -1,0 +1,101 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="1" name="thymio-II">
+# chronometer
+var c_sec
+var c_min
+var c_hr
+var c_pm
+var c_actif
+var k
+
+ c_sec = 0
+ c_min = 0
+ c_hr = 0
+ k=0
+ 
+ timer.period[0] = 1000 #= à une sec
+
+######### Chrono
+
+ onevent timer0
+ 	if c_actif==1 then	#demarrage
+		 c_sec++
+		 when c_sec == 60 do # temps qui s'additionne
+		 	c_sec = 0	
+		 	c_min++
+		 end
+		 when c_min==60 do
+		 	c_min=0
+		 	c_hr++
+		end
+	 
+	 	when c_hr==12 and c_pm==0 do
+	 		c_hr=0
+	 		c_pm=1	
+	 	end
+	 	when c_hr==12 and c_pm==1 do # thymio qui peut que aller à 											14. Donc on va jusqu'à 12 et on passe à une notation anglaise avec pm et am
+	 		c_hr=0
+	 		c_pm=0	
+	 	end
+	 end
+	
+	# Affichage du temps pour les 4 états
+		k++
+		if k==15 then
+			k=0
+		end
+		if k/5==0 then
+			call leds.circle((c_hr/2&amp;1)*32,(c_hr/2&amp;2)*16,(c_hr/2&amp;4)*8,(c_hr/2&amp;8)*4,(c_hr/2&amp;16)*2,(c_hr/2&amp;32)*1,(c_hr/2&amp;64)/2,(c_hr/2&amp;128)/4)
+			call leds.bottom.left(32,0,0)
+			call leds.bottom.right(32,0,0)
+		end
+		if k/5==1 then
+			call leds.circle((c_min/2&amp;1)*32,(c_min/2&amp;2)*16,(c_min/2&amp;4)*8,(c_min/2&amp;8)*4,(c_min/2&amp;16)*c_min/2,c_min/2&amp;32,(c_min/2&amp;64)/2,(c_min/2&amp;128)/4)
+			call leds.bottom.left(0,32,0)
+			call leds.bottom.right(0,32,0)
+		end
+		if k/5==2 then
+			call leds.circle((c_sec/2&amp;1)*32,(c_sec/2&amp;2)*16,(c_sec/2&amp;4)*8,(c_sec/2&amp;8)*4,(c_sec/2&amp;16)*c_sec/2,c_sec/2&amp;32,(c_sec/2&amp;64)/2,(c_sec/2&amp;128)/4)
+			call leds.bottom.left(0,0,32)
+			call leds.bottom.right(0,0,32)
+		end
+
+	
+	
+######### Controles
+	
+onevent button.center   #demmarage pause
+	when button.center==1 do
+		if c_actif==0 then
+			c_actif=1
+		elseif c_actif==1 then
+			c_actif=0
+		end
+	end
+	
+onevent button.backward  # remet à 0 qd il est en pause
+	
+ 	c_sec = 0
+ 	c_min = 0
+ 	c_hr = 0
+ 
+
+
+	</node>
+
+
+</network>

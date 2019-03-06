@@ -1,0 +1,79 @@
+<!DOCTYPE aesl-source>
+<network>
+
+
+<!--list of global events-->
+<event size="1" name="pair_run"/>
+
+
+<!--list of constants-->
+
+
+<!--show keywords state-->
+<keywords flag="true"/>
+
+
+<!--node thymio-II-->
+<node nodeId="57643" name="thymio-II"># variables for state
+var state[4] = [0,0,0,0]
+var new_state[4] = [0,0,0,0]
+
+# reset outputs
+call sound.system(-1)
+call leds.top(0,0,0)
+call leds.bottom.left(0,0,0)
+call leds.bottom.right(0,0,0)
+call leds.circle(0,0,0,0,0,0,0,0)
+
+# subroutine to display the current state
+sub display_state
+call leds.top((state[2]*32),(state[1]*32),(state[3]*32))
+
+onevent buttons
+	when button.center == 1 do
+		if state[0] == 0 and state[1] == 0 and state[2] == 0 and state[3] == 0 then
+			new_state[0] = 0
+			new_state[1] = 0
+			new_state[2] = 1
+			new_state[3] = 0
+			emit pair_run 0
+		end
+	end
+
+	when button.center == 1 do
+		if state[0] == 0 and state[1] == 0 and state[2] == 1 and state[3] == 0 then
+			new_state[0] = 0
+			new_state[1] = 1
+			new_state[2] = 0
+			new_state[3] = 0
+			emit pair_run 1
+		end
+	end
+
+	when button.center == 1 do
+		if state[0] == 0 and state[1] == 1 and state[2] == 0 and state[3] == 0 then
+			new_state[0] = 0
+			new_state[1] = 0
+			new_state[2] = 0
+			new_state[3] = 1
+			emit pair_run 2
+		end
+	end
+
+	when button.center == 1 do
+		if state[0] == 0 and state[1] == 0 and state[2] == 0 and state[3] == 1 then
+			new_state[0] = 0
+			new_state[1] = 0
+			new_state[2] = 0
+			new_state[3] = 0
+			emit pair_run 3
+		end
+	end
+
+	call math.copy(state, new_state)
+	callsub display_state
+
+</node>
+
+
+</network>
