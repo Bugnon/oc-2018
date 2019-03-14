@@ -3,6 +3,7 @@ from game import asteroid, load, player, resources
 
 # Set up a window
 game_window = pyglet.window.Window(800, 600)
+pyglet.gl.glClearColor(0.5,0.5,0.5,1)
 
 main_batch = pyglet.graphics.Batch()
 
