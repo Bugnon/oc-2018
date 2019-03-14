@@ -4,14 +4,14 @@ import pyglet
 window = pyglet.window.Window(800, 200)
 msg = 'Play music'
 label = pyglet.text.Label(msg, font_size=36, x=20, y=20)
-music = pyglet.resource.media('SuperMario.mp3')
+music = pyglet.resource.media('bullet.wav')
 player = music.play()
 
 @window.event
 def on_key_press(symbol, modifiers):
     label.text = 'Stop music'
     player.pause()
-y
+
 @window.event
 def on_draw():
     window.clear()
