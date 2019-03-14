@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-from sense_hat import SenseHat
-
-from time import sleep, time
-
-sense = SenseHat()
-sense.set_rotation(180)
-
-##tableau
-sense.clear()
-for x in range(0, 8, 2):
-    for y in range(8):
-        sense.set_pixel(x, y, green)
-        sleep(0.1)
-        
-=======
 ###Hélène Ardevol et Victoria Vila
 ###Bugnon 3M4
 ###5 Février 2019
@@ -205,4 +189,3 @@ print('module name =', __name__)
 
 if __name__ == '__main__':
     main() 
->>>>>>> d7109e730d9f15aa4366100c361c0832936ee66f
