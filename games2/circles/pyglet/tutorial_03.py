@@ -3,6 +3,7 @@ import pyglet
 
 window = pyglet.window.Window(500, 433)
 image = pyglet.resource.image('kitten.png')
+
 print(image)
 
 @window.event
