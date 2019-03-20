@@ -1,1 +1,4 @@
-SAONRIINECTFONTA
+[S, A, O, N]
+[R, I, I, N]
+[E, C, T, F]
+[O, N, T, A]
