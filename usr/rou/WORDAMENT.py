@@ -26,6 +26,8 @@ def on_mouse_press(x, y, button, modifiers):
 @window.event
 def on_draw():
     window.clear()
+    fichier = open('level_1.txt', 'r')
+    lines = fichier.readlines()
     for u in range(4):
         for n in range(4):
             N_letter = pyglet.image.load('n.png')                    
