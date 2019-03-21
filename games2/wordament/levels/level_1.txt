@@ -1,4 +1,16 @@
-[S, A, O, N]
-[R, I, I, N]
-[E, C, T, F]
-[O, N, T, A]
+S
+A
+O
+N
+R
+I
+I
+N
+E
+C
+T
+F
+O
+N
+T
+A
