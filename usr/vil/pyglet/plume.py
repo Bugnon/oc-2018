@@ -24,7 +24,7 @@ class FloatingLabel(pyglet.text.Label):
         self.y %= window.height
 
         
-mots = ['poétique', 'beau', 'frémissant']
+mots = ['poétique', 'beau', 'frémissant', 'vers', 'strophe']
 
 labels = []
 for mot in mots:
