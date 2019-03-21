@@ -13,14 +13,18 @@ image.height = y
 image.width = y/rapportparchemin
 
 
+def write_poetry():
+    txt = open("resources/poeme.txt", "r")
+    poetry = pyglet.text.Label(str(txt.read()),
+                          font_name='Janda Elegant Handwriting',
+                          font_size=16,
+                          x=0, y=0)
+    poetry.draw()
+
 @game_window.event
 def on_draw():
     game_window.clear()
     image.blit(x-y/rapportparchemin, 0)
-    label = pyglet.text.Label('Hello, world',
-                          font_name='Janda Elegant Handwriting',
-                          font_size=16,
-                          x=0, y=0)
-    label.draw()
+    write_poetry()
 
 pyglet.app.run()
