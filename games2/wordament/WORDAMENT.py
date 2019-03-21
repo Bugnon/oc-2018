@@ -30,8 +30,9 @@ def on_draw():
     lines = fichier.readlines()
     for u in range(4):
         for n in range(4):
-            letter = "images/" + lines[u][n] + ".png"
-            letter_print = pyglet.image.load(letter)                        
+            letter = "images/" + lines[4 * u + n - 4] + ".png"
+            letter = letter.replace('\n', "")
+            letter_print = pyglet.image.load(letter)
             letter_print.blit(x= pattern_size/4 * u, y=pattern_size/4 * n, height=pattern_size/4, width=pattern_size/4)
 
 M = [
