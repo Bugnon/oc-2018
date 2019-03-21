@@ -1,7 +1,7 @@
 import pyglet
 
-height = 300
-width = 700
+height = 500
+width = 500
 pattern_size = min(height, width)
 
 window = pyglet.window.Window(height, width)
