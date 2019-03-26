@@ -5,7 +5,7 @@ Handwriting = font.load('Janda Elegant Handwriting', 14)
 
 # Set up a window
 rapportparchemin = 3506/2480
-x = 500
+x = 1200
 y = x*9/16
 game_window = pyglet.window.Window(x, y)
 image = pyglet.resource.image('resources/parchemin.png')
@@ -24,7 +24,7 @@ def write_poetry():
     poetry = pyglet.text.Label(str(txt.read()),
                           font_name='Janda Elegant Handwriting',
                           font_size=8,
-                          x=x*9/16, y=100)
+                          x=x-y/rapportparchemin, y=y/2)
     poetry.draw()
 
 @game_window.event
