@@ -1,0 +1,2 @@
+LeCorbeau=['Le corbeau', 'Le Renard']
+print(len(LeCorbeau))
