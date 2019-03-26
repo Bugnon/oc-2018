@@ -14,19 +14,18 @@ image.width = y/rapportparchemin
 
 
 def write_poetry():
-    fname = input("Enter file name: ")
     num_lines = 0
-    with open(fname, 'r') as f:
+    with open("resources/poeme.txt", "r") as f:
         for line in f:
             num_lines += 1
-print("Number of lines:")
-print(num_lines)
-txt = open("resources/poeme.txt", "r")
-poetry = pyglet.text.Label(str(txt.read()),
+    print("Number of lines:")
+    print(num_lines)
+    txt = open("resources/poeme.txt", "r")
+    poetry = pyglet.text.Label(str(txt.read()),
                           font_name='Janda Elegant Handwriting',
-                          font_size=14,
-                          x=0, y=-20)
-poetry.draw()
+                          font_size=8,
+                          x=x*9/16, y=100)
+    poetry.draw()
 
 @game_window.event
 def on_draw():
