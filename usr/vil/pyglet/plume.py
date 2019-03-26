@@ -18,17 +18,22 @@ class FloatingLabel(pyglet.text.Label):
         self.dy = randint(-5, 5)
         
     def update(self, dt):
-        self.x += self.dx * dt
-        self.y += self.dy * dt
+        self.x += self.dx
+        self.y += self.dy
         self.x %= window.width
         self.y %= window.height
 
         
-mots = ['poétique', 'beau', 'frémissant', 'vers', 'strophe']
-
+mots = ['Alexandrin', 'ballade', 'césure', 'rime', 'poème', 'décasyllabe', 'fables','lyrique','sizain','strophe','tercet','hpetasyllabe']
+mots2 = ['arbre', 'soleil', 'monde','baname','table','sac','stylos','coiffeur','lunette','pull','bracelet','montre']
 labels = []
+
 for mot in mots:
     label = FloatingLabel(mot, font_size=36, batch=batch)
+    labels.append(label)
+
+for mot in mots2:
+    label = FloatingLabel(mot, font_size=24, batch=batch)
     labels.append(label)
 
 @window.event
@@ -40,7 +45,7 @@ def update(dt):
     for label in labels:
         label.update(dt)
 
-pyglet.clock.schedule_interval(update, 1/60.0) # update at 60Hz
+pyglet.clock.schedule_interval(update, 1/10) # update at 10Hz
 pyglet.app.run()
 
 
