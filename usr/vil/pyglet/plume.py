@@ -1,8 +1,8 @@
-import pyglet, random, math
+import pyglet, random, math, time
 from random import randint
 
 # Set up a window
-window = pyglet.window.Window(800, 600)
+window = pyglet.window.Window(1000, 800)
 batch = pyglet.graphics.Batch()
 
 # create a new class
@@ -12,28 +12,28 @@ class FloatingLabel(pyglet.text.Label):
     def __init__(self, *arg, **kwargs):
         # calling parent constructor function
         super().__init__(*arg, **kwargs)
-        self.x = randint(0, 500)
-        self.y = randint(0, 500)
-        self.dx = randint(-5, 5)
-        self.dy = randint(-5, 5)
+        self.x = randint(-2, 0)
+        self.y = randint(-5, 5)
+        self.dx = randint(-2, 0)
+        self.dy = randint(-2, 2)
         
     def update(self, dt):
         self.x += self.dx
         self.y += self.dy
         self.x %= window.width
         self.y %= window.height
-
+        
         
 mots = ['Alexandrin', 'ballade', 'césure', 'rime', 'poème', 'décasyllabe', 'fables','lyrique','sizain','strophe','tercet','hpetasyllabe']
-mots2 = ['arbre', 'soleil', 'monde','baname','table','sac','stylos','coiffeur','lunette','pull','bracelet','montre']
+mots2 = ['arbre', 'soleil', 'monde','banane','table','sac','stylos','coiffeur','lunette','pull','bracelet','montre']
 labels = []
 
 for mot in mots:
-    label = FloatingLabel(mot, font_size=36, batch=batch)
+    label = FloatingLabel(mot, font_size=randint(12, 36), batch=batch)
     labels.append(label)
 
 for mot in mots2:
-    label = FloatingLabel(mot, font_size=24, batch=batch)
+    label = FloatingLabel(mot, font_size=randint(12, 36), batch=batch)
     labels.append(label)
 
 @window.event
@@ -45,7 +45,7 @@ def update(dt):
     for label in labels:
         label.update(dt)
 
-pyglet.clock.schedule_interval(update, 1/10) # update at 10Hz
+pyglet.clock.schedule_interval(update, 1/60) # update at 10Hz
 pyglet.app.run()
 
 
