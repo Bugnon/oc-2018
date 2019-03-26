@@ -1,7 +1,7 @@
 import pyglet
 from pyglet import font
 font.add_file('resources/Handwriting.ttf')
-Handwriting = font.load('Janda Elegant Handwriting', 16)
+Handwriting = font.load('Janda Elegant Handwriting', 14)
 
 # Set up a window
 rapportparchemin = 3506/2480
@@ -14,12 +14,19 @@ image.width = y/rapportparchemin
 
 
 def write_poetry():
-    txt = open("resources/poeme.txt", "r")
-    poetry = pyglet.text.Label(str(txt.read()),
+    fname = input("Enter file name: ")
+    num_lines = 0
+    with open(fname, 'r') as f:
+        for line in f:
+            num_lines += 1
+print("Number of lines:")
+print(num_lines)
+txt = open("resources/poeme.txt", "r")
+poetry = pyglet.text.Label(str(txt.read()),
                           font_name='Janda Elegant Handwriting',
-                          font_size=16,
-                          x=0, y=0)
-    poetry.draw()
+                          font_size=14,
+                          x=0, y=-20)
+poetry.draw()
 
 @game_window.event
 def on_draw():
