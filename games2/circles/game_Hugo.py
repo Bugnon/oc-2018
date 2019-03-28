@@ -10,7 +10,7 @@ x = 1400
 y = int(x*9/16)
 game_window = pyglet.window.Window(x, y)
 pos = x-y/rapportparchemin
-
+pyglet.gl.glClearColor(1,1,1,1)
 parchemin = pyglet.resource.image('resources/parchemin.png')
 parchemin.height = y
 parchemin.width = y/rapportparchemin
