@@ -11,6 +11,7 @@ batch = pyglet.graphics.Batch()
 
 #show current verse at a fixed point no matter the window's size : 1% padding to the left,
 verse = pyglet.text.Label(text="Vers", x=window_width/100, y=window_height-(window_height/30), font_size=window_height/40, batch=batch)
+versetest = pyglet.text.Label(text=str(window_height-(window_height/30)), x=10, y=10, font_size=window_height/40, batch=batch)
 
 # create a new class
 class FloatingLabel(pyglet.text.Label):
@@ -28,7 +29,7 @@ class FloatingLabel(pyglet.text.Label):
         self.x += self.dx
         self.y += self.dy
         self.x %= window.width
-        self.y %= window.height
+        self.y %= window_height-(window_height/15)
         
         
 mots = ['Alexandrin', 'ballade', 'césure', 'rime', 'poème', 'décasyllabe', 'fables','lyrique','sizain','strophe','tercet','hpetasyllabe']
@@ -47,6 +48,10 @@ for mot in mots2:
 def on_draw():
     window.clear()
     batch.draw()
+    pyglet.graphics.draw(4, pyglet.gl.GL_LINES, 
+        ("v2f", (0, 0, 0, window.height, 0, window_height-(window_height/20), window.width, window_height-(window_height/20)))
+    )
+
 
 def update(dt):
     for label in labels:
