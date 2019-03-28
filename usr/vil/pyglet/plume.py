@@ -1,9 +1,16 @@
 import pyglet, random, math, time
 from random import randint
 
+#Define variables
+window_height=800
+window_width=1000
+
 # Set up a window
-window = pyglet.window.Window(1000, 800)
+window = pyglet.window.Window(window_width, window_height)
 batch = pyglet.graphics.Batch()
+
+#show current verse at a fixed point no matter the window's size : 1% padding to the left,
+verse = pyglet.text.Label(text="Vers", x=window_width/100, y=window_height-(window_height/30), font_size=window_height/40, batch=batch)
 
 # create a new class
 class FloatingLabel(pyglet.text.Label):
