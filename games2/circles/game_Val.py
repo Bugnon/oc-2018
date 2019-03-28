@@ -12,7 +12,7 @@ def center_image(image):
 # Set up a window
 rapportparchemin = 3506/2480
 x = 1000
-y = x*9/16
+y = int(x*9/16)
 game_window = pyglet.window.Window(x, y)
 pyglet.gl.glClearColor(1,1,1,1)
 
