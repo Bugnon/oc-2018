@@ -1,6 +1,8 @@
 import pyglet
 import math
 from pyglet import font
+from rotatingsprite import RotatingSprite
+
 font.add_file('resources/Handwriting.ttf')
 Handwriting = font.load('Janda Elegant Handwriting', 16)
 
@@ -29,24 +31,14 @@ r = x/4
 for i in range(15):
     angle_degrees = (360/15)*i
     angle_radians = math.radians(angle_degrees)
-    x_segment = xc + r * math.sin(angle_radians)
-    y_segment = yc + r * math.cos(angle_radians)
-    segment = pyglet.sprite.Sprite(img=circle_segment, x=x_segment, y=y_segment, batch=batch)
-    segment.rotation = angle_degrees
+
+    segment = RotatingSprite(img=circle_segment, batch=batch)
+    segment.angle = angle_radians
+    segment.r = r
+    segment.xc = xc
+    segment.yc = yc
     segment.scale = 0.55*x/1200
     segments.append(segment)
-
-def update(dt):
-    global angle_degrees
-    angular_velocity = 15 # degrees per second
-    angle_degrees += angular_velocity
-
-
-
-# définition d'une nouvelle classe
-class FloatingSprites(pyglet.sprite.Sprite):
-    def __init__(self):
-        pass
 
 
 def write_poetry():
@@ -64,4 +56,12 @@ def on_draw():
     write_poetry()
     batch.draw()
 
-pyglet.app.run()
+def update(dt):
+    for segment in segments:
+        segment.update(dt)
+
+if __name__ == "__main__":
+
+    pyglet.clock.schedule_interval(update, 1/60.0)
+
+    pyglet.app.run()
