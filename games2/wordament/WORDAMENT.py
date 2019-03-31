@@ -90,6 +90,12 @@ def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
                         print(new_word)
                         new_word_print.text = "Word : " + new_word
 
+def check_existence(search):
+    search = str(search + '\r\n')
+    fo = codecs.open('C:/dictionnaire.txt', 'r', 'utf-8')
+    string = fo.readlines()
+    if search in string:
+        return True
 ###########################################
 ########## Launching of the game ##########
 ###########################################
