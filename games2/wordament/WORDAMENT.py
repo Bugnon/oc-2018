@@ -1,26 +1,49 @@
+# File : Wordament 
+# Date : 31.03.2019
+# Author : Mirko Pirona, Michael Greub et Fabian Roulin
+
+###########################################
+##### Importation of the game modules #####
+###########################################
+
 import pyglet
 from levels import levels
 
+############################################
+### Initialisation des variables de base ###
+############################################
+
+# Screen size :
 height = 650
 width = 600
 pattern_size = min(height, width)
 #pattern_size = min(window.height, window.width)
 
+# Variable in game :
 new_word = ""
+
 M_NUL = [
     [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0]]
-ML = (levels.L1)
-#print(levels.L1)
+
 old_case = [-1, -1]
+
+# Select of the level imported :
+ML = (levels.L1)
 
 window = pyglet.window.Window(width, height)
 
+# Initialization of labels of the game :
 new_word_print = pyglet.text.Label('Word : -', font_size=30, x=0, y=610)
 score_print = pyglet.text.Label('Score : 0', font_size=30, x=400, y=610)
 
+############################################
+########## Start of the game code ##########
+############################################
+
+# Actions when the game start to create the game board :
 @window.event
 def on_draw():
     global ML
@@ -33,6 +56,7 @@ def on_draw():
     new_word_print.draw()
     score_print.draw()
 
+# Actions when the click of the mouse is release :
 @window.event 
 def on_mouse_release(x, y, button, modifiers):
     global old_case
@@ -46,6 +70,7 @@ def on_mouse_release(x, y, button, modifiers):
     old_case = [-1, -1]
     new_word = ""
 
+# Actions when the mouse is moving :
 @window.event  
 def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
     global new_word
@@ -65,5 +90,8 @@ def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
                         print(new_word)
                         new_word_print.text = "Word : " + new_word
 
+###########################################
+########## Launching of the game ##########
+###########################################
 
 pyglet.app.run()
