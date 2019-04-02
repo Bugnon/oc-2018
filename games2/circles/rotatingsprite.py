@@ -27,9 +27,9 @@ class RotatingSprite(pyglet.sprite.Sprite):
 
 class Player(pyglet.sprite.Sprite):
     def __init__(self, *args, **kwargs):
-        super(Player, self).__init__(img=player_image, *args, **kwargs)
+        super(Player, self).__init__(*args, **kwargs)
         
-        self.rotate_speed=150
+        self.rotate_speed=50
 
         self.keys = dict(left=False, true=False)
 
