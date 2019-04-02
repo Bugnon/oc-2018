@@ -52,9 +52,11 @@ class FloatingLabel(pyglet.text.Label):
 
     '''Applies acceleration when object moves, and ensures it stays within the game's borders'''
     def update(self, dt):
+        w, h = window.width, window.height
         self.x += self.dx
         self.y += self.dy
-        self.x %= window.width
+        self.x = (self.x - 200) % (w-200) +200
+        #self.x %= window.width-(window.width/10)
         self.y %= window_height-(window_height/15)
 
 
