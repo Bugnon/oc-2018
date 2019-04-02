@@ -3,6 +3,7 @@ import math
 
 # définition d'une nouvelle classe
 class RotatingSprite(pyglet.sprite.Sprite):
+    """Classe définissant les sprites qui tournent."""
     def __init__(self, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)
 
