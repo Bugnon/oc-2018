@@ -1,11 +1,10 @@
 import pyglet
 import math
 from pyglet import font
-from rotatingsprite import RotatingSprite
+from rotatingsprite import RotatingSprite, Player
 
-font.add_file('resources/Handwriting.ttf')
-Handwriting = font.load('Janda Elegant Handwriting', 14)
-
+font.add_file('resources/Angelface.otf')
+Angelface = font.load('Angelface', 16)
 
 def center_image(image):
     """Sets an image's anchor point to its center"""
@@ -19,22 +18,25 @@ x = game_window.width
 y = game_window.height
 pyglet.gl.glClearColor(1,1,1,1)
 
+batch = pyglet.graphics.Batch()
+
 parchemin_image = pyglet.resource.image('resources/parchemin2.png')
 parchemin_image.lengh = y
 parchemin_image.width = y/rapportparchemin
 parchemin_sprite = pyglet.sprite.Sprite(img=parchemin_image, x=x-y/rapportparchemin, y=(game_window.height-parchemin_image.height)/2)
 
+wallpaper = pyglet.resource.image('resources/wallpaper.jpg')
+wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
+
 player_image = pyglet.resource.image("resources/encrier.png")
 center_image(player_image)
-player_ink = pyglet.sprite.Sprite(img=player_image, x=(x-y/rapportparchemin)/2, y=y/2)
+player_ink = pyglet.sprite.Sprite(img=player_image, x=(x-y/rapportparchemin)/2, y=y/2, batch=batch)
 
 # utilisation de la classe Sprite telquel
 # https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/sprite.html?highlight=sprites
 circle_segment = pyglet.image.load("resources/circle_segment.png")
 circle_segment.anchor_x = circle_segment.width//2
 circle_segment.anchor_y = circle_segment.height//2
-
-batch = pyglet.graphics.Batch()
 
 segments = []
 xc, yc = ((x-y/rapportparchemin)//2, y/2)
@@ -73,15 +75,16 @@ def write_poetry():
     for line in txt:
         saut = saut+15*x/800
         poeme = pyglet.text.Label(line,
-                            font_name='Arial',
-                            font_size=9*x/800,
+                            font_name='AngelFace',
+                            font_size=14*x/800,
                             color=(0, 0, 50, 255),
-                            x=x-300*x/800, y=y-70*x/800-saut)
+                            x=x-300*x/800, y=y-40*x/800-saut)
         poeme.draw()
 
 @game_window.event
 def on_draw():
     game_window.clear()
+    wallpaper_sprite.draw()
     player_ink.draw()
     parchemin_sprite.draw()
     write_poetry()
