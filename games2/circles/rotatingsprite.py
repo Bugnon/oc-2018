@@ -5,6 +5,7 @@ from pyglet.window import key
 player_image = pyglet.resource.image("resources/encrier.png")
 # définition d'une nouvelle classe
 class RotatingSprite(pyglet.sprite.Sprite):
+    """Classe définissant les sprites qui tournent."""
     def __init__(self, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)
 
