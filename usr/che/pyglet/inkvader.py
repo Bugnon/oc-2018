@@ -1,23 +1,45 @@
-import pyglet, random, math, time
+import pyglet, random, math, time, inktilities
 from pyglet.window import key, mouse
 from random import randint
+
+pyglet.options['audio'] = ('openal', 'silent')
 
 # Resources 
 pyglet.resource.path = ['./resources']
 pyglet.resource.reindex()
 pen_image = pyglet.resource.image('pen.png')
 ink_image = pyglet.resource.image('ink.png')
+fire_sound = []
+for i in range(7):
+    fire_sound.append(pyglet.media.load('./resources/sounds/WaterDrop0' + str(i) + '.wav', streaming=False))
 
 game_objects = []
 
-# Define variables
-platform = pyglet.window.get_platform()
-display = platform.get_default_display()      
-screen = display.get_default_screen()
-window_width = screen.width
-window_height = screen.height
+# Music
+# create a player and queue the song
+player = pyglet.media.Player()
+sound = pyglet.media.load('./resources/music/Furious Freak.wav')
+player.queue(sound) 
 
-has_fired=0
+# keep playing for as long as the app is running (or you tell it to stop):
+player.eos_action = pyglet.media.SourceGroup.loop
+
+player.play()
+
+# Get screen size
+window_width = inktilities.screenInfo("x")
+window_height = inktilities.screenInfo("y")
+
+# Define ink variables
+ink_scale = window_width/(ink_image.width*100)
+ink_image.anchor_x = ink_image.width / 2
+ink_image.anchor_y = ink_image.height / 2
+
+# Define pen variables
+has_fired = 0
+fire_treshold = 30
+pen_image.anchor_x = pen_image.width / 2
+pen_image.anchor_y = pen_image.height / 2
 
 # Set up a window
 window = pyglet.window.Window(fullscreen=True)
@@ -26,10 +48,6 @@ batch = pyglet.graphics.Batch()
 #show current verse at a fixed point no matter the window's size : 1% padding to the left,
 verse = pyglet.text.Label(text="Vers", x=window_width/100, y=window_height-(window_height/30), font_size=window_height/40, batch=batch)
 #versetest = pyglet.text.Label(text=str(window_height-(window_height/30)), x=10, y=10, font_size=window_height/40, batch=batch)
-
-'''Formula to calculate distance between point A and B. Accepts (A, B)'''
-def distance(A, B):
-    return math.sqrt((A[0] - B[0]) ** 2 + (A[1] - B[1]) ** 2)
 
 '''Creates a class for the floating text'''
 class FloatingLabel(pyglet.text.Label):
@@ -76,7 +94,7 @@ class FloatingLabel(pyglet.text.Label):
         collision_distance = self.content_width / 2 + other_width / 2
 
         # Get distance using position tuples
-        actual_distance = distance((self.x, self.y), (obj.x, obj.y))
+        actual_distance = inktilities.distance((self.x, self.y), (obj.x, obj.y))
 
         return (actual_distance <= collision_distance)
 
@@ -89,9 +107,8 @@ class Pen(pyglet.sprite.Sprite):
 
     def __init__(self, *arg, **kwargs):
         super().__init__(img=pen_image, *arg, **kwargs)
-        self.x = window_width / 100
+        self.x = window_width / 4
         self.y = window_height / 2
-        self.dy = 0.0
 
         self.key_handler = key.KeyStateHandler()
         self.event_handlers = [self, self.key_handler]
@@ -104,7 +121,7 @@ class Pen(pyglet.sprite.Sprite):
 
 
     def update(self, dt):
-        
+        global fire_treshold
         global has_fired
         
         if self.key_handler[key.UP]:
@@ -113,31 +130,36 @@ class Pen(pyglet.sprite.Sprite):
             self.dy = -10
         else:
             self.dy = 0
+
+        if self.key_handler[key.RIGHT] and self.x < window_width / 2:
+            self.dx = 5
+        elif self.key_handler[key.LEFT] and self.x > window.width / 5:
+            self.dx = -5
+        else:
+            self.dx = 0
         
-        if self.key_handler[key.RIGHT] and has_fired==0:
+        if self.key_handler[key.SPACE] and has_fired==0:
             self.fire()
-            has_fired=60
-            print("fired")
+            has_fired=fire_treshold
         elif has_fired >0:
             has_fired-=1
         else:
             pass    
 
         self.y += self.dy
-        self.y %= window_height-(window_height/15) #Creates a zone free of word on top of the screen
-        #if self.y < 20:
-        #    self.y = 20
+        self.y %= window_height-(window_height/15) #Creates a zone free of words on top of the screen
+
+        self.x += self.dx
 
     # Create and launch ink
     def fire(self):
-        print(self.x, self.y)
-        ink_x = self.x
+        global ink_scale
+        ink_x = self.x+((window_width/(pen_image.width*16))*pen_image.width*0.9)
         ink_y = self.y
-        print(ink_x,ink_y)
         ink = Ink(x=ink_x, y=ink_y, batch=batch)
-        ink.scale = 0.05
+        ink.scale = ink_scale
         self.new_objects.append(ink)
-
+        fire_sound[randint(1, 6)].play()
 
     def collides_with(self, obj):
         # Ignore ink collisions if we're supposed to
@@ -155,7 +177,7 @@ class Pen(pyglet.sprite.Sprite):
         collision_distance = self.width / 2 + other_width / 2
 
         # Get distance using position tuples
-        actual_distance = distance((self.x, self.y), (obj.x, obj.y))
+        actual_distance = inktilities.distance((self.x, self.y), (obj.x, obj.y))
 
         return (actual_distance <= collision_distance)
 
@@ -167,7 +189,7 @@ class Ink(pyglet.sprite.Sprite):
 
     def __init__(self, *args, **kwargs):
         super().__init__(img=ink_image, *args, **kwargs)
-        self.dx = 7
+        self.dx = (window_width/self.width)
         # Kills the ink blob after it has had the time to travel through the map
         pyglet.clock.schedule_once(self.die, window_width/(9/10*self.dx*60))
         self.is_ink = True
@@ -199,7 +221,7 @@ class Ink(pyglet.sprite.Sprite):
         collision_distance = self.width / 2 + obj.width / 2
 
         # Get distance using position tuples
-        actual_distance = distance((self.x, self.y), (obj.x, obj.y))
+        actual_distance = inktilities.distance((self.x, self.y), (obj.x, obj.y))
 
         return (actual_distance <= collision_distance)
 
@@ -215,7 +237,7 @@ labels = []
 
 # Pen creation
 pen = Pen(batch=batch)
-pen.scale = 0.2
+pen.scale = window_width/(pen_image.width*16)
 pen.rotation = 0
 
 # Registering key event handler
@@ -239,10 +261,8 @@ def on_draw():
     #pyglet.gl.glClearColor(.8, 0.8, 0.8, 1)
     window.clear()
     batch.draw()
-    pyglet.graphics.draw(2, pyglet.gl.GL_LINES, #draws a beautiful line 
-        ("v2f", (0, window_height-(window_height/20), window.width, window_height-(window_height/20)))
-    )
-
+    inktilities.drawUI(window_height, window_width) #Draws the rest of the UI
+    inktilities.drawChargeBar(pen, pen_image, has_fired) #Draws the charge bar
 
 def update(dt):
     # Check collisions for all objects
@@ -278,23 +298,6 @@ def update(dt):
 
     # Add new objects to the list
     game_objects.extend(to_add)
-
-
-
-    # Update each object
-    #for obj in game_objects:
-    #    obj.update(dt)
-    #    if obj.dead:
-    #        objects_to_remove.append(obj)
-
-    # Delete dead objects
-    #for obj in objects_to_remove:
-    #    obj.delete()
-    #    game_objects.remove(obj)
-        
-    # Add new objects to game_objects
-    #game_objects.extend(objects_to_add)
-    
     
 
 pyglet.clock.schedule_interval(update, 1/60) # update at 60Hz
