@@ -83,7 +83,9 @@ class FloatingLabel(pyglet.text.Label):
         self.y += self.dy
         self.x = (self.x - 200) % (w-200) +200
         #self.x %= window.width-(window.width/10)
-        self.y %= window_height-(window_height/15)
+        if self.y >= h - (h / 15) or self.y < 0:
+            self.dy = -self.dy
+        #self.y %= window_height-(window_height/15)
 
     def collides_with(self, obj):
         # Ignore ink collisions if we're supposed to
@@ -131,10 +133,14 @@ class Pen(pyglet.sprite.Sprite):
         global fire_treshold
         global has_fired
         
-        if self.key_handler[key.UP]:
+        if self.key_handler[key.UP] and not self.key_handler[key.DOWN]:
             self.dy = 10
-        elif self.key_handler[key.DOWN]:
+            if self.y >= window_height - window_height / 15 - self.height:
+                self.y = window_height - window_height / 15 - self.height 
+        elif self.key_handler[key.DOWN] and not self.key_handler[key.UP]:
             self.dy = -10
+            if self.y <= self.height:
+                self.y = self.height
         else:
             self.dy = 0
 
@@ -158,7 +164,7 @@ class Pen(pyglet.sprite.Sprite):
             pass    
 
         self.y += self.dy
-        self.y %= window_height-(window_height/15) #Makes the pen loop around the screen
+        #self.y %= window_height-(window_height/15) #Makes the pen loop around the screen
 
         self.x += self.dx
 
