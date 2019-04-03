@@ -20,6 +20,8 @@ splatter_sound = []
 for i in range(7):
     splatter_sound.append(pyglet.media.load('./resources/sounds/Splatter0' + str(i) + '.wav', streaming=False))
 
+levelup_sound = pyglet.media.load('./resources/sounds/Levelup.wav', streaming=False)
+
 game_objects = []
 
 # Music
@@ -41,6 +43,7 @@ window_height = inktilities.screenInfo("y")
 word_amount = [0, 0]
 mots1 = [line.rstrip('\n') for line in open('mots1.txt')]
 mots2 = [line.rstrip('\n') for line in open('mots2.txt')]
+vers = [line.rstrip('\n') for line in open('vers.txt')]
 labels = []
 
 # Define ink variables
@@ -60,9 +63,11 @@ pen_limits = [window_width / 5, window_width / 2]
 # Set up a window
 window = pyglet.window.Window(fullscreen=True)
 batch = pyglet.graphics.Batch()
+score = 0
+level = 1
 
 #show current verse at a fixed point no matter the window's size : 1% padding to the left,
-verse = pyglet.text.Label(text="Vers", x=window_width/100, y=window_height-(window_height/30), font_size=window_height/40, batch=batch)
+verse = pyglet.text.Label(text="Vers " + str(level) + " | ", x=window_width/100, y=window_height-(window_height/30), font_size=window_height/40, batch=batch)
 #versetest = pyglet.text.Label(text=str(window_height-(window_height/30)), x=10, y=10, font_size=window_height/40, batch=batch)
 
 '''Creates a class for the floating text'''
@@ -73,7 +78,7 @@ class FloatingLabel(pyglet.text.Label):
         # calling parent constructor function
         super().__init__(*arg, **kwargs)
         self.x = randint(int(2/3*window_width),window_width)
-        self.y = randint(0,window_height)
+        self.y = randint(0,window_height/2)
         self.dead = False
 
         self.dx = randint(-2, -1)
@@ -241,6 +246,8 @@ def on_draw():
 def update(dt):
 
     global word_amount
+    global score
+    global level
 
     # Check collisions for all objects
     for i in range(len(game_objects)):
@@ -258,10 +265,18 @@ def update(dt):
                         obj_1.dead = True
                         if obj_1.kind == True:
                             word_amount[0] += -1
+                            if vers[score] == "X":
+                                score+=1
+                                levelup_sound.play()
+                                level += 1
+                                verse.text = "Vers " + str(level) + " | "
+                            else:
+                                verse.text = verse.text + " " + vers[score]
+                                score += 1
                         elif obj_1.kind == False:
                             word_amount[1] += -1
                         #If it's ink, it should splatter
-                        if obj_2.__class__ is Ink:
+                        if obj_2.__class__ is Ink: 
                             obj_2.splatter()
                             obj_2.dead = True
                         else:
@@ -299,13 +314,13 @@ def add_word(dt):
     global word_amount
     print("called")
     # Add words to fill in voids
-    if word_amount[0] < 2:
+    if word_amount[0] < 3:
             label = FloatingLabel(mots1[randint(0, len(mots1)-1)], font_size=randint(12, 36), batch=batch)
             label.kind = True
             game_objects.extend([label])
             word_amount[0] += 1
     
-    if word_amount[1] < 2:
+    if word_amount[1] < 3:
             label = FloatingLabel(mots2[randint(0, len(mots2)-1)], font_size=randint(12, 36), batch=batch)
             label.kind = False
             game_objects.extend([label])
