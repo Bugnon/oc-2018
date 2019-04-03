@@ -312,7 +312,6 @@ def update(dt):
 
 def add_word(dt):
     global word_amount
-    print("called")
     # Add words to fill in voids
     if word_amount[0] < 3:
             label = FloatingLabel(mots1[randint(0, len(mots1)-1)], font_size=randint(12, 36), batch=batch)
