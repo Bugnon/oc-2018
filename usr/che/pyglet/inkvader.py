@@ -9,9 +9,14 @@ pyglet.resource.path = ['./resources']
 pyglet.resource.reindex()
 pen_image = pyglet.resource.image('pen.png')
 ink_image = pyglet.resource.image('ink.png')
+splatter_image = pyglet.resource.image('splatter.png')
 fire_sound = []
 for i in range(7):
     fire_sound.append(pyglet.media.load('./resources/sounds/WaterDrop0' + str(i) + '.wav', streaming=False))
+
+splatter_sound = []
+for i in range(7):
+    splatter_sound.append(pyglet.media.load('./resources/sounds/Splatter0' + str(i) + '.wav', streaming=False))
 
 game_objects = []
 
@@ -34,12 +39,15 @@ window_height = inktilities.screenInfo("y")
 ink_scale = window_width/(ink_image.width*100)
 ink_image.anchor_x = ink_image.width / 2
 ink_image.anchor_y = ink_image.height / 2
+splatter_image.anchor_x = splatter_image.width / 2
+splatter_image.anchor_y = splatter_image.height / 2
 
 # Define pen variables
 has_fired = 0
 fire_treshold = 30
 pen_image.anchor_x = pen_image.width / 2
 pen_image.anchor_y = pen_image.height / 2
+pen_limits = [window_width / 5, window_width / 2]
 
 # Set up a window
 window = pyglet.window.Window(fullscreen=True)
@@ -76,7 +84,6 @@ class FloatingLabel(pyglet.text.Label):
         self.x = (self.x - 200) % (w-200) +200
         #self.x %= window.width-(window.width/10)
         self.y %= window_height-(window_height/15)
-
 
     def collides_with(self, obj):
         # Ignore ink collisions if we're supposed to
@@ -131,10 +138,14 @@ class Pen(pyglet.sprite.Sprite):
         else:
             self.dy = 0
 
-        if self.key_handler[key.RIGHT] and self.x < window_width / 2:
+        if self.key_handler[key.RIGHT] and not self.key_handler[key.LEFT]:
             self.dx = 5
-        elif self.key_handler[key.LEFT] and self.x > window.width / 5:
+            if self.x >= pen_limits[1]:
+                self.x = pen_limits[1]
+        elif self.key_handler[key.LEFT] and not self.key_handler[key.RIGHT]:
             self.dx = -5
+            if self.x <= pen_limits[0]:
+                self.x = pen_limits[0]
         else:
             self.dx = 0
         
@@ -147,14 +158,14 @@ class Pen(pyglet.sprite.Sprite):
             pass    
 
         self.y += self.dy
-        self.y %= window_height-(window_height/15) #Creates a zone free of words on top of the screen
+        self.y %= window_height-(window_height/15) #Makes the pen loop around the screen
 
         self.x += self.dx
 
     # Create and launch ink
     def fire(self):
         global ink_scale
-        ink_x = self.x+((window_width/(pen_image.width*16))*pen_image.width*0.9)
+        ink_x = self.x + pen.width / 2
         ink_y = self.y
         ink = Ink(x=ink_x, y=ink_y, batch=batch)
         ink.scale = ink_scale
@@ -189,9 +200,65 @@ class Ink(pyglet.sprite.Sprite):
 
     def __init__(self, *args, **kwargs):
         super().__init__(img=ink_image, *args, **kwargs)
-        self.dx = (window_width/self.width)
+        self.dx = (window_width / self.width + pen.dx / 3)
         # Kills the ink blob after it has had the time to travel through the map
         pyglet.clock.schedule_once(self.die, window_width/(9/10*self.dx*60))
+        self.is_ink = True
+        
+        # Collision attributes
+        self.react_to_ink = True
+        self.is_ink = True
+        self.dead = False
+
+        self.new_objects = []
+
+
+    def update(self, dt):
+        self.x += self.dx
+
+    # Marks the ink blob as dead
+    def die(self, dt):
+        self.dead = True
+
+    def collides_with(self, obj):
+        # Ignore ink collisions if we're supposed to
+        if not self.react_to_ink and obj.is_ink:
+            return False
+        if self.is_ink and not obj.react_to_ink:
+            return False
+
+        # Calculate distance between object centers that would be a collision,
+        # assuming square resources
+        collision_distance = self.width / 2 + obj.width / 2
+
+        # Get distance using position tuples
+        actual_distance = inktilities.distance((self.x, self.y), (obj.x, obj.y))
+
+        return (actual_distance <= collision_distance)
+
+    def handle_collision_with(self, obj):
+        #if obj.__class__ is not self.__class__:
+        #    self.dead = True
+        self.dead = True
+        self.splatter()
+
+    def splatter(self):
+        global ink_scale
+        splatter_x = self.x
+        splatter_y = self.y
+        splatter = Splatter(x=splatter_x, y=splatter_y, batch=batch)
+        splatter.scale = 0.1
+        splatter.rotation = randint(1, 360)
+        self.new_objects.append(splatter)
+        splatter_sound[randint(1, 6)].play()
+
+class Splatter(pyglet.sprite.Sprite):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(img=splatter_image, *args, **kwargs)
+        self.dx = 0.001
+        # Kills the ink blob after it has had the time to travel through the map
+        pyglet.clock.schedule_once(self.die, 2)
         self.is_ink = True
         
         # Collision attributes
@@ -203,7 +270,7 @@ class Ink(pyglet.sprite.Sprite):
 
 
     def update(self, dt):
-        self.x += self.dx
+        self.scale = abs(self.scale - self.dx)
 
     # Marks the ink blob as dead
     def die(self, dt):
@@ -263,6 +330,7 @@ def on_draw():
     batch.draw()
     inktilities.drawUI(window_height, window_width) #Draws the rest of the UI
     inktilities.drawChargeBar(pen, pen_image, has_fired) #Draws the charge bar
+    inktilities.drawLimitLine(window_height, pen, pen_limits) #Draws the limits when the pen touches them
 
 def update(dt):
     # Check collisions for all objects
@@ -274,9 +342,24 @@ def update(dt):
 
             # Make sure the objects haven't already been killed
             if not obj_1.dead and not obj_2.dead:
-                if obj_1.collides_with(obj_2):
-                    obj_1.handle_collision_with(obj_2)
-                    obj_2.handle_collision_with(obj_1)
+                #Checks if object 1 is text and object 2 ink/splatter, in order to use the special text hitbox formula
+                if obj_1.__class__ is FloatingLabel and obj_2.is_ink == True:
+                    obj = [obj_1.content_width, obj_1.content_height]
+                    if (obj_1.y - obj[1]/10 <= obj_2.y + obj_2.height <= obj_1.y + obj[1]*1.5) and (obj_1.x <= obj_2.x <= obj_1.x + obj[0]):
+                        obj_1.dead = True
+                        #If it's ink, it should splatter
+                        if obj_2.__class__ is Ink:
+                            obj_2.splatter()
+                            obj_2.dead = True
+                        else:
+                            splatter_sound[randint(1, 6)].play()
+                #Checks if both objects are Ink -> Splatter
+                elif obj_1.__class__ is Ink and obj_2.__class__ is Ink:
+                    if inktilities.distance((obj_1.x, obj_1.y), (obj_2.x, obj_2.y)) < obj_1.width/2:
+                        obj_1.dead = True
+                        obj_1.splatter()
+                        obj_2.dead = True
+                #Checks if 
 
     to_add = []
 
