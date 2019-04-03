@@ -1,10 +1,12 @@
 import pyglet, random, math, time, inktilities
 from pyglet.window import key, mouse
+from pyglet import clock
 from random import randint
 
 pyglet.options['audio'] = ('openal', 'silent')
 
 # Resources 
+fps_display = clock.ClockDisplay()
 pyglet.resource.path = ['./resources']
 pyglet.resource.reindex()
 pen_image = pyglet.resource.image('pen.png')
@@ -34,6 +36,12 @@ player.play()
 # Get screen size
 window_width = inktilities.screenInfo("x")
 window_height = inktilities.screenInfo("y")
+
+# Word variables
+word_amount = [0, 0]
+mots1 = [line.rstrip('\n') for line in open('mots1.txt')]
+mots2 = [line.rstrip('\n') for line in open('mots2.txt')]
+labels = []
 
 # Define ink variables
 ink_scale = window_width/(ink_image.width*100)
@@ -76,41 +84,16 @@ class FloatingLabel(pyglet.text.Label):
 
         self.new_objects = []
 
+        self.kind = bool
+
     '''Applies acceleration when object moves, and ensures it stays within the game's borders'''
     def update(self, dt):
         w, h = window.width, window.height
         self.x += self.dx
         self.y += self.dy
         self.x = (self.x - 200) % (w-200) +200
-        #self.x %= window.width-(window.width/10)
         if self.y >= h - (h / 15) or self.y < 0:
             self.dy = -self.dy
-        #self.y %= window_height-(window_height/15)
-
-    def collides_with(self, obj):
-        # Ignore ink collisions if we're supposed to
-        if not self.react_to_ink and obj.is_ink:
-            return False
-        if self.is_ink and not obj.react_to_ink:
-            return False
-
-        # Calculate distance between object centers that would be a collision,
-        # assuming square resources
-        if obj.__class__ == self.__class__:
-            other_width = obj.content_width
-        else:
-            other_width = obj.width
-        collision_distance = self.content_width / 2 + other_width / 2
-
-        # Get distance using position tuples
-        actual_distance = inktilities.distance((self.x, self.y), (obj.x, obj.y))
-
-        return (actual_distance <= collision_distance)
-
-    def handle_collision_with(self, obj):
-        if obj.__class__ is not self.__class__:
-            self.dead = True
-
 
 class Pen(pyglet.sprite.Sprite):
 
@@ -164,8 +147,6 @@ class Pen(pyglet.sprite.Sprite):
             pass    
 
         self.y += self.dy
-        #self.y %= window_height-(window_height/15) #Makes the pen loop around the screen
-
         self.x += self.dx
 
     # Create and launch ink
@@ -178,29 +159,6 @@ class Pen(pyglet.sprite.Sprite):
         self.new_objects.append(ink)
         fire_sound[randint(1, 6)].play()
 
-    def collides_with(self, obj):
-        # Ignore ink collisions if we're supposed to
-        if not self.react_to_ink and obj.is_ink:
-            return False
-        if self.is_ink and not obj.react_to_ink:
-            return False
-
-        # Calculate distance between object centers that would be a collision,
-        # assuming square resources
-        if obj.__class__ == self.__class__:
-            other_width = obj.width
-        else:
-            other_width = obj.content_width
-        collision_distance = self.width / 2 + other_width / 2
-
-        # Get distance using position tuples
-        actual_distance = inktilities.distance((self.x, self.y), (obj.x, obj.y))
-
-        return (actual_distance <= collision_distance)
-
-    def handle_collision_with(self, obj):
-        if obj.__class__ is not self.__class__:
-            self.dead = True
 
 class Ink(pyglet.sprite.Sprite):
 
@@ -225,28 +183,6 @@ class Ink(pyglet.sprite.Sprite):
     # Marks the ink blob as dead
     def die(self, dt):
         self.dead = True
-
-    def collides_with(self, obj):
-        # Ignore ink collisions if we're supposed to
-        if not self.react_to_ink and obj.is_ink:
-            return False
-        if self.is_ink and not obj.react_to_ink:
-            return False
-
-        # Calculate distance between object centers that would be a collision,
-        # assuming square resources
-        collision_distance = self.width / 2 + obj.width / 2
-
-        # Get distance using position tuples
-        actual_distance = inktilities.distance((self.x, self.y), (obj.x, obj.y))
-
-        return (actual_distance <= collision_distance)
-
-    def handle_collision_with(self, obj):
-        #if obj.__class__ is not self.__class__:
-        #    self.dead = True
-        self.dead = True
-        self.splatter()
 
     def splatter(self):
         global ink_scale
@@ -282,32 +218,6 @@ class Splatter(pyglet.sprite.Sprite):
     def die(self, dt):
         self.dead = True
 
-    def collides_with(self, obj):
-        # Ignore ink collisions if we're supposed to
-        if not self.react_to_ink and obj.is_ink:
-            return False
-        if self.is_ink and not obj.react_to_ink:
-            return False
-
-        # Calculate distance between object centers that would be a collision,
-        # assuming square resources
-        collision_distance = self.width / 2 + obj.width / 2
-
-        # Get distance using position tuples
-        actual_distance = inktilities.distance((self.x, self.y), (obj.x, obj.y))
-
-        return (actual_distance <= collision_distance)
-
-    def handle_collision_with(self, obj):
-        if obj.__class__ is not self.__class__:
-            self.dead = True
-
-
-
-mots = ['Alexandrin', 'ballade', 'césure', 'rime', 'poème', 'décasyllabe', 'fables','lyrique','sizain','strophe','tercet','hpetasyllabe']
-mots2 = ['arbre', 'soleil', 'monde','banane','table','sac','stylos','coiffeur','lunette','pull','bracelet','montre']
-labels = []
-
 # Pen creation
 pen = Pen(batch=batch)
 pen.scale = window_width/(pen_image.width*16)
@@ -316,18 +226,7 @@ pen.rotation = 0
 # Registering key event handler
 window.push_handlers(pen.key_handler)
 
-for mot in mots:
-    label = FloatingLabel(mot, font_size=randint(12, 36), batch=batch)
-    labels.append(label)
-
-#for mot in mots2:
-#    label = FloatingLabel(mot, font_size=randint(12, 36), batch=batch)
-#    labels.append(label)
-
-
 game_objects.append(pen)
-game_objects.extend(labels)
-
 
 @window.event
 def on_draw():
@@ -337,8 +236,12 @@ def on_draw():
     inktilities.drawUI(window_height, window_width) #Draws the rest of the UI
     inktilities.drawChargeBar(pen, pen_image, has_fired) #Draws the charge bar
     inktilities.drawLimitLine(window_height, pen, pen_limits) #Draws the limits when the pen touches them
+    fps_display.draw()
 
 def update(dt):
+
+    global word_amount
+
     # Check collisions for all objects
     for i in range(len(game_objects)):
         for j in range(i + 1, len(game_objects)):
@@ -353,6 +256,10 @@ def update(dt):
                     obj = [obj_1.content_width, obj_1.content_height]
                     if (obj_1.y - obj[1]/10 <= obj_2.y + obj_2.height <= obj_1.y + obj[1]*1.5) and (obj_1.x <= obj_2.x <= obj_1.x + obj[0]):
                         obj_1.dead = True
+                        if obj_1.kind == True:
+                            word_amount[0] += -1
+                        elif obj_1.kind == False:
+                            word_amount[1] += -1
                         #If it's ink, it should splatter
                         if obj_2.__class__ is Ink:
                             obj_2.splatter()
@@ -387,7 +294,23 @@ def update(dt):
 
     # Add new objects to the list
     game_objects.extend(to_add)
-    
 
+def add_word(dt):
+    global word_amount
+    print("called")
+    # Add words to fill in voids
+    if word_amount[0] < 2:
+            label = FloatingLabel(mots1[randint(0, len(mots1)-1)], font_size=randint(12, 36), batch=batch)
+            label.kind = True
+            game_objects.extend([label])
+            word_amount[0] += 1
+    
+    if word_amount[1] < 2:
+            label = FloatingLabel(mots2[randint(0, len(mots2)-1)], font_size=randint(12, 36), batch=batch)
+            label.kind = False
+            game_objects.extend([label])
+            word_amount[1] += 1
+
+pyglet.clock.schedule_interval(add_word, 5) # add words every 5 seconds
 pyglet.clock.schedule_interval(update, 1/60) # update at 60Hz
 pyglet.app.run()

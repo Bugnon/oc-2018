@@ -1,0 +1,12 @@
+arbre
+soleil
+monde
+banane
+table
+sac
+stylos
+coiffeur
+lunette
+pull
+bracelet
+montre
