@@ -6,7 +6,7 @@ from random import randint
 pyglet.options['audio'] = ('openal', 'silent')
 
 # Resources 
-fps_display = clock.ClockDisplay()
+#fps_display = clock.ClockDisplay()
 pyglet.resource.path = ['./resources']
 pyglet.resource.reindex()
 pen_image = pyglet.resource.image('pen.png')
@@ -21,6 +21,7 @@ for i in range(7):
     splatter_sound.append(pyglet.media.load('./resources/sounds/Splatter0' + str(i) + '.wav', streaming=False))
 
 levelup_sound = pyglet.media.load('./resources/sounds/Levelup.wav', streaming=False)
+rip_sound = pyglet.media.load('./resources/sounds/Rip.wav', streaming=False)
 
 game_objects = []
 
@@ -28,7 +29,8 @@ game_objects = []
 # create a player and queue the song
 player = pyglet.media.Player()
 sound = pyglet.media.load('./resources/music/Furious Freak.wav')
-player.queue(sound) 
+player.queue(sound)
+player.volume = 0.5 
 
 # keep playing for as long as the app is running (or you tell it to stop):
 player.eos_action = pyglet.media.SourceGroup.loop
@@ -96,7 +98,7 @@ class FloatingLabel(pyglet.text.Label):
         w, h = window.width, window.height
         self.x += self.dx
         self.y += self.dy
-        self.x = (self.x - 200) % (w-200) +200
+        self.x %= window_width
         if self.y >= h - (h / 15) or self.y < 0:
             self.dy = -self.dy
 
@@ -122,11 +124,11 @@ class Pen(pyglet.sprite.Sprite):
         global has_fired
         
         if self.key_handler[key.UP] and not self.key_handler[key.DOWN]:
-            self.dy = 10
+            self.dy = 7
             if self.y >= window_height - window_height / 15 - self.height:
                 self.y = window_height - window_height / 15 - self.height 
         elif self.key_handler[key.DOWN] and not self.key_handler[key.UP]:
-            self.dy = -10
+            self.dy = -7
             if self.y <= self.height:
                 self.y = self.height
         else:
@@ -241,7 +243,7 @@ def on_draw():
     inktilities.drawUI(window_height, window_width) #Draws the rest of the UI
     inktilities.drawChargeBar(pen, pen_image, has_fired) #Draws the charge bar
     inktilities.drawLimitLine(window_height, pen, pen_limits) #Draws the limits when the pen touches them
-    fps_display.draw()
+    #fps_display.draw()
 
 def update(dt):
 
@@ -275,6 +277,7 @@ def update(dt):
                                 score += 1
                         elif obj_1.kind == False:
                             word_amount[1] += -1
+                            rip_sound.play()
                         #If it's ink, it should splatter
                         if obj_2.__class__ is Ink: 
                             obj_2.splatter()
