@@ -1,6 +1,7 @@
 import pyglet
 import math
 from pyglet.window import key
+import game_Hugo
 
 player_image = pyglet.resource.image("resources/encrier.png")
 # définition d'une nouvelle classe
@@ -50,3 +51,26 @@ class Player(pyglet.sprite.Sprite):
             self.rotation -= self.rotate_speed * dt
         elif self.keys['right']:
             self.rotation += self.rotate_speed * dt
+
+class Ink(pyglet.sprite.Sprite):
+    def __init__(self, *args, **kwargs):
+        super(Ink, self).__init__(*args, **kwargs)
+
+        self.speed_x = self.speed * math.sin(self.rotation)
+        self.speed_y = self.speed * math.cos(self.rotation)
+
+        self.keys = {'space':False}
+
+    def on_key_press(self, symbol, modifiers):
+        if symbol == key.SPACE:
+            self.keys['space'] = True
+
+    def on_key_release(self, symbol, modifiers):
+        if symbol == key.SPACE:
+            self.keys['space'] = False
+    
+    def update(self, dt):
+        if self.keys['space']:
+            ink.draw()
+            self.x += self.speed_x * dt
+            self.y += self.speed_y * dt

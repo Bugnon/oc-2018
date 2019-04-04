@@ -1,7 +1,7 @@
 import pyglet, random
 import math
 from pyglet import font
-from rotatingsprite import RotatingSprite, Player
+from classes import RotatingSprite, Player, Ink
 
 font.add_file('resources/Angelface.otf')
 Angelface = font.load('Angelface', 14)
