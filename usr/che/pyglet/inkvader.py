@@ -15,7 +15,7 @@ splatter_image = pyglet.resource.image('splatter.png')
 fire_sound = []
 for i in range(7):
     fire_sound.append(pyglet.media.load('./resources/sounds/WaterDrop0' + str(i) + '.wav', streaming=False))
-
+ 
 splatter_sound = []
 for i in range(7):
     splatter_sound.append(pyglet.media.load('./resources/sounds/Splatter0' + str(i) + '.wav', streaming=False))
@@ -30,7 +30,7 @@ game_objects = []
 player = pyglet.media.Player()
 sound = pyglet.media.load('./resources/music/Furious Freak.wav')
 player.queue(sound)
-player.volume = 0.5 
+player.volume = 0.4
 
 # keep playing for as long as the app is running (or you tell it to stop):
 player.eos_action = pyglet.media.SourceGroup.loop
@@ -70,7 +70,6 @@ level = 1
 
 #show current verse at a fixed point no matter the window's size : 1% padding to the left,
 verse = pyglet.text.Label(text="Vers " + str(level) + " | ", x=window_width/100, y=window_height-(window_height/30), font_size=window_height/40, batch=batch)
-#versetest = pyglet.text.Label(text=str(window_height-(window_height/30)), x=10, y=10, font_size=window_height/40, batch=batch)
 
 '''Creates a class for the floating text'''
 class FloatingLabel(pyglet.text.Label):
@@ -98,7 +97,7 @@ class FloatingLabel(pyglet.text.Label):
         w, h = window.width, window.height
         self.x += self.dx
         self.y += self.dy
-        self.x %= window_width
+        self.x %= w
         if self.y >= h - (h / 15) or self.y < 0:
             self.dy = -self.dy
 
@@ -171,7 +170,9 @@ class Ink(pyglet.sprite.Sprite):
 
     def __init__(self, *args, **kwargs):
         super().__init__(img=ink_image, *args, **kwargs)
-        self.dx = (window_width / self.width + pen.dx / 3)
+        # Ink speed is proportional to the window's width and itselfs, and is affected by the pen's current speed
+        self.dx = (2*window_width / self.width + pen.dx / 3)
+
         # Kills the ink blob after it has had the time to travel through the map
         pyglet.clock.schedule_once(self.die, window_width/(9/10*self.dx*60))
         self.is_ink = True
@@ -330,4 +331,5 @@ def add_word(dt):
 
 pyglet.clock.schedule_interval(add_word, 5) # add words every 5 seconds
 pyglet.clock.schedule_interval(update, 1/60) # update at 60Hz
+print("test")
 pyglet.app.run()
