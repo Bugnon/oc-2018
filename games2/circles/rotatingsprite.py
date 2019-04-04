@@ -29,7 +29,7 @@ class Player(pyglet.sprite.Sprite):
     def __init__(self, *args, **kwargs):
         super(Player, self).__init__(*args, **kwargs)
         
-        self.rotate_speed=100
+        self.rotate_speed=150
 
         self.keys = {'left':False, 'right':False}
 
