@@ -72,15 +72,18 @@ def write_words():
                 label.draw()
 
 def write_poetry():
-    saut = 0
+    saut = 55
     for line in poetry:
         saut = saut+15*x/800
         poeme = pyglet.text.Label(line,
                             font_name='Angelface',
                             font_size=14*x/800,
                             color=(0, 0, 50, 255),
-                            x=x-290*x/800, y=y-30*x/800-saut)
+                            x=x-290*x/800, y=y-30*x/800-saut,
+                            batch=batch)
         poeme.draw()
+
+write_poetry()
 
 @game_window.event
 def on_draw():
@@ -88,8 +91,8 @@ def on_draw():
     wallpaper_sprite.draw()
     player_ink.draw()
     parchemin_sprite.draw()
+    #write_poetry()
     batch.draw()
-    write_poetry()
     write_words()
 
 def update(dt):
