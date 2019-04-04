@@ -29,7 +29,7 @@ greenblock.height = imageHeight
 
 # setting an image as the background 
 
-background = pyglet.image.load('parchemin.jpg')
+# background = pyglet.image.load('parchemin.jpg')
 
 # displaying a text behind the blocks
 label = pyglet.text.Label('BreakoutEtPoésie', 
