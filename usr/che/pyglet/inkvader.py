@@ -30,7 +30,7 @@ game_objects = []
 player = pyglet.media.Player()
 sound = pyglet.media.load('./resources/music/Furious Freak.wav')
 player.queue(sound)
-player.volume = 0.75 
+player.volume = 0.5 
 
 # keep playing for as long as the app is running (or you tell it to stop):
 player.eos_action = pyglet.media.SourceGroup.loop
