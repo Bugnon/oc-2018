@@ -29,9 +29,9 @@ class Player(pyglet.sprite.Sprite):
     def __init__(self, *args, **kwargs):
         super(Player, self).__init__(*args, **kwargs)
         
-        self.rotate_speed=50
+        self.rotate_speed=150
 
-        self.keys = dict(left=False, true=False)
+        self.keys = {'left':False, 'right':False}
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.LEFT:
@@ -46,8 +46,6 @@ class Player(pyglet.sprite.Sprite):
             self.keys['right'] = False
     
     def update(self, dt):
-        super(Player, self).update(dt)
-
         if self.keys['left']:
             self.rotation -= self.rotate_speed * dt
         elif self.keys['right']:

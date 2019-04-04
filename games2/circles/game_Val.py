@@ -26,7 +26,8 @@ parchemin_sprite = pyglet.sprite.Sprite(img=parchemin_image, x=x-y/rapportparche
 # Player
 player_image = pyglet.resource.image("resources/encrier.png")
 center_image(player_image)
-player_ink = pyglet.sprite.Sprite(img=player_image, x=(x-y/rapportparchemin)/2, y=y/2)
+#player_ink = pyglet.sprite.Sprite(img=player_image, x=(x-y/rapportparchemin)/2, y=y/2)
+player_ink = Player(img=player_image, x=400, y=y/2)
 
 # Poetry
 def write_poetry():
