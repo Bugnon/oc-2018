@@ -4,7 +4,7 @@ from pyglet import font
 from rotatingsprite import RotatingSprite, Player
 
 font.add_file('resources/Angelface.otf')
-Angelface = font.load('Angelface', 16)
+Angelface = font.load('Angelface', 14)
 
 def center_image(image):
     """Sets an image's anchor point to its center"""
@@ -55,6 +55,8 @@ for i in range(15):
 
 words = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o']
 
+poetry = open("resources/poeme.txt")
+
 def write_words():
         i = 0
         for word in words:
@@ -69,17 +71,27 @@ def write_words():
                 i += 1
                 label.draw()
 
+def split_poetry():
+        ListLines = poetry.readlines()
+        ListWords = []
+        for line in ListLines:
+                words = line.split(' ')
+                ListWords.append(words)
+
+def choose_words():
+        random.choice(ListWords)
 def write_poetry():
-    txt = open("resources/poeme.txt", "r")
-    saut = 0
-    for line in txt:
-        saut = saut+15*x/800
-        poeme = pyglet.text.Label(line,
-                            font_name='AngelFace',
-                            font_size=14*x/800,
-                            color=(0, 0, 50, 255),
-                            x=x-300*x/800, y=y-40*x/800-saut)
-        poeme.draw()
+        saut = 0
+        for line in poetry:
+                saut = saut+15*x/800
+                poeme = pyglet.text.Label(line,
+                                font_name='Angelface',
+                                font_size=14*x/800,
+                                color=(0, 0, 50, 255),
+                                x=x-290*x/800, y=y-30*x/800-saut)
+                poeme.draw()
+def all_poetry():
+        split_poetry()
 
 @game_window.event
 def on_draw():
@@ -87,8 +99,8 @@ def on_draw():
     wallpaper_sprite.draw()
     player_ink.draw()
     parchemin_sprite.draw()
-    write_poetry()
     batch.draw()
+    write_poetry()
     write_words()
 
 def update(dt):
