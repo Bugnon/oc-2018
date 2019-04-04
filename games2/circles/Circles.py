@@ -72,7 +72,15 @@ def write_words():
                 label.text = msg
                 i += 1
                 label.draw()
+def split_poetry():
+        ListLines = poetry.readlines()
+        ListWords = []
+        for line in ListLines:
+                words = line.split(' ')
+                ListWords.append(words)
 
+def choose_words():
+        random.choice(ListWords)
 def write_poetry():
     saut = 55
     for line in poetry:
