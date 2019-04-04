@@ -1,4 +1,4 @@
-import pyglet
+import pyglet, random
 import math
 from pyglet import font
 from rotatingsprite import RotatingSprite, Player
@@ -53,7 +53,7 @@ for i in range(15):
     segment.scale = 0.55*x/1200
     segments.append(segment)
 
-words = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o']
+words = ['arbre','fromage','language','beau','ramage','hôte','voix','bec','flatteur','dépens','leçon','honteux','confus','jura','tard']
 
 poetry = open("resources/poeme.txt")
 
@@ -63,7 +63,7 @@ def write_words():
                 msg = '{}'.format(word)
                 label = pyglet.text.Label(msg,
                           font_name='Times New Roman',
-                          font_size=30,
+                          font_size=20,
                           color=(75, 0, 130, 255),
                           x=segments[i].x, y=segments[i].y,
                           anchor_x='center', anchor_y='center')
@@ -71,27 +71,16 @@ def write_words():
                 i += 1
                 label.draw()
 
-def split_poetry():
-        ListLines = poetry.readlines()
-        ListWords = []
-        for line in ListLines:
-                words = line.split(' ')
-                ListWords.append(words)
-
-def choose_words():
-        random.choice(ListWords)
 def write_poetry():
-        saut = 0
-        for line in poetry:
-                saut = saut+15*x/800
-                poeme = pyglet.text.Label(line,
-                                font_name='Angelface',
-                                font_size=14*x/800,
-                                color=(0, 0, 50, 255),
-                                x=x-290*x/800, y=y-30*x/800-saut)
-                poeme.draw()
-def all_poetry():
-        split_poetry()
+    saut = 0
+    for line in poetry:
+        saut = saut+15*x/800
+        poeme = pyglet.text.Label(line,
+                            font_name='Angelface',
+                            font_size=14*x/800,
+                            color=(0, 0, 50, 255),
+                            x=x-290*x/800, y=y-30*x/800-saut)
+        poeme.draw()
 
 @game_window.event
 def on_draw():
