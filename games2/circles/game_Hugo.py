@@ -30,7 +30,9 @@ wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
 
 player_image = pyglet.resource.image("resources/encrier.png")
 center_image(player_image)
-player_ink = pyglet.sprite.Sprite(img=player_image, x=(x-y/rapportparchemin)/2, y=y/2, batch=batch)
+player_ink = Player(img=player_image, x=(x-y/rapportparchemin)/2, y=y/2, batch=batch)
+
+game_window.push_handlers(player_ink)
 
 # utilisation de la classe Sprite telquel
 # https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/sprite.html?highlight=sprites
@@ -50,7 +52,7 @@ for i in range(15):
     segment.r = r
     segment.xc = xc
     segment.yc = yc
-    segment.scale = 0.55*x/1200
+    segment.scale = 0.56*x/1200
     segments.append(segment)
 
 words = ['arbre','fromage','language','beau','ramage','hôte','voix','bec','flatteur','dépens','leçon','honteux','confus','jura','tard']
@@ -63,7 +65,7 @@ def write_words():
                 msg = '{}'.format(word)
                 label = pyglet.text.Label(msg,
                           font_name='Times New Roman',
-                          font_size=20,
+                          font_size=15,
                           color=(75, 0, 130, 255),
                           x=segments[i].x, y=segments[i].y,
                           anchor_x='center', anchor_y='center')
@@ -72,29 +74,35 @@ def write_words():
                 label.draw()
 
 def write_poetry():
-    saut = 0
+    saut = 55
     for line in poetry:
-        saut = saut+15*x/800
+        saut = saut+17*x/800
         poeme = pyglet.text.Label(line,
                             font_name='Angelface',
                             font_size=14*x/800,
                             color=(0, 0, 50, 255),
-                            x=x-290*x/800, y=y-30*x/800-saut)
+                            x=x-320*x/800, y=y-30*x/800-saut,
+                            batch=batch)
         poeme.draw()
+
+write_poetry()
 
 @game_window.event
 def on_draw():
+
     game_window.clear()
     wallpaper_sprite.draw()
     player_ink.draw()
     parchemin_sprite.draw()
+
     batch.draw()
-    write_poetry()
     write_words()
 
 def update(dt):
     for segment in segments:
         segment.update(dt)
+    player_ink.update(dt)
+
 
 if __name__ == "__main__":
 

@@ -17,15 +17,19 @@ y = int(x*9/16)
 game_window = pyglet.window.Window(x, y)
 pyglet.gl.glClearColor(1,1,1,1)
 
+# Parchemin
 parchemin_image = pyglet.resource.image('resources/parchemin2.png')
 parchemin_image.lengh = y
 parchemin_image.width = y/rapportparchemin
 parchemin_sprite = pyglet.sprite.Sprite(img=parchemin_image, x=x-y/rapportparchemin, y=0)
 
+# Player
 player_image = pyglet.resource.image("resources/encrier.png")
 center_image(player_image)
-player_ink = pyglet.sprite.Sprite(img=player_image, x=(x-y/rapportparchemin)/2, y=y/2)
+#player_ink = pyglet.sprite.Sprite(img=player_image, x=(x-y/rapportparchemin)/2, y=y/2)
+player_ink = Player(img=player_image, x=400, y=y/2)
 
+# Poetry
 def write_poetry():
     txt = open("resources/poeme.txt", "r")
     saut = 0
