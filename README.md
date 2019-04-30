@@ -15,5 +15,7 @@ Sujets:
   * boucles, if-else
   * fonctions
   * lists, dictionnaires, tuples
+* Entrées-sortes avec le SenseHAT
+* Programmer un jeu avec SenseHAT
 * Programmer un jeu avec pyglet
 * Programmation orienté objet (POO)
