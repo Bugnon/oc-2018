@@ -16,3 +16,4 @@ Sujets:
   * fonctions
   * lists, dictionnaires, tuples
 * Programmer un jeu avec pyglet
+* Programmation orienté objet (POO)
