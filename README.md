@@ -35,3 +35,9 @@ Install the virtual environment manager
 Install the sphinx document generation system:
     
     conda install sphinx
+
+Install the sphinx_rtd_theme
+
+    pip install sphinx_rtd_theme
+
+Install the VS Code extension **Live Server** (ritwickdey.liveserver).

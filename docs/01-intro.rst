@@ -1,4 +1,3 @@
-=====================================
 Option complémentaire en informatique
 =====================================
 
@@ -100,8 +99,8 @@ term (up to a line of text)
 next term
    Description.
 
- Line blocks
- -----------
+Line blocks
+-----------
 
 | These lines are
 | broken exactly like in
