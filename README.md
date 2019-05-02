@@ -1,6 +1,7 @@
 # Option complémentaire en informatique 2018-2019
 
 Sujets:
+
 * Le Raspberry Pi
 * Commandes linux
 * Thonny, un éditeur Python
@@ -19,3 +20,18 @@ Sujets:
 * Programmer un jeu avec SenseHAT
 * Programmer un jeu avec pyglet
 * Programmation orienté objet (POO)
+
+## Environnement virtuel
+
+Update the pip package manager in the private user space
+
+    /anaconda3/bin/python3 -m pip install --upgrade --user pip
+
+Install the virtual environment manager
+
+    /anaconda3/bin/python3 -m pip install --user virtualenv
+
+
+Install the sphinx document generation system:
+    
+    conda install sphinx
