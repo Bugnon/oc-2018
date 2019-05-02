@@ -1,7 +1,6 @@
 import pyglet
 import math
 from pyglet.window import key
-import game_Hugo
 
 player_image = pyglet.resource.image("resources/encrier.png")
 # définition d'une nouvelle classe
@@ -30,7 +29,7 @@ class Player(pyglet.sprite.Sprite):
     def __init__(self, *args, **kwargs):
         super(Player, self).__init__(*args, **kwargs)
         
-        self.rotate_speed=150
+        self.rotate_speed=200
 
         self.keys = {'left':False, 'right':False}
 
@@ -45,16 +44,18 @@ class Player(pyglet.sprite.Sprite):
             self.keys['left'] = False
         elif symbol == key.RIGHT:
             self.keys['right'] = False
-    
+
     def update(self, dt):
         if self.keys['left']:
             self.rotation -= self.rotate_speed * dt
         elif self.keys['right']:
             self.rotation += self.rotate_speed * dt
 
-class Ink(pyglet.sprite.Sprite):
+class Feather(pyglet.sprite.Sprite):
     def __init__(self, *args, **kwargs):
-        super(Ink, self).__init__(*args, **kwargs)
+        super(Feather, self).__init__(*args, **kwargs)
+
+        self.speed = 100
 
         self.speed_x = self.speed * math.sin(self.rotation)
         self.speed_y = self.speed * math.cos(self.rotation)
@@ -71,6 +72,6 @@ class Ink(pyglet.sprite.Sprite):
     
     def update(self, dt):
         if self.keys['space']:
-            ink.draw()
+            self.draw()
             self.x += self.speed_x * dt
             self.y += self.speed_y * dt
