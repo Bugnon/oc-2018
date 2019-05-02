@@ -21,7 +21,7 @@ pyglet.gl.glClearColor(1,1,1,1)
 batch = pyglet.graphics.Batch()
 
 musicSource = pyglet.media.load('resources/Violin.wav')
-music = pyglet.media.Player()
+music = pyglet.media.Player() 
 music.volume = 0.001
 
 parchemin_image = pyglet.resource.image('resources/parchemin.png')
@@ -41,6 +41,8 @@ center_image(feather_image)
 feather = Feather(img=feather_image, x=0, y=0)
 
 game_window.push_handlers(player_ink)
+
+game_window.push_handlers(feather)
 
 # utilisation de la classe Sprite telquel
 # https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/sprite.html?highlight=sprites
@@ -114,7 +116,6 @@ def on_draw():
 
     batch.draw()
     write_words()
-    
 
 def update(dt):
     for segment in segments:
