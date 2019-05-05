@@ -8,8 +8,10 @@ Angelface = font.load('Angelface', 14)
 
 def center_image(image):
     """Sets an image's anchor point to its center"""
-    image.anchor_x = image.width / 2
-    image.anchor_y = image.height / 2
+    image.anchor_x = image.width // 2
+    image.anchor_y = image.height // 2
+
+game_objects = []
 
 # Set up a window
 rapportparchemin = 3506/2480
@@ -47,8 +49,7 @@ game_window.push_handlers(feather)
 # utilisation de la classe Sprite telquel
 # https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/sprite.html?highlight=sprites
 circle_segment = pyglet.image.load("resources/circle_segment.png")
-circle_segment.anchor_x = circle_segment.width//2
-circle_segment.anchor_y = circle_segment.height//2
+center_image(circle_segment)
 
 segments = []
 xc, yc = ((x-y/rapportparchemin)//2, y/2)
@@ -106,6 +107,8 @@ def write_poetry():
 
 write_poetry()
 
+
+
 @game_window.event
 def on_draw():
 
@@ -117,10 +120,14 @@ def on_draw():
     batch.draw()
     write_words()
 
+
 def update(dt):
     for segment in segments:
         segment.update(dt)
     player_ink.update(dt)
+    for feather in player_ink.feathers:
+        feather.update(dt)
+        
 
 
 if __name__ == "__main__":
