@@ -1,32 +1,29 @@
-=====================================
 Option complémentaire en informatique
 =====================================
 
-Ce site GitHub contient le matériel pour le cours d'option complémentaire 
-en informatique du gymnase du Bugnon.
+Ce site présente le matériel pour le cours d'option complémentaire 
+en informatique du gymnase du Bugnon en 2018-2019.
 
 Les sujets sonts: 
 
+* le robot Thymio
+   * Programmation VPL (Visual Programming Language)
+   * Programmation en Aseaba
+   * système binaire, opérations
 * Raspberry Pi
 * GitHub
 * Linux
-* LaTeX
 * Python
 * Jupyter Lab
 * Jupyter Notebook
-* Widgets
-* Bokeh
-* Matplotlib
-* NumPy
-* SciPy
-* OpenCV
 * MarkDown
 * reStructuredText
 * Sphinx
-* HTML
-* CSS
-* Pygame
-* Minecraft
+* SenseHAT
+* Pyglet
+
+Getting started with Sphinx
+---------------------------
 
 Once Sphinx is :doc:`installed <glossary>`, you can proceed with
 setting up your first Sphinx project. To ease the process of getting started,
@@ -37,7 +34,7 @@ necessary.
 
 
 Préparation de l'infrastructure
-------------------------------------
+-------------------------------
 
 The root directory of a Sphinx collection of :term:`reStructuredText` document
 sources is called the :term:`source directory`.  This directory also contains
@@ -100,8 +97,8 @@ term (up to a line of text)
 next term
    Description.
 
- Line blocks
- -----------
+Line blocks
+-----------
 
 | These lines are
 | broken exactly like in
@@ -138,7 +135,7 @@ Tables
 | body row 2             | ...        | ...      |          |
 +------------------------+------------+----------+----------+
 
-This is another form.
+This is simpler form:
 
 =====  =====  =======
 A      B      A and B
@@ -158,15 +155,13 @@ If link text and link are the same use : https://www.epfl.ch without any special
 
 
 This is a heading
-=================
+-----------------
 
 This is a heading
------------------
+^^^^^^^^^^^^^^^^^
 
 .. this is a comment
 
 .. code-block:: shell
 
    $ sphinx-quickstart
-
-
