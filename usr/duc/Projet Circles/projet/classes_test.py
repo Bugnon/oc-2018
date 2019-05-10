@@ -1,16 +1,27 @@
 import pyglet, random, math, time
 from pyglet.window import key
 
+fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
+fire_sound = pyglet.media.Player()
+fire_sound.volume = 0.01
+
 def center_image(image):
     """Sets an image's anchor point to its center"""
     image.anchor_x = image.width // 2
     image.anchor_y = image.height // 2
+
+def distance(point_1=(0, 0), point_2=(0, 0)):
+    return math.sqrt(
+        (point_1[0] - point_2[0]) ** 2 +
+        (point_1[1] - point_2[1]) ** 2)
 
 
 class Player(pyglet.sprite.Sprite):
     """Classe définissant le joueur qui sera contrôlé avec les flèches gauche et droite."""
     def __init__(self, *args, **kwargs):
         super(Player, self).__init__(*args, **kwargs)
+
+        self.image = pyglet.resource.image('resources/sprites/player.png')
         
         self.rotate_speed = 200
 
@@ -51,9 +62,11 @@ class Player(pyglet.sprite.Sprite):
         feather.y = self.y + self.height * math.cos(math.radians(self.angle))
         
         feather.rotation = self.angle
-
         feather.scale = 0.03
+
         self.feathers.append(feather)
+        fire_sound.queue(fire)
+        fire_sound.play()
         self.reloading = 45 # 0,75 sec car il descend de 1 chaque 1/60 sec
 
     def update(self, dt):
@@ -71,13 +84,18 @@ class Player(pyglet.sprite.Sprite):
             self.reloading -= 1
         
         for feather in self.feathers:
+            
             Feather.update_position(feather, dt)
+
 
             platform = pyglet.window.get_platform()
             display = platform.get_default_display()      
             screen = display.get_default_screen()
             screen_width = screen.width
             screen_height = screen.height
+
+            if feather.dead == True:
+                self.feathers.remove(feather)
 
             if feather.x <= 0 or feather.x >= screen_width:
                 self.feathers.remove(feather)
@@ -89,6 +107,8 @@ class Feather(pyglet.sprite.Sprite):
     def __init__(self, player, *args, **kwargs):
         super(Feather, self).__init__(*args, **kwargs)
 
+        self.image = pyglet.resource.image('resources/sprites/feather.png')
+
         self.speed = 600 # Norm of the velocity$
 
         self.angle = player.angle
@@ -96,8 +116,15 @@ class Feather(pyglet.sprite.Sprite):
         self.dx = math.sin(math.radians(player.angle)) * self.speed
         self.dy = math.cos(math.radians(player.angle)) * self.speed
 
-    def update_position(self, dt):
+        self.dead = False
 
+    def collides_with(self, other_object):
+        collision_distance = self.image.width//2 + other_object.image.width//2
+        actual_distance = distance(self.position, other_object.position)
+
+        return (actual_distance <= collision_distance)
+
+    def update_position(self, dt):
 
         self.x += self.dx * dt
         self.y += self.dy * dt
@@ -116,6 +143,8 @@ class RotatingSprite(pyglet.sprite.Sprite):
 
         self.scale = 0.56*x/1200
 
+        self.dead = False
+
     def update_position(self):
         self.x = self.xc + self.r * math.sin(self.angle)
         self.y = self.yc + self.r * math.cos(self.angle)
@@ -123,4 +152,5 @@ class RotatingSprite(pyglet.sprite.Sprite):
 
     def update(self, dt):
         self.angle += self.angular_velocity * dt
+
         self.update_position()

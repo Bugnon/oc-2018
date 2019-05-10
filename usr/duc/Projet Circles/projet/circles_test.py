@@ -12,10 +12,15 @@ def center_image(image):
     image.anchor_x = image.width // 2
     image.anchor_y = image.height // 2
 
+def distance(point_1=(0, 0), point_2=(0, 0)):
+    return math.sqrt(
+        (point_1[0] - point_2[0]) ** 2 +
+        (point_1[1] - point_2[1]) ** 2)
+
 #import music file
-musicSource = pyglet.media.load('resources/sound/Violin.wav')
-music = pyglet.media.Player() 
-music.volume = 0.001
+musicSource = pyglet.media.load('resources/sound/violin.wav')
+music = pyglet.media.Player()
+music.volume = 0.005
 
 # Create a class for the game_window
 class Window(pyglet.window.Window):
@@ -66,16 +71,17 @@ words = ['arbre','fromage','language','beau','ramage','hôte','voix','bec','flat
 def write_words():
         i = 0
         for word in words:
-                msg = '{}'.format(word.upper())
-                label = pyglet.text.Label(msg,
-                          font_name='Times New Roman',
-                          font_size=14,
-                          color=(75, 0, 130, 255),
-                          x=segments[i].x, y=segments[i].y,
-                          anchor_x='center', anchor_y='center')
-                label.text = msg
-                i += 1
-                label.draw()
+                if i < len(segments):
+                        msg = '{}'.format(word.upper())
+                        label = pyglet.text.Label(msg,
+                                font_name='Times New Roman',
+                                font_size=14,
+                                color=(75, 0, 130, 255),
+                                x=segments[i].x, y=segments[i].y,
+                                anchor_x='center', anchor_y='center')
+                        label.text = msg
+                        i += 1
+                        label.draw()
 
 @game_window.event
 def on_draw():
@@ -91,10 +97,16 @@ def on_draw():
         projectile.draw()
 
 def update(dt):
+    global segment
     player_sprite.update(dt)
     for segment in segments:
         segment.update(dt)
 
+    ### Try the collision
+    for feather in player_sprite.feathers:
+        if math.sqrt((xc - feather.x)**2 + (yc - feather.y)**2) >= r - segment.height//2 - 25:
+                feather.dead = True
+                
 if __name__ == "__main__":
 
     pyglet.clock.schedule_interval(update, game_window.frame_rate)
