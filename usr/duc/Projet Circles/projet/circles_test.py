@@ -25,12 +25,12 @@ music.volume = 0.005
 
 # Create a class for the game_window
 class Window(pyglet.window.Window):
-    """Classe définissant une fenêtre de jeu en pleine écran à 60 FPS."""
+    """Classe définissant une fenêtre de jeu en pleine écran à 60 Hz."""
     def __init__(self, *args, **kwargs):
         super(Window, self).__init__(*args, **kwargs)
 
         self.set_fullscreen(True)
-        self.frame_rate = 1/60.0 
+        self.frame_rate = 1/60.0
         self.fps_display = FPSDisplay(self)
 
 #Set up the window with Window class
@@ -63,8 +63,9 @@ for i in range(15):
     angle_degrees = (360/15)*i
     angle_radians = math.radians(angle_degrees)
     xc, yc = (x//2, y//2)
-    r = x/4
+    r = x/6
     segment = RotatingSprite(angle_radians=angle_radians, x=x, r=r, xc=xc, yc=yc, img=circle_segment, batch=batch)
+    segment.scale = r/540
     segments.append(segment)
 
 words = ['arbre','fromage','language','beau','ramage','hôte','voix','bec','flatteur','dépens','leçon','honteux','confus','jura','tard']
@@ -76,10 +77,11 @@ def write_words():
                         msg = '{}'.format(word.upper())
                         label = pyglet.text.Label(msg,
                                 font_name='Times New Roman',
-                                font_size=14,
+                                font_size=r/30,
                                 color=(75, 0, 130, 255),
                                 x=segments[i].x, y=segments[i].y,
                                 anchor_x='center', anchor_y='center')
+                        #label.font_size = 20*segment.scale
                         label.text = msg
                         i += 1
                         label.draw()
@@ -99,15 +101,15 @@ def on_draw():
 
 def update(dt):
     global segment
-    player_sprite.update(dt)
+    player_sprite.update(dt) 
     for segment in segments:
         segment.update(dt)
 
     ### Try the collision
     for feather in player_sprite.feathers:
-        if math.sqrt((xc - feather.x)**2 + (yc - feather.y)**2) >= r - segment.height//2 - 25:
+        if math.sqrt((xc - feather.x)**2 + (yc - feather.y)**2) >= segment.r - segment.height//2 - 25:
                 feather.dead = True
-                
+
 if __name__ == "__main__":
 
     pyglet.clock.schedule_interval(update, game_window.frame_rate)
