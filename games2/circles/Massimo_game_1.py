@@ -12,9 +12,11 @@ def split_poetry(words):
         return words
 def choose_words():
         wordsplited = split_poetry(1)
-        words1 = random.sample(wordsplited, k=5)
+        words = random.sample(wordsplited, k=5)
         words2 = random.sample(wordsplited, k=5)
         words3 = (random.sample(wordsplited, k=5)
-        return lol
+        words.append(words2)
+        print(words)
+        return
 
-choose_words(1)
+choose_words()
