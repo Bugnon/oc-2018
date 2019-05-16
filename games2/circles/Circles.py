@@ -66,7 +66,7 @@ for i in range(15):
     segment.scale = 0.56*x/1200
     segments.append(segment)
 
-words = ['arbre','fromage','language','beau','ramage','hôte','voix','bec','flatteur','dépens','leçon','honteux','confus','jura','tard']
+words = ['arbre','fromage','language','beau','ramage','hote','voix','bec','flatteur','depens','lecon','honteux','confus','jura','tard']
 
 poetry = open("resources/poeme.txt", encoding='utf-8')
 

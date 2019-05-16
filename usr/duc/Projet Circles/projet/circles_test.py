@@ -1,3 +1,4 @@
+# coding=utf-8
 import pyglet, random, math
 from pyglet import font
 from pyglet.window import FPSDisplay

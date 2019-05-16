@@ -1,20 +1,24 @@
 import random
 
-poetry = open("resources/documents/poeme.txt")
+poetry = open("resources/documents/poeme.txt", encoding='utf8')
 
 
-def split_poetry(words):
+def split_poetry(ListWords):
         ListLines = poetry.readlines()
         ListWords = []
         for line in ListLines:
                 words = line.split(' ')
                 ListWords.append(words)
+        return ListWords
+def choose_words(words):
+        words = []
+        linesplited = split_poetry(1)
+        i=0
+        for __ in linesplited:
+                wordsplited = random.choice(linesplited[i])
+                i += 1
+                words.append(wordsplited)
         return words
-def choose_words():
-        wordsplited = split_poetry(1)
-        words1 = random.sample(wordsplited, k=5)
-        words2 = random.sample(wordsplited, k=5)
-        words3 = (random.sample(wordsplited, k=5)
-        return lol
 
-choose_words(1)
+words = choose_words(1)
+towards = split_poetry(1)
