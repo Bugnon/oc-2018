@@ -1,7 +1,7 @@
 import pyglet, random, math, time
 from pyglet.window import key
 
-fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
+##fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
 fire_sound = pyglet.media.Player()
 fire_sound.volume = 0.01
 
