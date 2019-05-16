@@ -67,7 +67,7 @@ class Player(pyglet.sprite.Sprite):
         self.feathers.append(feather)
         fire_sound.queue(fire)
         fire_sound.play()
-        self.reloading = 45 # 0,75 sec car il descend de 1 chaque 1/60 sec
+        self.reloading = 35 # 0,58 sec car il descend de 1 chaque 1/60 sec
 
     def update(self, dt):
         if self.keys['left']:
@@ -91,15 +91,13 @@ class Player(pyglet.sprite.Sprite):
             platform = pyglet.window.get_platform()
             display = platform.get_default_display()      
             screen = display.get_default_screen()
-            screen_width = screen.width
-            screen_height = screen.height
 
             if feather.dead == True:
                 self.feathers.remove(feather)
-
-            if feather.x <= 0 or feather.x >= screen_width:
+            
+            if feather.x <= 0 or feather.x >= screen.width:
                 self.feathers.remove(feather)
-            elif feather.y <= 0 or feather.y >= screen_height:
+            elif feather.y <= 0 or feather.y >= screen.height:
                 self.feathers.remove(feather)
 
 class Feather(pyglet.sprite.Sprite):
@@ -108,6 +106,7 @@ class Feather(pyglet.sprite.Sprite):
         super(Feather, self).__init__(*args, **kwargs)
 
         self.image = pyglet.resource.image('resources/sprites/feather.png')
+
 
         self.speed = 600 # Norm of the velocity
 
@@ -125,9 +124,14 @@ class Feather(pyglet.sprite.Sprite):
 
 class RotatingSprite(pyglet.sprite.Sprite):
     """Classe définissant les segments de cercle qui tournent."""
+
+    segments = []
+    words = ['arbre','fromage','language','beau','ramage','hôte','voix','bec','flatteur','dépens','leçon','honteux','confus','jura','tard']
+
     def __init__(self, angle_radians, x, r, xc, yc, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)
 
+        self.word = ''
         self.angular_velocity = math.pi/5
         self.angle = angle_radians
         self.xc = xc
@@ -149,6 +153,11 @@ class RotatingSprite(pyglet.sprite.Sprite):
     def update(self, dt):
         self.angle += self.angular_velocity * dt
         self.scale = self.r/540
+
+        if self.dead == True:
+                RotatingSprite.segments.remove(self)
+                RotatingSprite.words.remove(self.word)
+
 
         #if self.r >= 450:
         #    self.growing = False
