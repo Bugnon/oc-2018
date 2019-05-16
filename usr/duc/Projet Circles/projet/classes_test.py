@@ -60,7 +60,7 @@ class Player(pyglet.sprite.Sprite):
         feather = Feather(player=self, img=self.feather, x=self.x, y=self.y)
         feather.x = self.x + self.width * math.sin(math.radians(self.angle))
         feather.y = self.y + self.height * math.cos(math.radians(self.angle))
-        
+
         feather.rotation = self.angle
         feather.scale = 0.03
 
@@ -109,7 +109,7 @@ class Feather(pyglet.sprite.Sprite):
 
         self.image = pyglet.resource.image('resources/sprites/feather.png')
 
-        self.speed = 600 # Norm of the velocity$
+        self.speed = 600 # Norm of the velocity
 
         self.angle = player.angle
 
@@ -117,12 +117,6 @@ class Feather(pyglet.sprite.Sprite):
         self.dy = math.cos(math.radians(player.angle)) * self.speed
 
         self.dead = False
-
-    def collides_with(self, other_object):
-        collision_distance = self.image.width//2 + other_object.image.width//2
-        actual_distance = distance(self.position, other_object.position)
-
-        return (actual_distance <= collision_distance)
 
     def update_position(self, dt):
 
@@ -134,11 +128,13 @@ class RotatingSprite(pyglet.sprite.Sprite):
     def __init__(self, angle_radians, x, r, xc, yc, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)
 
-        self.angular_velocity = math.pi/10
+        self.angular_velocity = math.pi/5
         self.angle = angle_radians
         self.xc = xc
         self.yc = yc
         self.r = r
+        self.dr = 100
+        self.growing = False
         self.update_position()
 
         self.scale = 0.56*x/1200
@@ -152,5 +148,16 @@ class RotatingSprite(pyglet.sprite.Sprite):
 
     def update(self, dt):
         self.angle += self.angular_velocity * dt
+        self.scale = self.r/540
+
+        #if self.r >= 450:
+        #    self.growing = False
+        #elif self.r <= 200:
+        #    self.growing = True
+
+        #if self.growing:
+        #    self.r += self.dr * dt
+        #else:
+        #    self.r -= self.dr * dt
 
         self.update_position()
