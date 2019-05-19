@@ -67,7 +67,7 @@ class Player(pyglet.sprite.Sprite):
         self.feathers.append(feather)
         fire_sound.queue(fire)
         fire_sound.play()
-        self.reloading = 45 # 0,75 sec car il descend de 1 chaque 1/60 sec
+        self.reloading = 35 # 0,58 sec car il descend de 1 chaque 1/60 sec
 
     def update(self, dt):
         if self.keys['left']:
@@ -91,15 +91,13 @@ class Player(pyglet.sprite.Sprite):
             platform = pyglet.window.get_platform()
             display = platform.get_default_display()      
             screen = display.get_default_screen()
-            screen_width = screen.width
-            screen_height = screen.height
 
             if feather.dead == True:
                 self.feathers.remove(feather)
-
-            if feather.x <= 0 or feather.x >= screen_width:
+            
+            if feather.x <= 0 or feather.x >= screen.width:
                 self.feathers.remove(feather)
-            elif feather.y <= 0 or feather.y >= screen_height:
+            elif feather.y <= 0 or feather.y >= screen.height:
                 self.feathers.remove(feather)
 
 class Feather(pyglet.sprite.Sprite):
@@ -125,8 +123,14 @@ class Feather(pyglet.sprite.Sprite):
 
 class RotatingSprite(pyglet.sprite.Sprite):
     """Classe définissant les segments de cercle qui tournent."""
-    def __init__(self, angle_radians, x, r, xc, yc, *args, **kwargs):
+
+    segments = []
+    words = ['arbre','fromage','language','beau','ramage','hôte','voix','bec','flatteur','dépens','leçon','honteux','confus','jura','tard']
+
+    def __init__(self, angle_radians, x, r, xc, yc, word, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)
+
+        self.word = word
 
         self.angular_velocity = math.pi/5
         self.angle = angle_radians
@@ -134,21 +138,36 @@ class RotatingSprite(pyglet.sprite.Sprite):
         self.yc = yc
         self.r = r
         self.dr = 100
-        self.growing = False
-        self.update_position()
+        #self.growing = False
+
+        self.label = pyglet.text.Label(self.word.upper(),
+                font_name='Times New Roman',
+                font_size=self.r/30,
+                color=(75, 0, 130, 255),
+                x=0, y=0,
+                anchor_x='center', anchor_y='center')
 
         self.scale = 0.56*x/1200
 
         self.dead = False
+
+        self.update_position()
 
     def update_position(self):
         self.x = self.xc + self.r * math.sin(self.angle)
         self.y = self.yc + self.r * math.cos(self.angle)
         self.rotation = math.degrees(self.angle)
 
+        self.label.x = self.x
+        self.label.y = self.y
+
     def update(self, dt):
         self.angle += self.angular_velocity * dt
         self.scale = self.r/540
+
+        if self.dead == True:
+                RotatingSprite.segments.remove(self)
+                RotatingSprite.words.remove(self.word)
 
         #if self.r >= 450:
         #    self.growing = False
