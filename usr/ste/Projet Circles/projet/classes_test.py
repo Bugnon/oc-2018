@@ -1,7 +1,7 @@
 import pyglet, random, math, time
 from pyglet.window import key
 
-##fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
+fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
 fire_sound = pyglet.media.Player()
 fire_sound.volume = 0.01
 
@@ -67,7 +67,7 @@ class Player(pyglet.sprite.Sprite):
         self.feathers.append(feather)
         fire_sound.queue(fire)
         fire_sound.play()
-        self.reloading = 45 # 0,75 sec car il descend de 1 chaque 1/60 sec
+        self.reloading = 35 # 0,58 sec car il descend de 1 chaque 1/60 sec
 
     def update(self, dt):
         if self.keys['left']:
@@ -91,15 +91,13 @@ class Player(pyglet.sprite.Sprite):
             platform = pyglet.window.get_platform()
             display = platform.get_default_display()      
             screen = display.get_default_screen()
-            screen_width = screen.width
-            screen_height = screen.height
 
             if feather.dead == True:
                 self.feathers.remove(feather)
-
-            if feather.x <= 0 or feather.x >= screen_width:
+            
+            if feather.x <= 0 or feather.x >= screen.width:
                 self.feathers.remove(feather)
-            elif feather.y <= 0 or feather.y >= screen_height:
+            elif feather.y <= 0 or feather.y >= screen.height:
                 self.feathers.remove(feather)
 
 class Feather(pyglet.sprite.Sprite):
@@ -123,32 +121,79 @@ class Feather(pyglet.sprite.Sprite):
         self.x += self.dx * dt
         self.y += self.dy * dt
 
+def split_poetry(ListWords):
+        poetry = open("resources/documents/poeme.txt", encoding='utf8')
+        ListLines = poetry.readlines()
+        ListWords = []
+        for line in ListLines:
+                words = line.split(' ')
+                ListWords.append(words)
+        return ListWords
+
+def choose_words(words):
+        words = []
+        linesplited = split_poetry(1)
+        i = 0
+        for __ in linesplited:
+                wordsplited = random.choice(linesplited[i])
+                i += 1
+                words.append(wordsplited)
+        return words
+
+
 class RotatingSprite(pyglet.sprite.Sprite):
     """Classe définissant les segments de cercle qui tournent."""
-    def __init__(self, angle_radians, x, r, xc, yc, *args, **kwargs):
+
+    segments = []
+    words = choose_words(1)
+
+    def __init__(self, angle_radians, x, r, xc, yc, word, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)
+
+        self.word = word
 
         self.angular_velocity = math.pi/5
         self.angle = angle_radians
         self.xc = xc
         self.yc = yc
         self.r = r
-        self.dr = 100
-        self.growing = False
-        self.update_position()
+        #self.dr = 100
+        #self.growing = False
 
-        self.scale = 0.56*x/1200
+        self.label = pyglet.text.Label(self.word.upper(),
+                font_name='Times New Roman',
+                font_size=self.r/30,
+                color=(75, 0, 130, 255),
+                x=0, y=0,
+                anchor_x='center', anchor_y='center')
+
+        self.scale = x/1200
 
         self.dead = False
+
+        self.update_position()
 
     def update_position(self):
         self.x = self.xc + self.r * math.sin(self.angle)
         self.y = self.yc + self.r * math.cos(self.angle)
         self.rotation = math.degrees(self.angle)
 
+        self.label.x = self.xc + self.r * math.sin(self.angle)
+        self.label.y = self.yc + self.r * math.cos(self.angle)
+
     def update(self, dt):
         self.angle += self.angular_velocity * dt
         self.scale = self.r/540
+        self.label = pyglet.text.Label(self.word.upper(),
+            font_name='Times New Roman',
+            font_size=self.r/30,
+            color=(75, 0, 130, 255),
+            x=0, y=0,
+            anchor_x='center', anchor_y='center')
+
+        if self.dead == True:
+                RotatingSprite.segments.remove(self)
+                RotatingSprite.words.remove(self.word)
 
         #if self.r >= 450:
         #    self.growing = False
