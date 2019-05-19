@@ -29,7 +29,7 @@ class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super(Window, self).__init__(*args, **kwargs)
 
-        self.set_fullscreen(True)
+        self.set_fullscreen(False)
         self.frame_rate = 1/60.0
         self.fps_display = FPSDisplay(self)
 
@@ -68,28 +68,37 @@ for i in range(15):
     segment.scale = r/540
     segments.append(segment)
 
-poetry = open("resources/documents/poeme.txt", encoding='utf8')
-
-
 def split_poetry(ListWords):
+        poetry = open("resources/documents/poeme.txt", encoding='utf8')
         ListLines = poetry.readlines()
         ListWords = []
         for line in ListLines:
                 words = line.split(' ')
                 ListWords.append(words)
         return ListWords
+
 def choose_words(words):
         words = []
         linesplited = split_poetry(1)
-        i=0
-        for line in linesplited:
+        i = 0
+        for __ in linesplited:
                 wordsplited = random.choice(linesplited[i])
                 i += 1
                 words.append(wordsplited)
         return words
 
-words = choose_words(1)
+def write_towards():
+        words = choose_words(1)
+        toward = split_poetry(1)
+        msg = ' '.join(toward[0])
+        label = pyglet.text.Label(msg,
+                          font_name='Times New Roman',
+                          font_size=18,
+                          x=x/2, y=y/10,
+                          anchor_x='center', anchor_y='center')
+        label.draw()
 
+words = choose_words(1)
 def write_words():
         i = 0
         for word in words:
@@ -116,6 +125,7 @@ def on_draw():
     player_sprite.draw()
     batch.draw()
     write_words()
+    write_towards()
 
     for projectile in player_sprite.feathers:
         projectile.draw()
