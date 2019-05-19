@@ -21,7 +21,7 @@ def distance(point_1=(0, 0), point_2=(0, 0)):
 #import music file
 musicSource = pyglet.media.load('resources/sound/violin.wav')
 music = pyglet.media.Player()
-music.volume = 0.005
+music.volume = 0.0005
 
 # keep playing for as long as the app is running (or you tell it to stop):
 music.eos_action = pyglet.media.SourceGroup.loop
@@ -48,7 +48,6 @@ wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
 
 #Create a batch and set up the parchment image
 batch = pyglet.graphics.Batch()
-batch2 = pyglet.graphics.Batch()
 parchment_image = pyglet.resource.image('resources/sprites/parchment.png')
 center_image(parchment_image)
 parchment_scale = parchment_image.height/parchment_image.width #Scale of the parchment
@@ -72,7 +71,6 @@ for i in range(15):
     segment = RotatingSprite(angle_radians=angle_radians, x=x, r=r, xc=xc, yc=yc, word=RotatingSprite.words[i], img=circle_segment, batch=batch)
     segment.scale = r/540
     RotatingSprite.segments.append(segment)
-
 
 def write_word(msg):
         label = pyglet.text.Label(str(msg),
@@ -110,11 +108,12 @@ def on_draw():
     player_sprite.draw()
     parchment.draw()
     batch.draw()
+    write_word('Insérez la phrase')
     for segment in RotatingSprite.segments:
         segment.label.draw()
     chargeBar(player_sprite, player_image)
 
-    for projectile in player_sprite.feathers:
+    for projectile in Feather.feathers:
         projectile.draw()
 
 def update(dt):
@@ -124,7 +123,7 @@ def update(dt):
         segment.update(dt)
 
     ### Try the collision
-    for feather in player_sprite.feathers:
+    for feather in Feather.feathers:
         if math.sqrt((xc - feather.x)**2 + (yc - feather.y)**2) > segment.r - segment.height//2 - 25:
                 feather.dead = True
 
