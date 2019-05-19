@@ -3,7 +3,7 @@ from pyglet.window import key
 
 fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
 fire_sound = pyglet.media.Player()
-fire_sound.volume = 0.01
+fire_sound.volume = 0.001
 
 def center_image(image):
     """Sets an image's anchor point to its center"""
@@ -31,10 +31,6 @@ class Player(pyglet.sprite.Sprite):
 
         self.angle = 0
 
-        #Create the projectile (feathers)
-        self.feathers = []
-        self.feather = pyglet.resource.image('resources/sprites/feather.png')
-        center_image(self.feather)
 
         self.reloading = 0
 
@@ -57,14 +53,14 @@ class Player(pyglet.sprite.Sprite):
 
     def fire(self):
         self.angle = self.timer * self.rotate_speed
-        feather = Feather(player=self, img=self.feather, x=self.x, y=self.y)
+        feather = Feather(player=self, img=Feather.feather, x=self.x, y=self.y)
         feather.x = self.x + self.width * math.sin(math.radians(self.angle))
         feather.y = self.y + self.height * math.cos(math.radians(self.angle))
 
         feather.rotation = self.angle
         feather.scale = 0.03
 
-        self.feathers.append(feather)
+        Feather.feathers.append(feather)
         fire_sound.queue(fire)
         fire_sound.play()
         self.reloading = 35 # 0,58 sec car il descend de 1 chaque 1/60 sec
@@ -83,7 +79,7 @@ class Player(pyglet.sprite.Sprite):
         if self.reloading > 0:
             self.reloading -= 1
         
-        for feather in self.feathers:
+        for feather in Feather.feathers:
             
             Feather.update_position(feather, dt)
 
@@ -93,15 +89,22 @@ class Player(pyglet.sprite.Sprite):
             screen = display.get_default_screen()
 
             if feather.dead == True:
-                self.feathers.remove(feather)
+                Feather.feathers.remove(feather)
             
             if feather.x <= 0 or feather.x >= screen.width:
-                self.feathers.remove(feather)
+                Feather.feathers.remove(feather)
             elif feather.y <= 0 or feather.y >= screen.height:
-                self.feathers.remove(feather)
+                Feather.feathers.remove(feather)
 
 class Feather(pyglet.sprite.Sprite):
     """Classe définissant les projectiles que le joueur lancera avec la barre espace."""
+
+    #Create the projectile (feathers)
+    feather = pyglet.resource.image('resources/sprites/feather.png')
+    center_image(feather)
+
+    feathers = []
+
     def __init__(self, player, *args, **kwargs):
         super(Feather, self).__init__(*args, **kwargs)
 
@@ -122,30 +125,32 @@ class Feather(pyglet.sprite.Sprite):
         self.y += self.dy * dt
 
 class RotatingSprite(pyglet.sprite.Sprite):
-    """Classe définissant les segments de cercle qui tournent."""
+    """Classe définissant les segments de cercle et les mots qui tournent."""
 
     segments = []
     words = ['arbre','fromage','language','beau','ramage','hôte','voix','bec','flatteur','dépens','leçon','honteux','confus','jura','tard']
+    angular_velocity = math.pi/5
+    circle_segment_grey = pyglet.resource.image('resources/sprites/circle_segment_grey.png')
 
     def __init__(self, angle_radians, x, r, xc, yc, word, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)
 
         self.word = word
 
-        self.angular_velocity = math.pi/5
         self.angle = angle_radians
         self.xc = xc
         self.yc = yc
         self.r = r
-        self.dr = 100
+        #self.dr = 100
         #self.growing = False
 
         self.label = pyglet.text.Label(self.word.upper(),
                 font_name='Times New Roman',
                 font_size=self.r/30,
                 color=(75, 0, 130, 255),
-                x=0, y=0,
+                x=self.x, y=self.y,
                 anchor_x='center', anchor_y='center')
+
 
         self.scale = 0.56*x/1200
 
@@ -154,19 +159,19 @@ class RotatingSprite(pyglet.sprite.Sprite):
         self.update_position()
 
     def update_position(self):
+        self.label.x = self.x
+        self.label.y = self.y
+
         self.x = self.xc + self.r * math.sin(self.angle)
         self.y = self.yc + self.r * math.cos(self.angle)
         self.rotation = math.degrees(self.angle)
 
-        self.label.x = self.x
-        self.label.y = self.y
-
     def update(self, dt):
-        self.angle += self.angular_velocity * dt
+        self.angle += RotatingSprite.angular_velocity * dt
         self.scale = self.r/540
 
         if self.dead == True:
-                RotatingSprite.segments.remove(self)
+                RotatingSprite.segments.img = RotatingSprite.circle_segment_grey
                 RotatingSprite.words.remove(self.word)
 
         #if self.r >= 450:
