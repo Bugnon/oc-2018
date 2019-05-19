@@ -48,6 +48,7 @@ wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
 
 #Create a batch and set up the parchment image
 batch = pyglet.graphics.Batch()
+batch2 = pyglet.graphics.Batch()
 parchment_image = pyglet.resource.image('resources/sprites/parchment.png')
 center_image(parchment_image)
 parchment_scale = parchment_image.height/parchment_image.width #Scale of the parchment
@@ -68,29 +69,13 @@ for i in range(15):
     angle_radians = math.radians(angle_degrees)
     xc, yc = (x//2, (y+2*parchment.y)//2)
     r = x/6
-    segment = RotatingSprite(angle_radians=angle_radians, x=x, r=r, xc=xc, yc=yc, img=circle_segment, batch=batch)
+    segment = RotatingSprite(angle_radians=angle_radians, x=x, r=r, xc=xc, yc=yc, word=RotatingSprite.words[i], img=circle_segment, batch=batch)
     segment.scale = r/540
     RotatingSprite.segments.append(segment)
 
-def write_words():
-        i = 0
-        for word in RotatingSprite.words:
-                if i < len(RotatingSprite.segments):
-                        msg = '{}'.format(word.upper())
-                        label = pyglet.text.Label(msg,
-                                font_name='Times New Roman',
-                                font_size=r/30,
-                                color=(75, 0, 130, 255),
-                                x=RotatingSprite.segments[i].x, y=RotatingSprite.segments[i].y,
-                                anchor_x='center', anchor_y='center')
-                        RotatingSprite.segments[i].word = word
-                        #label.font_size = 20*segment.scale
-                        label.text = msg
-                        i += 1
-                        label.draw()
 
-def write_word():
-        label = pyglet.text.Label('Voici la phrase qui sera remplie de lacunes ...... à remplir',
+def write_word(msg):
+        label = pyglet.text.Label(str(msg),
                                 font_name='Times New Roman',
                                 font_size=15,
                                 color=(75, 0, 130, 255),
@@ -125,8 +110,8 @@ def on_draw():
     player_sprite.draw()
     parchment.draw()
     batch.draw()
-    write_words()
-    write_word()
+    for segment in RotatingSprite.segments:
+        segment.label.draw()
     chargeBar(player_sprite, player_image)
 
     for projectile in player_sprite.feathers:
@@ -134,7 +119,7 @@ def on_draw():
 
 def update(dt):
     global segment
-    player_sprite.update(dt) 
+    player_sprite.update(dt)
     for segment in RotatingSprite.segments:
         segment.update(dt)
 
