@@ -35,17 +35,6 @@ music.volume = 0.0005
 #Keep playing for as long as the app is running (or you tell it to stop):
 music.eos_action = pyglet.media.SourceGroup.loop
 
-
-# Create a class for the game_window
-class Window(pyglet.window.Window):
-    """Classe définissant une fenêtre de jeu en pleine écran à 60 Hz."""
-    def __init__(self, *args, **kwargs):
-        super(Window, self).__init__(*args, **kwargs)
-
-        self.set_fullscreen(False)
-        self.frame_rate = 1/60.0
-        self.fps_display = FPSDisplay(self)
-
 #Set up the window with Window class
 game_window = Window()
 x = game_window.width
@@ -88,10 +77,6 @@ for i in range(15):
 def write_towards():
         remove_word = Poetry().open_words()
         toward = Poetry().split_poetry()
-        if toward[0].index(remove_word[0]) == True:
-            loc = toward[0].index(remove_word[0])
-            toward[0].remove(remove_word[0])
-            toward[0].insert(loc, '...')
         msg = ' '.join(toward[0])
         label = pyglet.text.Label(str(msg),
                           font_name='Times New Roman',
@@ -141,11 +126,11 @@ def on_draw():
     '''
     game_window.clear()
     wallpaper_sprite.draw()
-    game_window.fps_display.draw()
+    #game_window.fps_display.draw()
     parchment.draw()
     #Draw the player and the segments
     batch.draw()
-    write_sentence('Insérez la phrase')
+    write_towards()
     #Draw the segments
     for segment in RotatingSprite.segments:
         segment.label.draw()

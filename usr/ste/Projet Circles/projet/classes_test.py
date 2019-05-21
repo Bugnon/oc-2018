@@ -1,4 +1,3 @@
-##### IMPORT #####
 import pyglet, random, math, time
 from pyglet.window import key, FPSDisplay
 
@@ -42,7 +41,7 @@ class Window(pyglet.window.Window):
 
         self.set_fullscreen(True)
         self.frame_rate = 1/60.0 
-        self.fps_display = FPSDisplay(self)
+        #self.fps_display = FPSDisplay(self)
 
 ##### PLAYER CLASS #####
 class Player(pyglet.sprite.Sprite):
