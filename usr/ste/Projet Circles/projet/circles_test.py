@@ -1,16 +1,7 @@
 ##### IMPORT #####
 import pyglet, random, math
 from pyglet import font
-<<<<<<< HEAD
-from pyglet.window import FPSDisplay
-from classes_test import Player, Feather, RotatingSprite, Poetry
-
-#Add a font for the poem on the right of the window
-font.add_file('resources/font/Angelface.otf')
-Angelface = font.load('Angelface', 14)
-=======
-from classes_test import Player, Feather, RotatingSprite, Window
->>>>>>> 7d6510ccb500526083c47b7114b79209bd1a0c53
+from classes_test import Player, Feather, RotatingSprite, Window, Poetry
 
 ##### USEFUL SIMPLE FUNCTIONS #####
 def center_image(image):
@@ -44,7 +35,6 @@ music.volume = 0.0005
 #Keep playing for as long as the app is running (or you tell it to stop):
 music.eos_action = pyglet.media.SourceGroup.loop
 
-<<<<<<< HEAD
 
 # Create a class for the game_window
 class Window(pyglet.window.Window):
@@ -57,9 +47,6 @@ class Window(pyglet.window.Window):
         self.fps_display = FPSDisplay(self)
 
 #Set up the window with Window class
-=======
-##### GAME WINDOW #####
->>>>>>> 7d6510ccb500526083c47b7114b79209bd1a0c53
 game_window = Window()
 x = game_window.width
 y = game_window.height
