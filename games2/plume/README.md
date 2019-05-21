@@ -29,3 +29,14 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
 
 ### Captures d'écran
 
+
+### Intéractions souris-clavier 
+Dans Inkvader, on utilise la souris et le clavier de cette manière-ci.
+
+* La souris s'utillise pour...
+
+* Dans le clavier, on utilise ces quatre flèches pour déplacer la plume
+=>
+On utilise la touche "space bar" pour tirer les tâches d'encre sur les mots. 
+
+### Explication du jeu 
