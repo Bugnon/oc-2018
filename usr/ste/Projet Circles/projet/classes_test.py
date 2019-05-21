@@ -147,29 +147,18 @@ class Feather(pyglet.sprite.Sprite):
         self.x += self.dx * dt
         self.y += self.dy * dt
 
-<<<<<<< HEAD
 class Poetry():
     """Classe permettant de lire, couper, choisir et utiliser les vers et les mots."""
     towards = []
     words = []
     poetry = open("resources/documents/poeme.txt", encoding='utf8')
     towards_unsplited = poetry.read().split('\n')
-=======
-##### POETRY CLASS #####
-class Poetry():
-    """Read, cut, choose and use sentences and words of the poetry."""
-    towards = []
-    words = []
-    poetry = open("resources/documents/poeme.txt", encoding='utf8')
-    towards_unsplited = poetry.readlines()
->>>>>>> 7d6510ccb500526083c47b7114b79209bd1a0c53
     def __init__(self):
         self.poetry = Poetry.towards_unsplited
         self.towards = Poetry.towards
         self.words = Poetry.words
 
     def split_poetry(self):
-<<<<<<< HEAD
             for line in self.poetry:
                     words_splited = line.split(' ')
                     self.towards.append(words_splited)
@@ -193,29 +182,6 @@ class Poetry():
         return open("words.txt", encoding='utf8').read().split('\n')
 
 Poetry().save_words()
-=======
-        '''
-        Return the poetry after splitting each sentences between them and put it into towards list.
-        :return: list
-        '''
-        for line in self.poetry:
-                words_splited = line.split(' ')
-                self.towards.append(words_splited)
-        return self.towards
-
-    def choose_words(self):
-        '''
-        Choose a random word in each sentence and put it into words list.
-        :return: list
-        '''
-        self.towards = Poetry().split_poetry()
-        i = 0
-        for __ in self.towards:
-                random_choice = random.choice(self.towards[i])
-                i += 1
-                self.words.append(random_choice)
-        return self.words
->>>>>>> 7d6510ccb500526083c47b7114b79209bd1a0c53
 
 ##### ROTATINGSPRITE CLASS #####
 class RotatingSprite(pyglet.sprite.Sprite):
@@ -223,13 +189,9 @@ class RotatingSprite(pyglet.sprite.Sprite):
 
     #Set the class attributes
     segments = []
-<<<<<<< HEAD
     words = Poetry().open_words()
-=======
-    words = Poetry().choose_words()
     angular_velocity = math.pi/5
     circle_segment_grey = pyglet.resource.image('resources/sprites/circle_segment_grey.png') #Dead segment
->>>>>>> 7d6510ccb500526083c47b7114b79209bd1a0c53
 
     def __init__(self, angle_radians, r, xc, yc, word, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)

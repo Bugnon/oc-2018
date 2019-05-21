@@ -98,7 +98,6 @@ for i in range(15):
     segment.scale = r/540
     RotatingSprite.segments.append(segment)
 
-<<<<<<< HEAD
 def write_towards():
         remove_word = Poetry().open_words()
         toward = Poetry().split_poetry()
@@ -123,22 +122,6 @@ def write_word(msg):
                                 x=parchment.x, y=parchment.y,
                                 anchor_x='center', anchor_y='center')
         label.draw()
-=======
-##### GAME FUNCTIONS #####
-def write_sentence(msg):
-    '''
-    Draws the sentence on the parchment.
-    :param msg: str
-    :return: None
-    '''
-    label = pyglet.text.Label(str(msg),
-        font_name='Times New Roman',
-        font_size=40,
-        color=(75, 0, 130, 255),
-        x=parchment.x, y=parchment.y,
-        anchor_x='center', anchor_y='center')
-    label.draw()
->>>>>>> 7d6510ccb500526083c47b7114b79209bd1a0c53
 
 def chargeBar(player_sprite, player_image):
         '''
