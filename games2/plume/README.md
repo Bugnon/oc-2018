@@ -1,7 +1,7 @@
 # Inkvader
 
 * Authors: Térence Chevroulet, Victoria Vila, Hélène Ardevol
-* Date:
+* Date: 23/05/2019
 
 ## Description
 
@@ -16,3 +16,12 @@ Inkvader est un jeu style rétro gaming. Il s'agit de se déplacer avec une plum
 * Mais aussi, les mots flottants sur l'écran, ont un rapport avec la poésie. Il s'agit des mots donnant le côté poétique (ex: "syllabe", "rime"). 
 * Un autre côté poétique, est le fait que quand on tire sur un mot poétique, un poème apparaît progressivement. 
 
+# Structure du programme
+
+* Les Variables
+
+* Les Class
+
+* Les méthodes 
+
+* La Fonction Main 
