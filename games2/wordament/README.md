@@ -16,7 +16,7 @@ Pour finir, notre jeu présente un interface simple est lisible, pour permettrte
 
 ## Stucture du programme
 
-Notre programme est codé en python, avec une forte sollicitation du module ''Pyglet''. La fonction principale de ce module est de permettre les interactions directes avec l'utilisateurs, de gérer l'affichage des images et les quelques effets sonnores et musicaux utilisés.
+Notre programme est codé en python, avec une forte sollicitation du module ```Pyglet```. La fonction principale de ce module est de permettre les interactions directes avec l'utilisateurs, de gérer l'affichage des images et les quelques effets sonnores et musicaux utilisés.
 
 Notre code commence par l'importation des trois modules utilisés par la suite, soit:
 * Pyglet
@@ -24,10 +24,12 @@ Notre code commence par l'importation des trois modules utilisés par la suite, 
 * La fonction Path de Pathlib
 
 par le code suivant:
-'''
+```python
 import pyglet
 from levels import levels
 import codecs
 from pathlib import Path
-'''
-La deuxième ligne quant à elle, importe le contenu du fichier ''levels'' qui contient les différents niveaux.
+```
+La deuxième ligne quant à elle, importe le contenu du fichier ```levels``` qui contient les différents niveaux.
+
+# A Continuer
