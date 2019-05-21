@@ -121,31 +121,47 @@ class Feather(pyglet.sprite.Sprite):
         self.x += self.dx * dt
         self.y += self.dy * dt
 
-def split_poetry(ListWords):
-        poetry = open("resources/documents/poeme.txt", encoding='utf8')
-        ListLines = poetry.readlines()
-        ListWords = []
-        for line in ListLines:
-                words = line.split(' ')
-                ListWords.append(words)
-        return ListWords
+class Poetry():
+    """Classe permettant de lire, couper, choisir et utiliser les vers et les mots."""
+    towards = []
+    words = []
+    poetry = open("resources/documents/poeme.txt", encoding='utf8')
+    towards_unsplited = poetry.read().split('\n')
+    def __init__(self):
+        self.poetry = Poetry.towards_unsplited
+        self.towards = Poetry.towards
+        self.words = Poetry.words
 
-def choose_words(words):
-        words = []
-        linesplited = split_poetry(1)
-        i = 0
-        for __ in linesplited:
-                wordsplited = random.choice(linesplited[i])
-                i += 1
-                words.append(wordsplited)
-        return words
+    def split_poetry(self):
+            for line in self.poetry:
+                    words_splited = line.split(' ')
+                    self.towards.append(words_splited)
+            return self.towards
 
+    def choose_words(self):
+            self.towards = Poetry().split_poetry()
+            i = 0
+            for __ in self.towards:
+                    random_choice = random.choice(self.towards[i])
+                    i += 1
+                    self.words.append(random_choice)
+            return self.words
+
+    def save_words(self):
+        with open('words.txt', 'w', encoding='utf8') as filehandle:
+            for listitem in Poetry().choose_words():
+                filehandle.write('%s\n' % listitem)
+    
+    def open_words(self):
+        return open("words.txt", encoding='utf8').read().split('\n')
+
+Poetry().save_words()
 
 class RotatingSprite(pyglet.sprite.Sprite):
     """Classe définissant les segments de cercle qui tournent."""
 
     segments = []
-    words = choose_words(1)
+    words = Poetry().open_words()
 
     def __init__(self, angle_radians, x, r, xc, yc, word, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)

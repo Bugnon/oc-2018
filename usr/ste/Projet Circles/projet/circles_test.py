@@ -2,7 +2,7 @@
 import pyglet, random, math
 from pyglet import font
 from pyglet.window import FPSDisplay
-from classes_test import Player, Feather, RotatingSprite
+from classes_test import Player, Feather, RotatingSprite, Poetry
 
 #Add a font for the poem on the right of the window
 font.add_file('resources/font/Angelface.otf')
@@ -33,7 +33,7 @@ class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super(Window, self).__init__(*args, **kwargs)
 
-        self.set_fullscreen(True)
+        self.set_fullscreen(False)
         self.frame_rate = 1/60.0
         self.fps_display = FPSDisplay(self)
 
@@ -73,34 +73,15 @@ for i in range(15):
     segment.scale = r/540
     RotatingSprite.segments.append(segment)
 
-def split_poetry(ListWords):
-        poetry = open("resources/documents/poeme.txt", encoding='utf8')
-        ListLines = poetry.readlines()
-        ListWords = []
-        for line in ListLines:
-                words = line.split(' ')
-                ListWords.append(words)
-        return ListWords
-
-def choose_words(words):
-        words = []
-        linesplited = split_poetry(1)
-        i = 0
-        for __ in linesplited:
-                wordsplited = random.choice(linesplited[i])
-                i += 1
-                words.append(wordsplited)
-        return words
-
 def write_towards():
-        remove_word = choose_words(1)
-        toward = split_poetry(1)
-        if remove_word[0] in toward[0]:
+        remove_word = Poetry().open_words()
+        toward = Poetry().split_poetry()
+        if toward[0].index(remove_word[0]) == True:
             loc = toward[0].index(remove_word[0])
             toward[0].remove(remove_word[0])
             toward[0].insert(loc, '...')
         msg = ' '.join(toward[0])
-        label = pyglet.text.Label(msg,
+        label = pyglet.text.Label(str(msg),
                           font_name='Times New Roman',
                           font_size=18,
                           color=(75, 0, 130, 255),
