@@ -6,7 +6,7 @@
 ## Description
 
 ### Introduction
-Dans notre Gymnase du Bugnon Ours, on a pu participer à la semaine de la poésie, lancée par la ville de Lausanne. Dans l'option complémentaire informatique, on a dû créer un jeu ayant un rapport avec la poésie, pour cette semaine-là. (insérer, site UNIL pour semaine de la poésie)
+Dans notre Gymnase du Bugnon Ours, on a pu participer à la semaine de la poésie, lancée par la ville de Lausanne. Dans l'option complémentaire informatique, on a dû créer un jeu ayant un rapport avec la poésie, pour cette semaine-là. (insérer, site UNIL pour semaine de la poésie) [lien unil](http://printempspoesie.ch/wordpress/)
 
 Inkvader est un jeu style rétro gaming. On s'est inspirés du jeu clasique "Asteroids" pour le créer. Il s'agit de se déplacer avec une plume et de tirer des tâches d'encre sur des mots flottants sur l'écran. Ces mots sont de deux sortes. D'un côté, ils ont un vocabulaire poétique. Et de l'autre, ce sont des mots choisis au hasard. Le but est de tirer sur les mots poétiques, afin qu'un poème s'écrive progressivement. 
 
@@ -33,10 +33,12 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
 ### Intéractions souris-clavier 
 Dans Inkvader, on utilise la souris et le clavier de cette manière-ci.
 
-* La souris s'utillise pour...
+* La souris s'utillise pour... (insérer code) 
 
 * Dans le clavier, on utilise ces quatre flèches pour déplacer la plume
 =>
-On utilise la touche "space bar" pour tirer les tâches d'encre sur les mots. 
+On utilise la touche "space bar" pour tirer les tâches d'encre sur les mots. (insérer code) 
 
 ### Explication du jeu 
+
+
