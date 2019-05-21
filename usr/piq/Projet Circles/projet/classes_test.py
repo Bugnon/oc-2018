@@ -137,8 +137,6 @@ class RotatingSprite(pyglet.sprite.Sprite):
         self.xc = xc
         self.yc = yc
         self.r = r
-        self.dr = 100
-        self.growing = False
         self.update_position()
 
         self.scale = 0.56*x/1200
@@ -157,16 +155,5 @@ class RotatingSprite(pyglet.sprite.Sprite):
         if self.dead == True:
                 RotatingSprite.segments.remove(self)
                 RotatingSprite.words.remove(self.word)
-
-
-        #if self.r >= 450:
-        #    self.growing = False
-        #elif self.r <= 200:
-        #    self.growing = True
-
-        #if self.growing:
-        #    self.r += self.dr * dt
-        #else:
-        #    self.r -= self.dr * dt
 
         self.update_position()
