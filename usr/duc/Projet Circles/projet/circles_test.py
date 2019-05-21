@@ -143,11 +143,15 @@ def update(dt):
     player_sprite.update(dt)
     for segment in RotatingSprite.segments:
         segment.update(dt)
+    for dead_segment in RotatingSprite.dead_segments:
+        dead_segment.update(dt)
 
     ### Try the collision
     for feather in Feather.feathers:
-        if math.sqrt((xc - feather.x)**2 + (yc - feather.y)**2) > segment.r - segment.height//2 - 25:
-                feather.dead = True
+        if distance(point_1=(player_sprite.x, player_sprite.y), point_2=(feather.x, feather.y)) >= r - segment.height/2 - feather.height/2:
+            feather.dead = True
+    if len(RotatingSprite.segments) == 15:
+        RotatingSprite.segments[0].dead = True
 
 if __name__ == "__main__":
 

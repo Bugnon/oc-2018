@@ -90,7 +90,7 @@ class Player(pyglet.sprite.Sprite):
         Feather.feathers.append(feather)
         fire_sound.queue(fire)
         fire_sound.play()
-        self.reloading = 35 # 0,58 sec car il descend de 1 chaque 1/60 sec
+        self.reloading = 30 # 0,5 sec car il descend de 1 chaque 1/60 sec
 
     def update(self, dt):
         if self.keys['left']:
@@ -133,7 +133,7 @@ class Feather(pyglet.sprite.Sprite):
 
         self.image = pyglet.resource.image('resources/sprites/feather.png')
 
-        self.speed = 600 # Norm of the velocity
+        self.speed = 500 # Norm of the velocity
 
         self.angle = player.angle
 
@@ -153,6 +153,7 @@ class RotatingSprite(pyglet.sprite.Sprite):
 
     #Set the class attributes
     segments = []
+    dead_segments = []
     words = ['arbre','fromage','language','beau','ramage','hôte','voix','bec','flatteur','dépens','leçon','honteux','confus','jura','tard']
     angular_velocity = math.pi/5
     circle_segment_grey = pyglet.resource.image('resources/sprites/circle_segment_grey.png') #Dead segment
@@ -169,7 +170,6 @@ class RotatingSprite(pyglet.sprite.Sprite):
         #self.dr = 100
         #self.growing = False
 
-
         self.scale = 0.56*screen.width/1200
 
         self.dead = False
@@ -178,24 +178,30 @@ class RotatingSprite(pyglet.sprite.Sprite):
 
     def update_position(self):
         #Set the self label onto the self segment
+
+        self.x = self.xc + self.r * math.sin(self.angle)
+        self.y = self.yc + self.r * math.cos(self.angle)
+        self.rotation = math.degrees(self.angle)
+        
         self.label = pyglet.text.Label(self.word.upper(),
                 font_name='Times New Roman',
                 font_size=self.r/30,
                 color=(75, 0, 130, 255),
                 x=self.x, y=self.y,
                 anchor_x='center', anchor_y='center')
-
-        self.x = self.xc + self.r * math.sin(self.angle)
-        self.y = self.yc + self.r * math.cos(self.angle)
-        self.rotation = math.degrees(self.angle)
+        if len(RotatingSprite.segments) == 15:
+            RotatingSprite.segments[14].dead = True
 
     def update(self, dt):
         self.angle += RotatingSprite.angular_velocity * dt
         self.scale = self.r/540
 
         if self.dead == True:
-                self.img = RotatingSprite.circle_segment_grey #replace the image by a dead segment image
-                RotatingSprite.words.remove(self.word) #destroy the word assigns to the dead segment
+            RotatingSprite.segments.remove(self)
+            RotatingSprite.dead_segments.append(self)
+            self.img = RotatingSprite.circle_segment_grey #replace the image by a dead segment image
+            self.dead = False
+            #RotatingSprite.words.remove(self.word.lower()) #destroy the word assigns to the dead segment
 
         #if self.r >= 450:
         #    self.growing = False
@@ -208,35 +214,3 @@ class RotatingSprite(pyglet.sprite.Sprite):
         #    self.r -= self.dr * dt
 
         self.update_position()
-
-##### POETRY CLASS #####
-class Poetry():
-    """Read, cut, choose and use sentences and words of the poetry."""
-
-    towards = [] #each toward of the poetry
-    words = [] #random word in each toward
-    poetry = open("resources/documents/poeme.txt", encoding='utf8')
-    towards_unsplited = poetry.readlines()
-
-    def split_poetry():
-        '''
-        Return the poetry after splitting each sentences between them and put it into towards list.
-        :return: list
-        '''
-        for line in Poetry.poetry:
-            words_splited = line.split(' ')
-            Poetry.towards.append(words_splited)
-        return Poetry.towards
-
-    def choose_words():
-        '''
-        Choose a random word in each sentence and put it into words list.
-        :return: list
-        '''
-        Poetry.towards = Poetry().split_poetry()
-        i = 0
-        for toward in Poetry.towards:
-            random_choice = random.choice(Poetry.towards[i])
-            i += 1
-            Poetry.words.append(random_choice)
-        return Poetry.words
