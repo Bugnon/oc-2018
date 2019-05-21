@@ -6,7 +6,6 @@ feather_image = pyglet.resource.image("resources/plume.png")
 
 player_image = pyglet.resource.image("resources/encrier.png")
 
-# définition d'une nouvelle classe
 class RotatingSprite(pyglet.sprite.Sprite):
     """Classe définissant les sprites qui tournent."""
     def __init__(self, *args, **kwargs):
