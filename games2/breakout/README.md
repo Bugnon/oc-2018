@@ -5,6 +5,15 @@
 
 ## Description
 
+## Introduction
+
+Au cours de l’année 2019, un évènement a eu lieu dans tout l’ouest de la Suisse ainsi que dans plusieurs villes partout dans le monde durant le mois d’avril : Le printemps de la poésie.
+Cet événement s’est déroulé durant tout le mois d’avril et a consisté à proposer durant tout un mois des évènements ainsi que des activités liés à la poésie. ( pour plus d’informations, veuillez-vous référer au site : http://printempspoesie.ch)
+Le gymnase vaudois du bugnon a décidé de prendre part au printemps de la poésie en faisant participer le corps enseignant ainsi que les élèves, tout au long d’une semaine, à des activités poétiques diverses et variées.
+Dans le cadre de l’option complémentaire de 3ème année gymnasiale d’informatique, nous avons travaillé sur la programmation d’un jeu à thème poétique. Pour se faire, chaque groupe a proposé le style de jeu sur lequel travailler. 
+
+Notre groupe a donc choisi de travailler sur un jeu de style « Casse-brique ». Ce style de jeu consiste, à l’aide d’une plateforme que le joueur contrôle, à faire rebondir une balle sur des briques sans laisser tomber ladite balle.
+Afin d’ajouter notre côté poétique à notre jeu, nous avons décidé de travailler sur la reconstitution d’un poème à l’aide du cassage de brique.
 
 
 ## Explication du jeu 
