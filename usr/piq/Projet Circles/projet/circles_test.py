@@ -140,8 +140,13 @@ def update(dt):
 
     ### Try the collision
     for feather in player_sprite.feathers:
-        if math.sqrt((xc - feather.x)**2 + (yc - feather.y)**2) > segment.r - segment.height//2 - 25:
-                feather.dead = True
+        if distance(point_1=(feather.x, feather.y), point_2=(xc, yc)) > segment.r - segment.height//2 - 25:
+                for segment in RotatingSprite.segments:
+                        feather.dead = True
+                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.27 * r * math.sin(math.radians(360/15)/2):
+                                print(distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)))
+               
+                
 
 if __name__ == "__main__":
 

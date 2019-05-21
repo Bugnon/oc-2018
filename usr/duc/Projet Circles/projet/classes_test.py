@@ -1,21 +1,50 @@
+##### IMPORT #####
 import pyglet, random, math, time
-from pyglet.window import key
+from pyglet.window import key, FPSDisplay
 
+##### MEDIA #####
 fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
 fire_sound = pyglet.media.Player()
 fire_sound.volume = 0.001
 
+##### SCREEN INFORMATION #####
+platform = pyglet.window.get_platform()
+display = platform.get_default_display()      
+screen = display.get_default_screen()
+
+##### USEFUL SIMPLE FUNCTIONS #####
 def center_image(image):
-    """Sets an image's anchor point to its center"""
+    """
+    Sets an image's anchor point to its center
+    :param image: image
+    :return: None
+    """
     image.anchor_x = image.width // 2
     image.anchor_y = image.height // 2
 
 def distance(point_1=(0, 0), point_2=(0, 0)):
+    '''
+    Calculates the distance between two points.
+    :param point_1: tuple
+    :param point_2: tuple
+    :return: float
+    '''
     return math.sqrt(
         (point_1[0] - point_2[0]) ** 2 +
         (point_1[1] - point_2[1]) ** 2)
 
+##### GAME WINDOW CLASS #####
+# Create a class for the game_window
+class Window(pyglet.window.Window):
+    """Classe définissant une fenêtre de jeu en pleine écran à 60 FPS."""
+    def __init__(self, *args, **kwargs):
+        super(Window, self).__init__(*args, **kwargs)
 
+        self.set_fullscreen(True)
+        self.frame_rate = 1/60.0 
+        self.fps_display = FPSDisplay(self)
+
+##### PLAYER CLASS #####
 class Player(pyglet.sprite.Sprite):
     """Classe définissant le joueur qui sera contrôlé avec les flèches gauche et droite."""
     def __init__(self, *args, **kwargs):
@@ -31,9 +60,7 @@ class Player(pyglet.sprite.Sprite):
 
         self.angle = 0
 
-
         self.reloading = 0
-
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.LEFT:
@@ -63,7 +90,7 @@ class Player(pyglet.sprite.Sprite):
         Feather.feathers.append(feather)
         fire_sound.queue(fire)
         fire_sound.play()
-        self.reloading = 35 # 0,58 sec car il descend de 1 chaque 1/60 sec
+        self.reloading = 30 # 0,5 sec car il descend de 1 chaque 1/60 sec
 
     def update(self, dt):
         if self.keys['left']:
@@ -83,11 +110,6 @@ class Player(pyglet.sprite.Sprite):
             
             Feather.update_position(feather, dt)
 
-
-            platform = pyglet.window.get_platform()
-            display = platform.get_default_display()      
-            screen = display.get_default_screen()
-
             if feather.dead == True:
                 Feather.feathers.remove(feather)
             
@@ -96,6 +118,7 @@ class Player(pyglet.sprite.Sprite):
             elif feather.y <= 0 or feather.y >= screen.height:
                 Feather.feathers.remove(feather)
 
+##### PROJECTILE CLASS #####
 class Feather(pyglet.sprite.Sprite):
     """Classe définissant les projectiles que le joueur lancera avec la barre espace."""
 
@@ -110,7 +133,7 @@ class Feather(pyglet.sprite.Sprite):
 
         self.image = pyglet.resource.image('resources/sprites/feather.png')
 
-        self.speed = 600 # Norm of the velocity
+        self.speed = 500 # Norm of the velocity
 
         self.angle = player.angle
 
@@ -124,18 +147,21 @@ class Feather(pyglet.sprite.Sprite):
         self.x += self.dx * dt
         self.y += self.dy * dt
 
+##### ROTATINGSPRITE CLASS #####
 class RotatingSprite(pyglet.sprite.Sprite):
-    """Classe définissant les segments de cercle et les mots qui tournent."""
+    """A class which defines the circle's segments and the turning words."""
 
+    #Set the class attributes
     segments = []
+    dead_segments = []
     words = ['arbre','fromage','language','beau','ramage','hôte','voix','bec','flatteur','dépens','leçon','honteux','confus','jura','tard']
     angular_velocity = math.pi/5
-    circle_segment_grey = pyglet.resource.image('resources/sprites/circle_segment_grey.png')
+    circle_segment_grey = pyglet.resource.image('resources/sprites/circle_segment_grey.png') #Dead segment
 
-    def __init__(self, angle_radians, x, r, xc, yc, word, *args, **kwargs):
+    def __init__(self, angle_radians, r, xc, yc, word, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)
-
-        self.word = word
+        #Set the instance attributes
+        self.word = word #the word  assigns to self
 
         self.angle = angle_radians
         self.xc = xc
@@ -144,35 +170,38 @@ class RotatingSprite(pyglet.sprite.Sprite):
         #self.dr = 100
         #self.growing = False
 
-        self.label = pyglet.text.Label(self.word.upper(),
-                font_name='Times New Roman',
-                font_size=self.r/30,
-                color=(75, 0, 130, 255),
-                x=self.x, y=self.y,
-                anchor_x='center', anchor_y='center')
-
-
-        self.scale = 0.56*x/1200
+        self.scale = 0.56*screen.width/1200
 
         self.dead = False
 
         self.update_position()
 
     def update_position(self):
-        self.label.x = self.x
-        self.label.y = self.y
+        #Set the self label onto the self segment
 
         self.x = self.xc + self.r * math.sin(self.angle)
         self.y = self.yc + self.r * math.cos(self.angle)
         self.rotation = math.degrees(self.angle)
+        
+        self.label = pyglet.text.Label(self.word.upper(),
+                font_name='Times New Roman',
+                font_size=self.r/30,
+                color=(75, 0, 130, 255),
+                x=self.x, y=self.y,
+                anchor_x='center', anchor_y='center')
+        if len(RotatingSprite.segments) == 15:
+            RotatingSprite.segments[14].dead = True
 
     def update(self, dt):
         self.angle += RotatingSprite.angular_velocity * dt
         self.scale = self.r/540
 
         if self.dead == True:
-                RotatingSprite.segments.img = RotatingSprite.circle_segment_grey
-                RotatingSprite.words.remove(self.word)
+            RotatingSprite.segments.remove(self)
+            RotatingSprite.dead_segments.append(self)
+            self.img = RotatingSprite.circle_segment_grey #replace the image by a dead segment image
+            self.dead = False
+            #RotatingSprite.words.remove(self.word.lower()) #destroy the word assigns to the dead segment
 
         #if self.r >= 450:
         #    self.growing = False
