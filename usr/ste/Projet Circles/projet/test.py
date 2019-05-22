@@ -1,10 +1,6 @@
 import random
 class Poetry():
-<<<<<<< HEAD
-    """Classe permettant de lire, couper, choisir et utiliser les vers et les mots."""
-=======
     """Read, cut, choose and use sentences and words of the poetry."""
->>>>>>> 7d6510ccb500526083c47b7114b79209bd1a0c53
     towards = []
     words = []
     poetry = open("resources/documents/poeme.txt", encoding='utf8')

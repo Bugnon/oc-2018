@@ -39,7 +39,7 @@ class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super(Window, self).__init__(*args, **kwargs)
 
-        self.set_fullscreen(True)
+        self.set_fullscreen(False)
         self.frame_rate = 1/60.0 
         #self.fps_display = FPSDisplay(self)
 
@@ -164,13 +164,17 @@ class Poetry():
             return self.towards
 
     def choose_words(self):
-            self.towards = Poetry().split_poetry()
-            i = 0
-            for __ in self.towards:
-                    random_choice = random.choice(self.towards[i])
+        self.towards = Poetry().split_poetry()
+        i = 0
+        for __ in self.towards:
+            while i < 15:
+                random_choice = random.choice(self.towards[i])
+                if len(random_choice) > 2:
                     i += 1
                     self.words.append(random_choice)
-            return self.words
+                else: 
+                    random_choice = random.choice(self.towards[i])
+        return self.words
 
     def save_words(self):
         with open('words.txt', 'w', encoding='utf8') as filehandle:
@@ -179,8 +183,20 @@ class Poetry():
     
     def open_words(self):
         return open("words.txt", encoding='utf8').read().split('\n')
+    
+    def remove_words(self):
+        i = 0
+        words_to_remove = Poetry().open_words()
+        towards = self.towards
+        for toward in towards:
+            loc = towards[i].index(words_to_remove[i])
+            towards[i].remove(words_to_remove[i])
+            towards[i].insert(loc, '........')
+            i += 1 
+        return towards
 
 Poetry().save_words()
+Poetry().remove_words()
 
 ##### ROTATINGSPRITE CLASS #####
 class RotatingSprite(pyglet.sprite.Sprite):

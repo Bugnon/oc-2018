@@ -75,7 +75,6 @@ for i in range(15):
     RotatingSprite.segments.append(segment)
 
 def write_towards():
-        remove_word = Poetry().open_words()
         toward = Poetry().split_poetry()
         msg = ' '.join(toward[0])
         label = pyglet.text.Label(str(msg),
