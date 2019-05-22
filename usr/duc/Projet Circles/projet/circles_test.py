@@ -1,7 +1,7 @@
 ##### IMPORT #####
 import pyglet, random, math
 from pyglet import font
-from classes_test import Player, Feather, RotatingSprite, Window
+from classes_test import Player, Feather, RotatingSprite, Window, Poetry
 
 ##### USEFUL SIMPLE FUNCTIONS #####
 def center_image(image):
@@ -67,27 +67,29 @@ for i in range(15):
     angle_degrees = (360/15)*i
     angle_radians = math.radians(angle_degrees)
     xc, yc = (x//2, (y+2*parchment.y)//2)
-    r = x/6
+    r = x//6
     segment = RotatingSprite(angle_radians=angle_radians,
                             r=r, xc=xc, yc=yc,
                             word=RotatingSprite.words[i], img=circle_segment, batch=batch)
     segment.scale = r/540
     RotatingSprite.segments.append(segment)
 
+##### POETRY #####
+poem = Poetry()
+poem.save_words()
+
 ##### GAME FUNCTIONS #####
-def write_sentence(msg):
-    '''
-    Draws the sentence on the parchment.
-    :param msg: str
-    :return: None
-    '''
-    label = pyglet.text.Label(str(msg),
-        font_name='Times New Roman',
-        font_size=40,
-        color=(75, 0, 130, 255),
-        x=parchment.x, y=parchment.y,
-        anchor_x='center', anchor_y='center')
-    label.draw()
+def write_towards(poetry):
+        remove_word = poetry.open_words()
+        toward = poetry.split_poetry()
+        msg = ' '.join(toward[0])
+        label = pyglet.text.Label(str(msg),
+                          font_name='Times New Roman',
+                          font_size=18,
+                          color=(75, 0, 130, 255),
+                          x=parchment.x, y=parchment.y,
+                          anchor_x='center', anchor_y='center')
+        label.draw()
 
 def chargeBar(player_sprite, player_image):
         '''
@@ -124,7 +126,7 @@ def on_draw():
     parchment.draw()
     #Draw the player and the segments
     batch.draw()
-    write_sentence('Insérez la phrase')
+    write_towards(poem)
     #Draw the segments
     for segment in RotatingSprite.segments:
         segment.label.draw()
@@ -133,11 +135,13 @@ def on_draw():
     #Draw every projectile
     for feather in Feather.feathers:
         feather.draw()
+    for obj in RotatingSprite.intert_objects:
+        obj.draw()
 
 def update(dt):
     '''
     Updates the game objects every frame (60 times per second)
-    :param dt: float (1/60)
+    :param dt: float
     :return: None
     '''
     player_sprite.update(dt)
@@ -145,13 +149,15 @@ def update(dt):
         segment.update(dt)
     for dead_segment in RotatingSprite.dead_segments:
         dead_segment.update(dt)
+    for obj in RotatingSprite.intert_objects:
+        obj.update(dt)
+
 
     ### Try the collision
     for feather in Feather.feathers:
-        if distance(point_1=(player_sprite.x, player_sprite.y), point_2=(feather.x, feather.y)) >= r - segment.height/2 - feather.height/2:
+        r_max = r - segment.height/2 - feather.height/2
+        if distance(point_1=(player_sprite.x, player_sprite.y), point_2=(feather.x, feather.y)) >= r_max:
             feather.dead = True
-    if len(RotatingSprite.segments) == 15:
-        RotatingSprite.segments[0].dead = True
 
 if __name__ == "__main__":
 
