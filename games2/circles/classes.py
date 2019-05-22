@@ -111,7 +111,7 @@ class Player(pyglet.sprite.Sprite):
             Feather.update_position(feather, dt)
 
             if feather.dead == True:
-                feather.die()
+                feather.die(self)
                 Feather.feathers.remove(feather)
             
             if feather.x <= 0 or feather.x >= screen.width:
@@ -136,6 +136,7 @@ class Feather(pyglet.sprite.Sprite):
         self.xc = player.x
         self.yc = player.y
         self.r = screen.width // 6
+        self.timer = player.timer
 
         self.speed = 500 # Norm of the velocity
 
@@ -146,16 +147,16 @@ class Feather(pyglet.sprite.Sprite):
 
         self.dead = False
 
-    def die(self):
-        self = RotatingSprite(angle_radians=self.angle,
-                            r=self.r - self.height, xc=self.xc, yc=self.yc,
-                            word=None, img=self.image, x=self.x, y = self.y)
-        RotatingSprite.intert_objects.append(self)
-
     def update_position(self, dt):
 
         self.x += self.dx * dt
         self.y += self.dy * dt
+
+    def die(self, player):
+        self = RotatingSprite(angle_radians=math.radians(player.angle),
+                            r=self.r - self.height, xc=self.xc, yc=self.yc,
+                            word=None, img=self.image)
+        RotatingSprite.intert_objects.append(self)
 
 ##### POETRY #####
 class Poetry():
@@ -212,6 +213,17 @@ class Poetry():
         '''
         return open("resources/documents/words.txt", encoding='utf8').read().split('\n')
 
+    def remove_words(self):
+        i = 0
+        words_to_remove = Poetry().open_words()
+        towards = self.towards
+        for toward in towards:
+            loc = towards[i].index(words_to_remove[i])
+            towards[i].remove(words_to_remove[i])
+            towards[i].insert(loc, '........')
+            i += 1 
+        return towards
+
 Poetry().save_words()
 
 ##### ROTATINGSPRITE CLASS #####
@@ -222,8 +234,10 @@ class RotatingSprite(pyglet.sprite.Sprite):
     segments = []
     dead_segments = []
     intert_objects = []
+
     words = Poetry().open_words()
     angular_velocity = math.pi/5
+
     circle_segment = pyglet.image.load("resources/sprites/circle_segment.png")
     center_image(circle_segment)
     circle_segment_grey = pyglet.image.load('resources/sprites/circle_segment_grey.png') #Dead segment
