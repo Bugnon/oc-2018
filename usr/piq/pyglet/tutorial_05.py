@@ -11,11 +11,12 @@ def on_mouse_press(x, y, button, modifiers):
     label.text = msg
     label.x = x
     label.y = y
-    print(msg)
+
 
 @window.event
 def on_draw():
     window.clear()
-    label.draw()
+    if 100 <= label.x <= 200 and 100 <= label.y <= 200:
+        label.draw()
 
 pyglet.app.run()
