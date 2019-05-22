@@ -1,141 +1,169 @@
-import pyglet, random
-import math
+##### IMPORT #####
+import pyglet, random, math
 from pyglet import font
-from classes import RotatingSprite, Player, Feather
+from classes import Player, Feather, RotatingSprite, Window, Poetry
 
-font.add_file('resources/Angelface.otf')
-Angelface = font.load('Angelface', 14)
-
+##### USEFUL SIMPLE FUNCTIONS #####
 def center_image(image):
-    """Sets an image's anchor point to its center"""
+    """
+    Sets an image's anchor point to its center
+    :param image: image
+    :return: None
+    """
     image.anchor_x = image.width // 2
     image.anchor_y = image.height // 2
 
-game_objects = []
+def distance(point_1=(0, 0), point_2=(0, 0)):
+    '''
+    Calculates the distance between two points.
+    :param point_1: tuple
+    :param point_2: tuple
+    :return: float
+    '''
+    return math.sqrt(
+        (point_1[0] - point_2[0]) ** 2 +
+        (point_1[1] - point_2[1]) ** 2)
 
-# Set up a window
-rapportparchemin = 3506/2480
-game_window = pyglet.window.Window(fullscreen = True)
+##### FONT #####
+#font.add_file('resources/font/Angelface.otf')
+#Angelface = font.load('Angelface', 14)
+
+##### MUSIC #####
+musicSource = pyglet.media.load('resources/sound/violin.wav')
+music = pyglet.media.Player()
+music.volume = 0.0005
+#Keep playing for as long as the app is running (or you tell it to stop):
+music.eos_action = pyglet.media.SourceGroup.loop
+
+##### GAME WINDOW #####
+game_window = Window()
 x = game_window.width
 y = game_window.height
-pyglet.gl.glClearColor(1,1,1,1)
 
-batch = pyglet.graphics.Batch()
-
-musicSource = pyglet.media.load('resources/Violin.wav')
-music = pyglet.media.Player() 
-music.volume = 0.001
-
-parchemin_image = pyglet.resource.image('resources/parchemin.png')
-parchemin_image.lengh = y
-parchemin_image.width = y/rapportparchemin
-parchemin_sprite = pyglet.sprite.Sprite(img=parchemin_image, x=x-y/rapportparchemin, y=(game_window.height-parchemin_image.height)/2)
-
-wallpaper = pyglet.resource.image('resources/wallpaper.jpg')
+##### WALLPAPER #####
+wallpaper = pyglet.resource.image('resources/sprites/wallpaper.jpg')
 wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
 
-player_image = pyglet.resource.image("resources/encrier.png")
+##### BATCH #####
+batch = pyglet.graphics.Batch()
+
+##### PARCHMENT #####
+parchment_image = pyglet.resource.image('resources/sprites/parchment.png')
+center_image(parchment_image)
+parchment_scale = parchment_image.height/parchment_image.width #Scale of the parchment
+parchment = pyglet.sprite.Sprite(img=parchment_image, x=x//2, y=parchment_image.height//2 + 20)
+
+##### PLAYER #####
+player_image = pyglet.resource.image('resources/sprites/player.png')
 center_image(player_image)
-player_ink = Player(img=player_image, x=(x-y/rapportparchemin)/2, y=y/2, batch=batch)
+player_sprite = Player(img=player_image, x=x//2, y=(y+2*parchment.y)//2, batch=batch)
+game_window.push_handlers(player_sprite)
 
-feather_image = pyglet.resource.image("resources/plume.png")
-center_image(feather_image)
-feather = Feather(img=feather_image, x=0, y=0)
-
-game_window.push_handlers(player_ink)
-
-game_window.push_handlers(feather)
-
-# utilisation de la classe Sprite telquel
-# https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/sprite.html?highlight=sprites
-circle_segment = pyglet.image.load("resources/circle_segment.png")
+##### CIRCLE SEGMENTS #####
+circle_segment = pyglet.image.load("resources/sprites/circle_segment.png")
 center_image(circle_segment)
-
-segments = []
-xc, yc = ((x-y/rapportparchemin)//2, y/2)
-r = x/4
+#Load the 15 segments with the RotatingSprite class
 for i in range(15):
     angle_degrees = (360/15)*i
     angle_radians = math.radians(angle_degrees)
+    xc, yc = (x//2, (y+2*parchment.y)//2)
+    r = x//6
+    segment = RotatingSprite(angle_radians=angle_radians,
+                            r=r, xc=xc, yc=yc,
+                            word=RotatingSprite.words[i], img=circle_segment, batch=batch)
+    segment.scale = r/540
+    RotatingSprite.segments.append(segment)
 
-    segment = RotatingSprite(img=circle_segment, batch=batch)
-    segment.angle = angle_radians
-    segment.r = r
-    segment.xc = xc
-    segment.yc = yc
-    segment.scale = 0.56*x/1200
-    segments.append(segment)
+##### POETRY #####
+poem = Poetry()
+poem.save_words()
 
-words = ['arbre','fromage','language','beau','ramage','hote','voix','bec','flatteur','depens','lecon','honteux','confus','jura','tard']
-
-poetry = open("resources/poeme.txt", encoding='utf-8')
-
-def write_words():
-        i = 0
-        for word in words:
-                msg = '{}'.format(word)
-                label = pyglet.text.Label(msg,
+##### GAME FUNCTIONS #####
+def write_towards(poetry):
+        remove_word = poetry.open_words()
+        toward = poetry.split_poetry()
+        msg = ' '.join(toward[0])
+        label = pyglet.text.Label(str(msg),
                           font_name='Times New Roman',
-                          font_size=16,
+                          font_size=18,
                           color=(75, 0, 130, 255),
-                          x=segments[i].x, y=segments[i].y,
+                          x=parchment.x, y=parchment.y,
                           anchor_x='center', anchor_y='center')
-                label.text = msg
-                i += 1
-                label.draw()
-def split_poetry():
-        ListLines = poetry.readlines()
-        ListWords = []
-        for line in ListLines:
-                words = line.split(' ')
-                ListWords.append(words)
+        label.draw()
 
-def choose_words(wordList):
-        random.choice(wordList)
+def chargeBar(player_sprite, player_image):
+        '''
+        Draws the line for the reloading time.
+        :param player_sprite: sprite
+        :param player_image: image
+        :return: None
+        '''
 
-def write_poetry():
-    saut = 40
-    for line in poetry:
-        saut = saut+16*x/800
-        poeme = pyglet.text.Label(line,
-                            font_name='Angelface',
-                            font_size=15*x/800,
-                            color=(0, 0, 50, 255),
-                            x=x-300*x/800, y=y-60*x/800-saut,
-                            batch=batch)
-        poeme.draw()
+        player_start = player_sprite.x - player_sprite.width // 2
 
-write_poetry()
-
-
+        pyglet.graphics.draw(2, pyglet.gl.GL_LINES,
+            ("v2f", (player_start, player_sprite.y-(player_image.height)/1.2, player_start+2*(player_sprite.width*(player_sprite.reloading/60)), player_sprite.y-(player_image.height)/1.2))
+        )
+        pyglet.graphics.draw(2, pyglet.gl.GL_LINES,
+            ("v2f", (player_start, player_sprite.y-(player_image.height)/1.2+1, player_start+2*(player_sprite.width*(player_sprite.reloading/60)), player_sprite.y-(player_image.height)/1.2+1))
+        )
+        pyglet.graphics.draw(2, pyglet.gl.GL_LINES,
+            ("v2f", (player_start, player_sprite.y-(player_image.height)/1.2+2, player_start+2*(player_sprite.width*(player_sprite.reloading/60)), player_sprite.y-(player_image.height)/1.2+2))
+        )
+        pyglet.graphics.draw(2, pyglet.gl.GL_LINES,
+            ("v2f", (player_start, player_sprite.y-(player_image.height)/1.2+3, player_start+2*(player_sprite.width*(player_sprite.reloading/60)), player_sprite.y-(player_image.height)/1.2+3))
+        )
 
 @game_window.event
 def on_draw():
-
+    '''
+    The draw function.
+    :return: None
+    '''
     game_window.clear()
     wallpaper_sprite.draw()
-    player_ink.draw()
-    parchemin_sprite.draw()
-
+    game_window.fps_display.draw()
+    parchment.draw()
+    #Draw the player and the segments
     batch.draw()
-    write_words()
-
+    write_towards(poem)
+    #Draw the segments
+    for segment in RotatingSprite.segments:
+        segment.label.draw()
+    #Draw the reloading line
+    chargeBar(player_sprite, player_image)
+    #Draw every projectile
+    for feather in Feather.feathers:
+        feather.draw()
+    for obj in RotatingSprite.intert_objects:
+        obj.draw()
 
 def update(dt):
-    for segment in segments:
+    '''
+    Updates the game objects every frame (60 times per second)
+    :param dt: float
+    :return: None
+    '''
+    player_sprite.update(dt)
+    for segment in RotatingSprite.segments:
         segment.update(dt)
-    player_ink.update(dt)
-    for feather in player_ink.feathers:
-        feather.update(dt)
-        
+    for dead_segment in RotatingSprite.dead_segments:
+        dead_segment.update(dt)
+    for obj in RotatingSprite.intert_objects:
+        obj.update(dt)
 
+
+    ### Try the collision
+    for feather in Feather.feathers:
+        r_max = r - segment.height/2 - feather.height/2
+        if distance(point_1=(player_sprite.x, player_sprite.y), point_2=(feather.x, feather.y)) >= r_max:
+            feather.dead = True
 
 if __name__ == "__main__":
 
-    pyglet.clock.schedule_interval(update, 1/60.0)
+    pyglet.clock.schedule_interval(update, game_window.frame_rate) #Activate the update function (60 Hz)
 
     music.queue(musicSource)
     music.play()
-
 
     pyglet.app.run()
