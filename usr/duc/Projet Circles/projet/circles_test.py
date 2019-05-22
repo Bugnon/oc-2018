@@ -77,10 +77,10 @@ for i in range(15):
 ##### POETRY #####
 poem = Poetry()
 poem.save_words()
+poem.remove_words()
 
 ##### GAME FUNCTIONS #####
 def write_towards(poetry):
-        remove_word = poetry.open_words()
         toward = poetry.split_poetry()
         msg = ' '.join(toward[0])
         label = pyglet.text.Label(str(msg),
@@ -152,10 +152,9 @@ def update(dt):
     for obj in RotatingSprite.intert_objects:
         obj.update(dt)
 
-
     ### Try the collision
     for feather in Feather.feathers:
-        r_max = r - segment.height/2 - feather.height/2
+        r_max = r - feather.height
         if distance(point_1=(player_sprite.x, player_sprite.y), point_2=(feather.x, feather.y)) >= r_max:
             feather.dead = True
 
