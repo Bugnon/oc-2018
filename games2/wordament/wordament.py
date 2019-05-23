@@ -15,7 +15,21 @@ from random import randint
 ############################################
 ###   Initialization of game variables   ###
 ############################################
-
+def random_level_generation():
+    all_letter = []
+    grid = []
+    for letter in levels.scrabble_letter:
+        for i in range(levels.scrabble_letter[letter]):
+            all_letter.append(letter)
+    for i in range(4):
+        line = []
+        for j in range(4):
+            changed_letter = all_letter.pop(randint(0, len(all_letter)-1-4*i-j))
+            line.append(changed_letter)
+        grid.append(line)
+    print(all_letter, grid)
+    return grid
+random_level_generation()
 # Screen size variables :
 height = 650
 width = 600
@@ -32,7 +46,7 @@ old_case = [-1, -1]
 
 # Imported variables :
 game_location = str(Path(__file__).absolute().parent)
-ML = (levels.L1)
+ML = random_level_generation()
 
 # Creation of the window and the game board:
 window = pyglet.window.Window(width, height, resizable = True, caption='Wordament')
@@ -54,6 +68,7 @@ music_player.queue(looper)
 looper.loop = True
 music_player.play()
 music_player.volume = 0.25
+background_image = pyglet.image.load(Path(game_location + '/images/Background.jpg'))
 
 # Set of the written items to initial form :
 new_word_print = pyglet.text.Label('Word : ', font_size = 28, x = 5, y = 612)
@@ -69,7 +84,6 @@ def on_draw():
     if game_state == 0:
         # clears the screen
         window.clear()
-        background_image = pyglet.image.load(Path(game_location + '/images/Background.jpg'))
         # draws the image on the screen
         background_image.blit(x = 0, y = 0, height = window.height, width = window.width)
     if game_state == 1:
@@ -77,7 +91,6 @@ def on_draw():
         global word_coordinate
         window.clear()
         print(word_state)
-        background_image = pyglet.image.load(Path(game_location + '/images/Background.jpg'))
         # draws the image on the screen
         background_image.blit(x = 0, y = 0, height = window.height, width = window.width)
         for u in range(4):
@@ -100,6 +113,7 @@ def on_draw():
         if word_state != 0:
             word_state = 0
             word_coordinate = []
+            pyglet.clock.schedule_once(update, 1)
         
 @window.event
 def on_mouse_press(x, y, b, m):
@@ -178,7 +192,11 @@ def check_existence(search):
     string = set(string)
     if search in string:
         return True
+
+def update(dt):
+    on_draw()
 ###########################################
 ########## Launching of the game ##########
 ###########################################
 pyglet.app.run()
+
