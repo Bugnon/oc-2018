@@ -1,7 +1,7 @@
-# Title of your project game
+# Poetic Breakout
 
-* Authors:
-* Date:
+* Authors: Pierre Gaglio, Jérémy Werro & Nisa Azizi
+* Date: 26.05.2019
 
 ## Description
 
