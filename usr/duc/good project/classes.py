@@ -277,7 +277,7 @@ class RotatingSprite(pyglet.sprite.Sprite):
                     anchor_x='center', anchor_y='center')
 
     def update(self, dt):
-        if self.dead and self.image != RotatingSprite.circle_segment_grey:
+        if self.dead:
             RotatingSprite.segments.remove(self)
             RotatingSprite.dead_segments.append(self)
             RotatingSprite.words.remove(self.word) #destroy the word assigns to the dead segment
