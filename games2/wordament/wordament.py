@@ -11,6 +11,7 @@ import pyglet
 from levels import levels
 import codecs
 from pathlib import Path
+from random import randint
 ############################################
 ###   Initialization of game variables   ###
 ############################################
@@ -44,7 +45,8 @@ for u in range(4):
             
 # Set of the music during the game :
 pyglet.options['audio'] = ('openal', 'pulse', 'directsound', 'silent')
-music = pyglet.media.load(game_location + '/images/music.wav')
+num = randint(0,2)
+music = pyglet.media.load(game_location + '/images/music_' + str(num) + '.wav')
 looper = pyglet.media.SourceGroup(music.audio_format, None)
 music_player = pyglet.media.Player()
 looper.queue(music)
@@ -61,33 +63,23 @@ score_print = pyglet.text.Label('Score : 0', font_size = 28, x = 400, y = 612)
 ########## Start of the game code ##########
 ############################################
 
-# Function that update the game board :
-if game_state == 0:
-    @window.event
-    def on_draw():
-        
+#Function that update the game board :
+@window.event
+def on_draw():
+    if game_state == 0:
         # clears the screen
         window.clear()
-        background_image = pyglet.image.load("images/Background.jpg")
+        background_image = pyglet.image.load(Path(game_location + '/images/Background.jpg'))
         # draws the image on the screen
-        background_image.blit(0, 0)
-
-
-# starts the application
-pyglet.app.run()
-    
-    
-if game_state == 1:
-    def update(dt):
-        on_draw()
-
-    # Actions when the game start to create the game board :
-    @window.event
-    def on_draw():
+        background_image.blit(x = 0, y = 0, height = window.height, width = window.width)
+    if game_state == 1:
         global word_state
         global word_coordinate
         window.clear()
         print(word_state)
+        background_image = pyglet.image.load(Path(game_location + '/images/Background.jpg'))
+        # draws the image on the screen
+        background_image.blit(x = 0, y = 0, height = window.height, width = window.width)
         for u in range(4):
             for n in range(4):
                 letter = image_store[ML[3 - n][u]]
@@ -108,11 +100,21 @@ if game_state == 1:
         if word_state != 0:
             word_state = 0
             word_coordinate = []
-            pyglet.clock.schedule_once(update, 1)
+        
+@window.event
+def on_mouse_press(x, y, b, m):
+    global game_state
+    if game_state == 0:
+        game_state = 1
 
-    # Actions when the click of the mouse is release :
-    @window.event
-    def on_mouse_release(x, y, button, modifiers):
+
+
+
+    
+ # Actions when the click of the mouse is release :
+@window.event
+def on_mouse_release(x, y, button, modifiers):
+    if game_state == 1:
         global old_case
         global new_word
         global word_coordinate
@@ -133,13 +135,14 @@ if game_state == 1:
 
         new_word = ""
         new_word_print.text = "Word : " + new_word
-        
-        
-    # Actions when the mouse is moving :
+    
+    
+# Actions when the mouse is moving :
 
 
-    @window.event
-    def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
+@window.event
+def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
+    if game_state == 1:
         global new_word
         global word_coordinate
         global old_case
@@ -158,26 +161,24 @@ if game_state == 1:
                                     new_word = new_word[:-1]
                                     new_word_print.text = "Word : " + new_word
 
-    @window.event 
-    def on_resize(width, height):
-        global pattern_size, new_word_print, score_print
-        pattern_size = min(width, height - 50)
-        new_word_print = pyglet.text.Label('Word : ', font_size = 28, x = 5, y = height - 38)
-        score_print = pyglet.text.Label('Score : ' + str(score), font_size =28, x = pattern_size - 200, y = height - 38)
-        
-        
+@window.event 
+def on_resize(width, height):
+    global case_size, new_word_print, score_print
+    pattern_size = min(width, height - 50)
+    new_word_print = pyglet.text.Label('Word : ', font_size = 28, x = 5, y = height - 38)
+    score_print = pyglet.text.Label('Score : ' + str(score), font_size =28, x = pattern_size - 200, y = height - 38)
+    case_size = pattern_size/4
+    
 
-    def check_existence(search):
-        search = str(search + '\r\n')
-        search = search.lower()
-        fo = codecs.open(game_location + '/levels/dico.txt', 'r', 'utf-8')
-        string = fo.readlines()
-        string = set(string)
-        if search in string:
-            return True
-    ###########################################
-    ########## Launching of the game ##########
-    ###########################################
-
-
-    pyglet.app.run()
+def check_existence(search):
+    search = str(search + '\r\n')
+    search = search.lower()
+    fo = codecs.open(game_location + '/levels/dico.txt', 'r', 'utf-8')
+    string = fo.readlines()
+    string = set(string)
+    if search in string:
+        return True
+###########################################
+########## Launching of the game ##########
+###########################################
+pyglet.app.run()
