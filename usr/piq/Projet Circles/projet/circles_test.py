@@ -144,7 +144,7 @@ def update(dt):
                 for segment in RotatingSprite.segments:
                         feather.dead = True
                         if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.27 * r * math.sin(math.radians(360/15)/2):
-                                print(distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)))
+                                segment.dead = True
                
                 
 
