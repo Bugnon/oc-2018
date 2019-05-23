@@ -53,6 +53,12 @@ center_image(parchment_image)
 parchment_scale = parchment_image.height/parchment_image.width #Scale of the parchment
 parchment = pyglet.sprite.Sprite(img=parchment_image, x=x//2, y=parchment_image.height//2 + 20)
 
+### RESTART BUTTON ###
+restart_image = pyglet.resource.image('resources/sprites/restart_game.png')
+center_image(restart_image)
+restart_scale = restart_image.height/restart_image.width
+restart = pyglet.sprite.Sprite(img=restart_image, x=x//6, y=y-y/3)
+
 ##### PLAYER #####
 player_image = pyglet.resource.image('resources/sprites/player.png')
 center_image(player_image)
@@ -124,6 +130,7 @@ def on_draw():
     wallpaper_sprite.draw()
     game_window.fps_display.draw()
     parchment.draw()
+    restart.draw()
     #Draw the player and the segments
     batch.draw()
     write_towards(poem)
@@ -133,7 +140,7 @@ def on_draw():
     #Draw the reloading line
     chargeBar(player_sprite, player_image)
     #Draw every projectile
-    for feather in Feather.feathers:
+    for feather in Feather.feathers:       
         feather.draw()
     for obj in RotatingSprite.intert_objects:
         obj.draw()
@@ -159,11 +166,12 @@ def update(dt):
                         feather.dead = True
                         if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.26 * r * math.sin(math.radians(360/15)/2):
                                 segment.dead = True
+                                segment.update(dt)
 if __name__ == "__main__":
 
     pyglet.clock.schedule_interval(update, game_window.frame_rate) #Activate the update function (60 Hz)
 
     music.queue(musicSource)
-    music.play()
+    music.play()   
 
     pyglet.app.run()
