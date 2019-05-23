@@ -60,6 +60,8 @@ class Player(pyglet.sprite.Sprite):
 
         self.angle = 0
 
+        self.scale = 0.56*screen.width/1200
+
         self.reloading = 0
 
     def on_key_press(self, symbol, modifiers):
@@ -85,12 +87,11 @@ class Player(pyglet.sprite.Sprite):
         feather.y = self.y + self.height * math.cos(math.radians(self.angle))
 
         feather.rotation = self.angle
-        feather.scale = 0.03
 
         Feather.feathers.append(feather)
         fire_sound.queue(fire)
         fire_sound.play()
-        self.reloading = 30 # 0,5 sec car il descend de 1 chaque 1/60 sec
+        self.reloading = 15 # 0,25 sec car il descend de 1 chaque 1/60 sec
 
     def update(self, dt):
         if self.keys['left']:
@@ -137,6 +138,8 @@ class Feather(pyglet.sprite.Sprite):
         self.yc = player.y
         self.r = screen.width // 6
         self.timer = player.timer
+
+        self.scale = 0.025*screen.width/1200
 
         self.speed = 500 # Norm of the velocity
 
@@ -242,8 +245,6 @@ class RotatingSprite(pyglet.sprite.Sprite):
     center_image(circle_segment)
     circle_segment_grey = pyglet.image.load('resources/sprites/circle_segment_grey.png') #Dead segment
     center_image(circle_segment_grey)
-    splatter = pyglet.image.load('resources/sprites/splatter.png')
-    center_image(splatter)
 
     def __init__(self, angle_radians, r, xc, yc, word, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)
@@ -257,7 +258,7 @@ class RotatingSprite(pyglet.sprite.Sprite):
         if self.word != None:
             self.scale = 0.56*screen.width/1200
         else:
-            self.scale = 0.03
+            self.scale = 0.025*screen.width/1200
 
         self.dead = False
 
