@@ -51,17 +51,11 @@ class Player(pyglet.sprite.Sprite):
         super(Player, self).__init__(*args, **kwargs)
 
         self.image = pyglet.resource.image('resources/sprites/player.png')
-        
         self.rotate_speed = 200
-
         self.keys = {'left':False, 'right':False, 'space':False}
-
-        self.timer = 0
-
+        self.timer = 0 #the timer is an attribute to helps the feather to know the angular position of the player
         self.angle = 0
-
         self.scale = 0.56*screen.width/1200
-
         self.reloading = 0
 
     def on_key_press(self, symbol, modifiers):
@@ -82,16 +76,17 @@ class Player(pyglet.sprite.Sprite):
 
     def fire(self):
         self.angle = self.timer * self.rotate_speed
+
         feather = Feather(player=self, img=Feather.feather, x=self.x, y=self.y)
         feather.x = self.x + self.width * math.sin(math.radians(self.angle))
         feather.y = self.y + self.height * math.cos(math.radians(self.angle))
-
         feather.rotation = self.angle
-
         Feather.feathers.append(feather)
+
         fire_sound.queue(fire)
         fire_sound.play()
-        self.reloading = 30 # 0,5 sec car il descend de 1 chaque 1/60 sec
+
+        self.reloading = 30 # = 0,5 sec car il descend de 1 chaque 1/60 sec
 
     def update(self, dt):
         if self.keys['left']:
@@ -106,7 +101,10 @@ class Player(pyglet.sprite.Sprite):
         
         if self.reloading > 0:
             self.reloading -= 1
-        
+
+        self.update_feather(dt)
+
+    def update_feather(self, dt):
         for feather in Feather.feathers:
             
             Feather.update_position(feather, dt)
@@ -236,26 +234,27 @@ class RotatingSprite(pyglet.sprite.Sprite):
     #Set the class attributes
     segments = []
     dead_segments = []
-    intert_objects = []
+    intert_objects = [] #a list of the dead feather
 
-    words = Poetry().open_words()
+    words = Poetry().open_words() #a list of the words of the poetry
     angular_velocity = math.pi/5
 
     circle_segment = pyglet.image.load("resources/sprites/circle_segment.png")
     center_image(circle_segment)
-    circle_segment_grey = pyglet.image.load('resources/sprites/circle_segment_grey.png') #Dead segment
-    center_image(circle_segment_grey)
+    dead_segment = pyglet.image.load('resources/sprites/circle_segment_grey.png')
+    center_image(dead_segment)
 
     def __init__(self, angle_radians, r, xc, yc, word, *args, **kwargs):
         super(RotatingSprite, self).__init__(*args, **kwargs)
         #Set the instance attributes
         self.word = word #the word assigns to self
+        self.dead_word = None
 
         self.angle = angle_radians
         self.xc = xc
         self.yc = yc
         self.r = r
-        if self.word != None:
+        if self.word != None: #If the sprite is a segment or an intert object (dead feather)
             self.scale = 0.56*screen.width/1200
         else:
             self.scale = 0.02*screen.width/1200
@@ -268,7 +267,7 @@ class RotatingSprite(pyglet.sprite.Sprite):
         self.x = self.xc + self.r * math.sin(self.angle)
         self.y = self.yc + self.r * math.cos(self.angle)
         self.rotation = math.degrees(self.angle)
-        if self.word != None:
+        if self.word != None: #assign a word as a label to the sprite if it's a segment
             self.label = pyglet.text.Label(self.word.upper(),
                     font_name='Times New Roman',
                     font_size=self.r/30,
@@ -276,13 +275,18 @@ class RotatingSprite(pyglet.sprite.Sprite):
                     x=self.x, y=self.y,
                     anchor_x='center', anchor_y='center')
 
+    def relive(self):
+        self.image = RotatingSprite.circle_segment
+        RotatingSprite.words.append(self.word)
+        RotatingSprite.segments.append(self)
+
     def update(self, dt):
         if self.dead:
             RotatingSprite.segments.remove(self)
-            RotatingSprite.dead_segments.append(self)
             RotatingSprite.words.remove(self.word) #destroy the word assigns to the dead segment
-            self.image = RotatingSprite.circle_segment_grey #replace the image by a dead segment image
-            self.dead = False
+            RotatingSprite.dead_segments.append(self)
+            self.image = RotatingSprite.dead_segment #replace the image by a dead segment image
+            self.dead = False #Stay as a RotatingSprite to update itself
         else:
             self.angle += RotatingSprite.angular_velocity * dt
             self.update_position()
