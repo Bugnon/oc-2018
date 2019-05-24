@@ -2,6 +2,7 @@
 import pyglet, random, math
 from pyglet import font
 from classes import Player, Feather, RotatingSprite, Window, Poetry
+from pyglet.window import mouse
 
 ##### USEFUL SIMPLE FUNCTIONS #####
 def center_image(image):
@@ -44,6 +45,19 @@ y = game_window.height
 wallpaper = pyglet.resource.image('resources/sprites/wallpaper.jpg')
 wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
 
+##### MENU ####
+close_img = pyglet.resource.image('resources/sprites/close_game.png')
+close_img2 = pyglet.resource.image('resources/sprites/close_game_grey.png')
+close_scale = close_img.height/close_img.width
+close = pyglet.sprite.Sprite(img=close_img, x=close_img.width*close_scale//4, y=y-int(2*close_img.height*close_scale))
+close.scale = close_scale
+
+restart_img = pyglet.resource.image('resources/sprites/restart_game.png')
+restart_img2 = pyglet.resource.image('resources/sprites/restart_game_grey.png')
+restart_scale = restart_img.height/restart_img.width
+restart = pyglet.sprite.Sprite(img=restart_img, x=restart_img.width*restart_scale//4, y=y-int(3.5*restart_img.height*restart_scale))
+restart.scale = restart_scale
+
 ##### BATCH #####
 batch = pyglet.graphics.Batch()
 
@@ -60,7 +74,7 @@ player_sprite = Player(img=player_image, x=x//2, y=(y+2*parchment.y)//2, batch=b
 game_window.push_handlers(player_sprite)
 
 ##### CIRCLE SEGMENTS #####
-circle_segment = pyglet.image.load("resources/sprites/circle_segment.png")
+circle_segment = pyglet.resource.image("resources/sprites/circle_segment.png")
 center_image(circle_segment)
 #Load the 15 segments with the RotatingSprite class
 for i in range(15):
@@ -75,9 +89,7 @@ for i in range(15):
     RotatingSprite.segments.append(segment)
 
 ##### POETRY #####
-poem = Poetry()
-poem.save_words()
-poem.remove_words()
+Poetry().remove_words()
 
 ##### GAME FUNCTIONS #####
 def write_towards(poetry):
@@ -114,6 +126,17 @@ def chargeBar(player_sprite, player_image):
             ("v2f", (player_start, player_sprite.y-(player_image.height)/1.2+3, player_start+2*(player_sprite.width*(player_sprite.reloading/60)), player_sprite.y-(player_image.height)/1.2+3))
         )
 
+def in_sprite(sprite, x, y):
+    '''
+    Verify if the coordonates (x, y) are in the sprite
+    :param sprite: sprite
+    :param x: int
+    :param y: int
+    :return: bool
+    '''
+    res = sprite.x <= x <= sprite.x + sprite.width and sprite.y <= y <= sprite.y + sprite.height
+    return res
+
 @game_window.event
 def on_draw():
     '''
@@ -122,11 +145,13 @@ def on_draw():
     '''
     game_window.clear()
     wallpaper_sprite.draw()
+    restart.draw()
+    close.draw()
     game_window.fps_display.draw()
     parchment.draw()
     #Draw the player and the segments
     batch.draw()
-    write_towards(poem)
+    write_towards(Poetry())
     #Draw the segments
     for segment in RotatingSprite.segments:
         segment.label.draw()
@@ -138,6 +163,36 @@ def on_draw():
     for obj in RotatingSprite.intert_objects:
         obj.draw()
 
+@game_window.event
+def on_mouse_press(x, y, button, modifiers):
+        if mouse.LEFT == True:
+            if in_sprite(restart, x, y): #condition to press on the button
+                game_restart()
+            elif in_sprite(close, x, y):
+                pyglet.app.exit()
+
+@game_window.event
+def on_mouse_motion(x, y, dx, dy):
+    '''
+    Control the animation of the two buttons.
+    :return: None
+    '''
+    if restart.image == restart_img and in_sprite(restart, x, y):
+        restart.image = restart_img2
+    elif restart.image != restart_img and not in_sprite(restart, x, y):
+        restart.image = restart_img
+
+    if close.image == close_img and in_sprite(close, x, y):
+        close.image = close_img2
+    elif close.image != close_img and not in_sprite(close, x, y):
+        close.image = close_img
+
+def game_restart():
+    for segment in RotatingSprite.dead_segments:
+        segment.relive()
+    RotatingSprite.dead_segments.clear()
+    RotatingSprite.intert_objects.clear()
+
 def update(dt):
     '''
     Updates the game objects every frame (60 times per second)
@@ -145,18 +200,31 @@ def update(dt):
     :return: None
     '''
     player_sprite.update(dt)
-    for segment in RotatingSprite.segments:
-        segment.update(dt)
-    for dead_segment in RotatingSprite.dead_segments:
-        dead_segment.update(dt)
-    for obj in RotatingSprite.intert_objects:
-        obj.update(dt)
+    if len(RotatingSprite.segments) > 0:
+        for segment in RotatingSprite.segments:
+            segment.update(dt)
+    if len(RotatingSprite.dead_segments) > 0:
+        for dead_segment in RotatingSprite.dead_segments:
+            dead_segment.update(dt)
+    if len(RotatingSprite.intert_objects) > 0:
+        for obj in RotatingSprite.intert_objects:
+            obj.update(dt)
 
-    ### Try the collision
+
+    ### Collision condition
     for feather in Feather.feathers:
-        r_max = r - feather.height
-        if distance(point_1=(player_sprite.x, player_sprite.y), point_2=(feather.x, feather.y)) >= r_max:
+        already_dead = False #prevent the delete of two segments with the same feather
+        if distance(point_1=(feather.x, feather.y), point_2=(xc, yc)) > r - circle_segment.height//2:
             feather.dead = True
+            if len(RotatingSprite.segments) > 0:
+                for segment in RotatingSprite.segments:
+                    if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.26 * r * math.sin(math.radians(360/15)/2):
+                        if not already_dead:
+                            segment.dead = True
+                            segment.update(dt)
+                            already_dead = True
+            else:
+                print('Win')
 
 if __name__ == "__main__":
 
@@ -164,5 +232,5 @@ if __name__ == "__main__":
 
     music.queue(musicSource)
     music.play()
-
+ 
     pyglet.app.run()
