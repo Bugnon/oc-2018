@@ -1,5 +1,5 @@
 ##### IMPORT #####
-import pyglet, random, math
+import pyglet, random, math, time
 from pyglet import font
 from classes import Player, Feather, RotatingSprite, Window, Poetry
 from pyglet.window import mouse
@@ -41,6 +41,22 @@ game_window = Window()
 x = game_window.width
 y = game_window.height
 
+game = False
+
+time0 = time.time()
+
+##### INTRO TEXT #####
+intro_label = pyglet.text.Label("Press left mouse button to start", x=x//2 , y=y//2)
+intro_label.anchor_x = 'center'
+intro_label.anchor_y = 'center'
+intro_label.italic = True
+intro_label.bold = True
+intro_label.font_size = 40
+
+##### BATCH #####
+main_batch = pyglet.graphics.Batch() #Draw the player and the segments
+buttons = pyglet.graphics.Batch()
+
 ##### WALLPAPER #####
 wallpaper = pyglet.resource.image('resources/sprites/wallpaper.jpg')
 wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
@@ -49,17 +65,14 @@ wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
 close_img = pyglet.resource.image('resources/sprites/close_game.png')
 close_img2 = pyglet.resource.image('resources/sprites/close_game_grey.png')
 close_scale = close_img.height/close_img.width
-close = pyglet.sprite.Sprite(img=close_img, x=close_img.width*close_scale//4, y=y-int(2*close_img.height*close_scale))
+close = pyglet.sprite.Sprite(img=close_img, x=close_img.width*close_scale//4, y=y-int(2*close_img.height*close_scale), batch=buttons)
 close.scale = close_scale
 
 restart_img = pyglet.resource.image('resources/sprites/restart_game.png')
 restart_img2 = pyglet.resource.image('resources/sprites/restart_game_grey.png')
 restart_scale = restart_img.height/restart_img.width
-restart = pyglet.sprite.Sprite(img=restart_img, x=restart_img.width*restart_scale//4, y=y-int(3.5*restart_img.height*restart_scale))
+restart = pyglet.sprite.Sprite(img=restart_img, x=restart_img.width*restart_scale//4, y=y-int(3.5*restart_img.height*restart_scale), batch=buttons)
 restart.scale = restart_scale
-
-##### BATCH #####
-batch = pyglet.graphics.Batch()
 
 ##### PARCHMENT #####
 parchment_image = pyglet.resource.image('resources/sprites/parchment.png')
@@ -70,7 +83,7 @@ parchment = pyglet.sprite.Sprite(img=parchment_image, x=x//2, y=parchment_image.
 ##### PLAYER #####
 player_image = pyglet.resource.image('resources/sprites/player.png')
 center_image(player_image)
-player_sprite = Player(img=player_image, x=x//2, y=(y+2*parchment.y)//2, batch=batch)
+player_sprite = Player(img=player_image, x=x//2, y=(y+2*parchment.y)//2, batch=main_batch)
 game_window.push_handlers(player_sprite)
 
 ##### CIRCLE SEGMENTS #####
@@ -84,12 +97,9 @@ for i in range(15):
     r = x//6
     segment = RotatingSprite(angle_radians=angle_radians,
                             r=r, xc=xc, yc=yc,
-                            word=RotatingSprite.words[i], img=circle_segment, batch=batch)
+                            word=RotatingSprite.words[i], img=circle_segment, batch=main_batch)
     segment.scale = r/540
     RotatingSprite.segments.append(segment)
-
-##### POETRY #####
-Poetry().remove_words()
 
 ##### GAME FUNCTIONS #####
 def write_towards(poetry):
@@ -105,12 +115,11 @@ def write_towards(poetry):
 
 def chargeBar(player_sprite, player_image):
         '''
-        Draws the line for the reloading time.
+        Draws the charge bar for the reloading time.
         :param player_sprite: sprite
         :param player_image: image
         :return: None
         '''
-
         player_start = player_sprite.x - player_sprite.width // 2
 
         pyglet.graphics.draw(2, pyglet.gl.GL_LINES,
@@ -128,7 +137,7 @@ def chargeBar(player_sprite, player_image):
 
 def in_sprite(sprite, x, y):
     '''
-    Verify if the coordonates (x, y) are in the sprite
+    Verifies if the coordonate (x, y) is in the sprite
     :param sprite: sprite
     :param x: int
     :param y: int
@@ -145,31 +154,35 @@ def on_draw():
     '''
     game_window.clear()
     wallpaper_sprite.draw()
-    restart.draw()
-    close.draw()
-    game_window.fps_display.draw()
-    parchment.draw()
-    #Draw the player and the segments
-    batch.draw()
-    write_towards(Poetry())
-    #Draw the segments
-    for segment in RotatingSprite.segments:
-        segment.label.draw()
-    #Draw the reloading line
-    chargeBar(player_sprite, player_image)
-    #Draw every projectile
-    for feather in Feather.feathers:
-        feather.draw()
-    for obj in RotatingSprite.intert_objects:
-        obj.draw()
+    if game:
+        buttons.draw()
+        game_window.fps_display.draw()
+        parchment.draw()
+        main_batch.draw()
+        write_towards(Poetry())
+        #Draw the segments labels
+        for segment in RotatingSprite.segments:
+            segment.label.draw()
+        #Draw the reloading line
+        chargeBar(player_sprite, player_image)
+        #Draw every projectile
+        for feather in Feather.feathers:
+            feather.draw()
+        for obj in RotatingSprite.intert_objects:
+            obj.draw()
+    else:
+        intro_label.draw()
 
 @game_window.event
 def on_mouse_press(x, y, button, modifiers):
-        if mouse.LEFT == True:
-            if in_sprite(restart, x, y): #condition to press on the button
-                game_restart()
-            elif in_sprite(close, x, y):
-                pyglet.app.exit()
+    global game
+    if mouse.LEFT == True:
+        if not game:
+            game = True #lance le jeu
+        if in_sprite(restart, x, y): #condition to press on the button
+            game_restart()
+        elif in_sprite(close, x, y):
+            pyglet.app.exit()
 
 @game_window.event
 def on_mouse_motion(x, y, dx, dy):
@@ -199,32 +212,32 @@ def update(dt):
     :param dt: float
     :return: None
     '''
-    player_sprite.update(dt)
-    if len(RotatingSprite.segments) > 0:
-        for segment in RotatingSprite.segments:
-            segment.update(dt)
-    if len(RotatingSprite.dead_segments) > 0:
-        for dead_segment in RotatingSprite.dead_segments:
-            dead_segment.update(dt)
-    if len(RotatingSprite.intert_objects) > 0:
-        for obj in RotatingSprite.intert_objects:
-            obj.update(dt)
+    if game:
+        player_sprite.update(dt)
+        if len(RotatingSprite.segments) > 0:
+            for segment in RotatingSprite.segments:
+                segment.update(dt)
+        if len(RotatingSprite.dead_segments) > 0:
+            for dead_segment in RotatingSprite.dead_segments:
+                dead_segment.update(dt)
+        if len(RotatingSprite.intert_objects) > 0:
+            for obj in RotatingSprite.intert_objects:
+                obj.update(dt)
 
-
-    ### Collision condition
-    for feather in Feather.feathers:
-        already_dead = False #prevent the delete of two segments with the same feather
-        if distance(point_1=(feather.x, feather.y), point_2=(xc, yc)) > r - circle_segment.height//2:
-            feather.dead = True
-            if len(RotatingSprite.segments) > 0:
-                for segment in RotatingSprite.segments:
-                    if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.26 * r * math.sin(math.radians(360/15)/2):
-                        if not already_dead:
-                            segment.dead = True
-                            segment.update(dt)
-                            already_dead = True
-            else:
-                print('Win')
+        ### Collision condition
+        for feather in Feather.feathers:
+            already_dead = False #prevent the delete of two segments with the same feather
+            if distance(point_1=(feather.x, feather.y), point_2=(xc, yc)) > r - circle_segment.height//2:
+                feather.dead = True
+                if len(RotatingSprite.segments) > 0:
+                    for segment in RotatingSprite.segments:
+                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.26 * r * math.sin(math.radians(360/15)/2):
+                            if not already_dead:
+                                segment.dead = True
+                                segment.update(dt)
+                                already_dead = True
+                else:
+                    print('Win')
 
 if __name__ == "__main__":
 

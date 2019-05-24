@@ -191,7 +191,7 @@ class Poetry():
         for __ in self.towards:
             while i < 15:
                 random_choice = random.choice(self.towards[i])
-                if len(random_choice) > 2:
+                if len(random_choice) >= 3:
                     i += 1
                     self.words.append(random_choice)
                 else: 
@@ -222,10 +222,11 @@ class Poetry():
             loc = towards[i].index(words_to_remove[i])
             towards[i].remove(words_to_remove[i])
             towards[i].insert(loc, '........')
-            i += 1 
+            i += 1
         return towards
 
 Poetry().save_words()
+Poetry().remove_words()
 
 ##### ROTATINGSPRITE CLASS #####
 class RotatingSprite(pyglet.sprite.Sprite):
@@ -261,19 +262,26 @@ class RotatingSprite(pyglet.sprite.Sprite):
 
         self.dead = False
 
+        if self.word != None:
+            self.label = pyglet.text.Label(self.word.upper(),
+                        font_name='Times New Roman',
+                        font_size=self.r/30,
+                        color=(75, 0, 130, 255),
+                        x=0, y=0,
+                        anchor_x='center', anchor_y='center')
+        
     def update_position(self):
         #Set the self label onto the self segment
-
         self.x = self.xc + self.r * math.sin(self.angle)
         self.y = self.yc + self.r * math.cos(self.angle)
         self.rotation = math.degrees(self.angle)
         if self.word != None: #assign a word as a label to the sprite if it's a segment
             self.label = pyglet.text.Label(self.word.upper(),
-                    font_name='Times New Roman',
-                    font_size=self.r/30,
-                    color=(75, 0, 130, 255),
-                    x=self.x, y=self.y,
-                    anchor_x='center', anchor_y='center')
+                        font_name='Times New Roman',
+                        font_size=self.r/30,
+                        color=(75, 0, 130, 255),
+                        x=self.x, y=self.y,
+                        anchor_x='center', anchor_y='center')
 
     def relive(self):
         self.image = RotatingSprite.circle_segment
