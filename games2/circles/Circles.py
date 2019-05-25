@@ -137,7 +137,7 @@ def chargeBar(player_sprite, player_image):
 
 def in_sprite(sprite, x, y):
     '''
-    Verifies if the coordonate (x, y) is in the sprite
+    Verifies if the coordinate (x, y) is in the sprite
     :param sprite: sprite
     :param x: int
     :param y: int
@@ -160,9 +160,10 @@ def on_draw():
         parchment.draw()
         main_batch.draw()
         write_towards(Poetry())
-        #Draw the segments labels
-        for segment in RotatingSprite.segments:
-            segment.label.draw()
+        #Draw the segments labels (batch labels)
+        #for segment in RotatingSprite.segments:
+        #    segment.label.draw()
+        RotatingSprite.lbls.draw()
         #Draw the reloading line
         chargeBar(player_sprite, player_image)
         #Draw every projectile
