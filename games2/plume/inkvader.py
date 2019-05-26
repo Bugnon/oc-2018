@@ -1,8 +1,10 @@
-import pyglet, random, math, time, inktilities, inkgame, gc
+import pyglet, random, math, time, inktilities, inkgame, gc, time
+from time import sleep
 from pyglet.window import key, mouse
 from pyglet import clock
 from random import randint
 
+# Sets the drivers for the sound and music
 pyglet.options['audio'] = ('openal', 'silent')
 
 window = inkgame.CurrentWindow.window
@@ -45,6 +47,7 @@ class MainSequence():
         inkgame.CurrentWindow.window = inkgame.MenuWindow.window
         inkgame.CurrentWindow.batch = inkgame.MenuWindow.batch
 
+
 @window.event
 def on_draw():
     global window
@@ -70,8 +73,7 @@ def on_key_press(pressed_key, modifiers):
     elif pressed_key == pyglet.window.key.RETURN and inkgame.CurrentWindow.window == inkgame.GameWindow.window:
         MainSequence.pause()
     elif pressed_key == pyglet.window.key.RETURN and inkgame.CurrentWindow.window == inkgame.WinWindow.window:
-        MainSequence.reset()
-        MainSequence.main_menu()
+        exit()
     elif pressed_key == pyglet.window.key.ESCAPE:
         exit()
 
@@ -83,6 +85,8 @@ def collect(dt):
     gc.collect
 
 pyglet.clock.schedule_interval(update, 1/60)
+pyglet.clock.schedule_interval(inkgame.CurrentWindow.slow_update, 1/10)
 pyglet.clock.schedule_interval(collect, 5)
 MainSequence.main_menu()
 pyglet.app.run()
+  

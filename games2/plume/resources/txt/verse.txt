@@ -4,7 +4,6 @@ trou
 de
 verdure
 où
-XX
 chante
 une
 rivière
@@ -115,5 +114,4 @@ Il a
 Deux trous
 Rouge au 
 Coté droit.
-X
-X
+XX

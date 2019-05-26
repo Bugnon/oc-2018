@@ -112,11 +112,13 @@ class FloatingLabel(pyglet.text.Label):
     
     def create_word(word_amount, batch):
         word = FloatingLabel(batch = batch)
-        if word_amount[0] > word_amount[1]:
+        if word_amount[1] < 5:
+            print('added false')
             word_amount[1] += 1
             word.kind = False
             word.text = words_0[random.randint(0, len(words_0) - 1)]
-        else:
+        elif word_amount[0] < 5:
+            print('added true')
             word_amount[0] += 1
             word.kind = True
             word.text = words_1[random.randint(0, len(words_1) - 1)]
