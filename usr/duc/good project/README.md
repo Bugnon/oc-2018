@@ -29,9 +29,13 @@ Le sujet de ce travail de fin d’année, consistait à créer un projet dans le
 
 Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un poème, tout en restant dans thème poétique. Le choix de nos sprites a donc été méthodique pour le respecter.
 
+<center>
+
 | Projectile    | Player | Parchemin  |
 | :-------------: |:------:| :----------:|
 | ![Projectile](./img/feather.png)      | ![Joueur](./img/player.png) | ![Parchemin](./img/parchment.png) |
+
+</center>
 
 
 À cela, nous avons ajouté des sprites représentants l’écriture : un encrier étant la source des projectiles, un parchemin étant l'endroit sur lequel on écrit et une musique classique représentant la douceur de cet art.
