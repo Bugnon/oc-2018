@@ -211,7 +211,6 @@ class Poetry():
         Open the file with the words in it
         :return: list
         '''
-        self.save_words() #create a default word.txt file if it's not the case
         return open("resources/documents/words.txt", encoding='utf8').read().split('\n')
 
     def remove_words(self):
@@ -236,6 +235,8 @@ class Poetry():
         '''
         self.remove_words()
 
+Poetry().save_words()
+
 ##### ROTATINGSPRITE CLASS #####
 class RotatingSprite(pyglet.sprite.Sprite):
     """A class which defines the circle's segments and the turning words."""
@@ -246,6 +247,7 @@ class RotatingSprite(pyglet.sprite.Sprite):
     intert_objects = [] #a list of the dead feather
 
     words = Poetry().open_words() #a list of the words of the poetry
+    words.pop() # delete the last empty line
     angular_velocity = math.pi/5
 
     circle_segment = pyglet.image.load("resources/sprites/circle_segment.png")

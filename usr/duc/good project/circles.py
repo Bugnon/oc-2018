@@ -219,6 +219,11 @@ def update(dt):
                 for segment in RotatingSprite.segments:
                     if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.26 * r * math.sin(math.radians(360/15)/2):
                         if not already_dead:
+                            if segment.word == RotatingSprite.words[0]:
+                                print('juste')
+                            else:
+                                print('faux')
+                                print(RotatingSprite.words)
                             segment.dead = True
                             segment.update(dt)
                             already_dead = True
