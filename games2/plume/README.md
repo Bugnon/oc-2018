@@ -32,20 +32,20 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
 * Pour démarrer le jeu il faut cliquer sur l'écran à l'aide de la souris.
 ![starttoclick](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
  
- * Voici à quoi ressemble lorsqu'une partie est en cours.
+ * Voici à quoi ressemble le jeu lorsqu'une partie est en cours.
  ![play](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
  
- * En appuyant sur la touche enter, le jeux se met en pause.
+ * En appuyant sur la touche "enter", le jeu se met en pause.
  ![pause](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
  
- * La plume ne peut se déplacer dans tout l'espace de l'écrans, un barre apparait lorsqu'elle atteind une limite.
+ * La plume ne peut se déplacer dans tout l'espace de l'écran, une barre apparait lorsqu'elle atteint une limite.
  ![limite](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
  
- * Lorsqu'un mot du vocabulaire poétique est touché, la tache d'encre est verte en signe de victoire.
+ * Lorsqu'un mot du vocabulaire poétique est touché, la tâche d'encre est verte en signe de victoire.
  ![victoire](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
   
  * Lorsqu'un mot du vocabulaire pas poétique est touché, la tache d'encre est rouge en signe d'échèque.
- ![échèque](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
+ ![échèque](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG
 
 ### Intéractions souris-clavier 
 Dans Inkvader, on utilise la souris et le clavier de cette manière-ci.
