@@ -27,9 +27,8 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
 
 * La Fonction Main 
 
-### Visuel
-
-![photo début](../../games2/plume/clicktostart.JPG)
+### Captures d'écran
+![photo début](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
 
 ### Intéractions souris-clavier 
 Dans Inkvader, on utilise la souris et le clavier de cette manière-ci.
@@ -42,4 +41,6 @@ On utilise la touche "space bar" pour tirer les tâches d'encre sur les mots. (i
 
 ### Explication du jeu 
 
+* Le but: Le but du jeu est d'écrire le poème "Le Dormeur du Val" de Rimbaud.
 
+Premierement on doit mettre en marche le jeu. Ensuite nous devons nous deplacer a l'aide des quatres flèches sur le clavier, montrées ci-dessus, afin de se positionner sur l'écran de maniere a pouvoir tirer sur un mot poétique. Il faut ensuite appuyer sur la barre d'espace pour tirer une tâche d'encre sur un mot. Il faut viser les mots poétiques, car a chaque fois qu'on en touche un, le poème s'écrit mot a mot en haut de l'écran.
