@@ -50,11 +50,12 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
 ### Intéractions souris-clavier 
 Dans Inkvader, on utilise la souris et le clavier de cette manière-ci.
 
-* La souris s'utillise pour... (insérer code) 
+* La souris s'utillise pour lancer le jeu. (insérer code) 
 
 * Dans le clavier, on utilise ces quatre flèches pour déplacer la plume
 =>
 On utilise la touche "space bar" pour tirer les tâches d'encre sur les mots. (insérer code) 
+On utilise la touche "enter" afin de mettre sur pause.
 
 ### Explication du jeu 
 
