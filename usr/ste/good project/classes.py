@@ -125,13 +125,13 @@ class Feather(pyglet.sprite.Sprite):
     #Create the projectile (feathers)
     feather = pyglet.resource.image('resources/sprites/feather.png')
     center_image(feather)
-
+    speed = 500 # Norm of the velocity
     feathers = []
 
     def __init__(self, player, *args, **kwargs):
         super(Feather, self).__init__(*args, **kwargs)
 
-        self.image = pyglet.resource.image('resources/sprites/feather.png')
+        self.image = Feather.feather
         self.xc = player.x
         self.yc = player.y
         self.r = screen.width // 6
@@ -139,12 +139,10 @@ class Feather(pyglet.sprite.Sprite):
 
         self.scale = 0.02*screen.width/1200
 
-        self.speed = 500 # Norm of the velocity
-
         self.angle = player.angle
 
-        self.dx = math.sin(math.radians(player.angle)) * self.speed
-        self.dy = math.cos(math.radians(player.angle)) * self.speed
+        self.dx = math.sin(math.radians(player.angle)) * Feather.speed
+        self.dy = math.cos(math.radians(player.angle)) * Feather.speed
 
         self.dead = False
 
@@ -165,9 +163,10 @@ class Poetry():
     towards = []
     words = []
     poetry = open("resources/documents/poeme.txt", encoding='utf8')
-    towards_unsplited = poetry.read().split('\n')
+    towards_splited = poetry.read().split('\n')
+
     def __init__(self):
-        self.poetry = Poetry.towards_unsplited
+        self.poetry = Poetry.towards_splited
         self.towards = Poetry.towards
         self.words = Poetry.words
 
@@ -194,8 +193,6 @@ class Poetry():
                 if len(random_choice) > 2:
                     i += 1
                     self.words.append(random_choice)
-                else: 
-                    random_choice = random.choice(self.towards[i])
         return self.words
 
     def save_words(self):
@@ -210,11 +207,15 @@ class Poetry():
     def open_words(self):
         '''
         Open the file with the words in it
-        :return: str
+        :return: list
         '''
         return open("resources/documents/words.txt", encoding='utf8').read().split('\n')
 
     def remove_words(self):
+        '''
+        Remove the word chosen in the toward.
+        :return: list
+        '''
         i = 0
         words_to_remove = self.open_words()
         towards = self.towards
@@ -224,6 +225,13 @@ class Poetry():
             towards[i].insert(loc, '........')
             i += 1 
         return towards
+
+    def initialize(self):
+        '''
+        Initialize the poetry splitting.
+        :return: None
+        '''
+        self.remove_words()
 
 Poetry().save_words()
 
@@ -237,6 +245,7 @@ class RotatingSprite(pyglet.sprite.Sprite):
     intert_objects = [] #a list of the dead feather
 
     words = Poetry().open_words() #a list of the words of the poetry
+    words.pop() # delete the last empty line
     angular_velocity = math.pi/5
 
     circle_segment = pyglet.image.load("resources/sprites/circle_segment.png")
