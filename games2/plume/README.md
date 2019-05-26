@@ -17,7 +17,7 @@ Dans notre jeu, Inkvader, nous avons inséré le côté poétique de cette mani�
 * Un autre côté poétique, est le fait que quand on tire sur un mot poétique, un poème apparaît progressivement. 
 
 ### Structure du programme
-Nous allons pas vous présenter le code en entier, car il est très long. Néanmoins, nous allons vous expliquer les Variables, les Class et les méthodes principales pour pouvoir comprendre comment fonctionne le jeu. Le code principal est inkvader.py, ensuite inkgame,py contient toutes les classes pour le jeu et le menu, et inktilities.py contient les fonctions utiles. 
+Nous allons pas vous présenter le code en entier, car il est très long. Néanmoins, nous allons vous expliquer les Variables, les Class et les méthodes principales pour pouvoir comprendre comment fonctionne le jeu. La boucle de notre jeu se trouve dans inkvader.py, ensuite inkgame,py contient toutes les classes pour le jeu et le menu, et inktilities.py contient les fonctions utiles. 
 
 * Les Variables
 -> Objets principaux : stylo, mots, tâche d'encre
@@ -60,4 +60,4 @@ On utilise la touche "space bar" pour tirer les tâches d'encre sur les mots. (i
 
 * Le but: Le but du jeu est d'écrire le poème "Le Dormeur du Val" de Rimbaud.
 
-Premierement on doit mettre en marche le jeu. Ensuite nous devons nous deplacer a l'aide des quatres flèches sur le clavier, montrées ci-dessus, afin de se positionner sur l'écran de maniere a pouvoir tirer sur un mot poétique. Il faut ensuite appuyer sur la barre d'espace pour tirer une tâche d'encre sur un mot. Il faut viser les mots poétiques, car a chaque fois qu'on en touche un, le poème s'écrit mot a mot en haut de l'écran.
+Premierement on doit mettre en marche le jeu, en cliquanr avec la souris sur l'écrans. Ensuite nous devons nous deplacer a l'aide des quatres flèches sur le clavier, montrées ci-dessus, afin de se positionner sur l'écran de maniere a pouvoir tirer sur un mot poétique. Il faut ensuite appuyer sur la barre d'espace pour tirer une tâche d'encre sur un mot. Il faut viser les mots poétiques, car a chaque fois qu'on en touche un, le poème s'écrit mot a mot en haut de l'écran.
