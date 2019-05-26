@@ -45,7 +45,7 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
  ![victoire](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
   
  * Lorsqu'un mot du vocabulaire pas poétique est touché, la tache d'encre est rouge en signe d'échèque.
- ![échèque](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG
+ ![échèque](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
 
 ### Intéractions souris-clavier 
 Dans Inkvader, on utilise la souris et le clavier de cette manière-ci.
