@@ -119,4 +119,30 @@ Cette classe a pour attribut d'instance :
 * label : Le label auquel est affecté le `self.word`
 * dead : L'état de l'instance, mort ou vivant (True ou False)
 
+#### *Poetry*
+
+Cette classe est la seule qui n'a pas d'héritage, est attribuée au poème choisi de 15 vers auquel nous allons séléctionner 1 mot pour chaque vers. Pour le moment, notre jeu fonctionne avec un choix de 15 mots, pas plus ni moins, car il est composé de 15 segments.
+
+Ses méthodes sont :
+* relive() : Permet de faire revivre un segment mort lorsqu'on appuie sur le bouton Restart.
+* update(dt) : Vérifie si le segment est devenu mort, si oui lui supprime son mot assigné et réctifie son image en dead segment. Puis met à jour l'angle de l'instance pour qu'elle tourne. Ensuite appelle la méthode `update_position`.
+* update_position() : Assigne la nouvelle position à l'instance ainsi qu'au mot qui lui ai assigné si elle en possède un (par exemple les dead_segments et les projectiles n'ont pas de mot qui leur sont assigné).
+
+Cette classe a pour attribut de classe :
+* segments : La liste des segments vivants
+* dead_segments : La liste des segments morts
+* inert_objects : La liste des projectils morts qui tournent désormais
+* angular_velocity : Une constante qui définit la vitesse angulaire des instances.
+* words : La liste de 15 mots qui rempliront les lacunes
+
+Cette classe a pour attribut d'instance :
+* word : Correspond au mot de l'instance si c'est un segment vivant. Fait partie de `RotatingSprite.words`
+* angle : C'est l'angle actuel de l'instance
+* xc : La coordonée X du centre autour duquel tourne le sprite
+* yc : La coordonée Y du centre autour duquel tourne le sprite
+* r : Le rayon de la rotation. Donc la distance entre le centre et l'instance qui tourne
+* scale : La mise à l'échelle de l'instance
+* label : Le label auquel est affecté le `self.word`
+* dead : L'état de l'instance, mort ou vivant (True ou False)
+
 ### Conclusion
