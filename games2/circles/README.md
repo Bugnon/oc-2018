@@ -53,6 +53,7 @@ Il faut tirer sur le mot qui manque dans le vers affiché pour passer au vers su
 ![Capture 1 - Partie commencée](./img/capture_2.png)
 
 Au début de chaque partie, le joueur a un total de 3 vies. Si le joueur se trompe de mot, il en perdra une. S'il commet 3 erreur, la partie est terminée.
+L'affichage et la gestion des vies n'est pas encore achevé.
 
 ### Touches et interactions
 
