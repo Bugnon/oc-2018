@@ -15,11 +15,7 @@ Pour ce projet, des conditions ont été imposées par notre enseignant. En effe
 
 Ce travail nous a donc permis de remettre en question nos idées et nos capacités : on a été emmené à discuter entre nous afin d’arriver à terrain d’entente qui satisfasse tous les membres du groupe et nous devions penser à un gameplay divertissant, mais étant en accord avec nos connaissances du langage.
 
-<center> 
-
 #### Côté poétique
-
-</center>
 
 Le sujet de ce travail de fin d’année, consistait à créer un projet dans lequel la poésie jouait un rôle important. Ceci était donc notre critère primordial, nous devions donc concevoir un jeu avec une atmosphère "poétique".
 
