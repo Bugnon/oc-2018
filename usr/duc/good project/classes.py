@@ -164,6 +164,7 @@ class Poetry():
     words = []
     poetry = open("resources/documents/poeme.txt", encoding='utf8')
     towards_splited = poetry.read().split('\n')
+
     def __init__(self):
         self.poetry = Poetry.towards_splited
         self.towards = Poetry.towards
@@ -210,6 +211,7 @@ class Poetry():
         Open the file with the words in it
         :return: list
         '''
+        self.save_words() #create a default word.txt file if it's not the case
         return open("resources/documents/words.txt", encoding='utf8').read().split('\n')
 
     def remove_words(self):
@@ -227,7 +229,12 @@ class Poetry():
             i += 1 
         return towards
 
-Poetry().save_words()
+    def initialize(self):
+        '''
+        Initialize the poetry splitting.
+        :return: None
+        '''
+        self.remove_words()
 
 ##### ROTATINGSPRITE CLASS #####
 class RotatingSprite(pyglet.sprite.Sprite):

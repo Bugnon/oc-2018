@@ -89,19 +89,20 @@ for i in range(15):
     RotatingSprite.segments.append(segment)
 
 ##### POETRY #####
-Poetry().remove_words()
+poem = Poetry()
+poem.initialize()
 
 ##### GAME FUNCTIONS #####
 def write_towards(poetry):
-        toward = poetry.split_poetry()
-        msg = ' '.join(toward[0])
-        label = pyglet.text.Label(str(msg),
-                          font_name='Times New Roman',
-                          font_size=18,
-                          color=(75, 0, 130, 255),
-                          x=parchment.x, y=parchment.y,
-                          anchor_x='center', anchor_y='center')
-        label.draw()
+    toward = poetry.split_poetry()
+    msg = ' '.join(toward[0])
+    label = pyglet.text.Label(str(msg),
+            font_name='Times New Roman',
+            font_size=18,
+            color=(75, 0, 130, 255),
+            x=parchment.x, y=parchment.y,
+            anchor_x='center', anchor_y='center')
+    label.draw()
 
 def chargeBar(player_sprite, player_image):
         '''
@@ -150,7 +151,7 @@ def on_draw():
     parchment.draw()
     #Draw the player and the segments
     batch.draw()
-    write_towards(Poetry())
+    write_towards(poem)
     #Draw the segments
     for segment in RotatingSprite.segments:
         segment.label.draw()
