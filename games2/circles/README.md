@@ -26,7 +26,7 @@ Nous vivons dans un monde où l’Informatique prend de plus en plus d’importa
 
 Tout comme les informaticiens, nous aimons créer des choses. Nous avons ce plaisir de concevoir des programmes qui pourront être utilisés par la suite seulement pour l’amour de l’art. C’est pour cela que nous avons choisi Informatique comme Option complémentaire. Nous avons eu l’opportunité de créer pour notre examen final un jeu vidéo interactif et défendre celui-ci devant deux experts qui jugeront notre rendu final.
 
-Pour ce projet, des conditions ont été imposées par notre enseignant. En effet, la difficulté de ce dernier était de créer un jeu vidéo ayant un côté poétique en raison de la semaine de la poésie dans le Gymnase du Bugnon. Nous devions imaginer, structurer et créer un jeu vidéo à partir de rien.
+Pour ce projet, des conditions ont été imposées par notre enseignant. En effet, la difficulté de ce dernier était de créer un jeu vidéo ayant un côté poétique en raison du printemps de la poésie dans le Gymnase du Bugnon. Nous devions imaginer, structurer et créer un jeu vidéo à partir de rien.
 
 Ce travail nous a donc permis de remettre en question nos idées et nos capacités : on a été emmené à discuter entre nous afin d’arriver à terrain d’entente qui satisfasse tous les membres du groupe et nous devions penser à un gameplay divertissant, mais étant en accord avec nos connaissances du langage.
 
@@ -180,7 +180,7 @@ if game:
     parchment.draw()
     #Draw the player and the segments
     batch.draw()
-    write_towards(poem)
+    write_towards(poetry)
     #Draw the segments
     for segment in RotatingSprite.segments:
         segment.label.draw()
