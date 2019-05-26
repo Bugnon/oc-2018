@@ -43,7 +43,7 @@ from pyglet.window import FPSDisplay
     * La ``` class Player() ```. 
     * La ``` class Brique() ```. *À noter que la classe Brique n'a pas pu être intégrée dans notre fichier final susnommé **BreakoutGame.py**. Vous trouverez le code de cette classe dans le fichier nommé **breakoutbriques.py**.*
     
-Pour plus de précision, veuillez vous référer au code et à ses explications[](https://github.com/Bugnon/oc-2018/blob/master/games2/breakout/Game_Breaker/BreakoutGame.py)
+Pour plus de précision, veuillez vous référer [au code et à ses explications](https://github.com/Bugnon/oc-2018/blob/master/games2/breakout/Game_Breaker/BreakoutGame.py)
 
 Finalement, nous définissons une fonction ```on_draw() ``` qui aura pour but de lancer le jeu.
 
