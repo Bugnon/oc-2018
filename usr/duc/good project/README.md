@@ -164,7 +164,7 @@ Pour ce qui est des fonctions dites normales. Il en existe 4 dont voici la descr
 * chargeBar : Charge la barre de rechargement en dessous du joueur
 * in_sprite : Vérifie si les paramètres x et y sont comprises dans le sprite donné en paramètre
 * write_towards : Ecrit la phrase qu'il faut remplir sur le parchemin
-* game_restat : Une fonction qui remet tous les segments à l'état vivant et remet à zéro toutes les variables pour recommencer à jouer.
+* game_restart : Une fonction qui remet tous les segments à l'état vivant et remet à zéro toutes les variables pour recommencer à jouer.
 
 Il existe un autre type de fonctions, celles qui s'actualise à 60 Hz. Il en existe trois, dont `on_draw()` est la plus importante. Les deux fonctions concernant `mouse` servent à détecter si la souris survole ou appuie sur les deux bouttons "Quit" et "Restart".
 

@@ -3,106 +3,204 @@
 * Authors: Massimo Stefani, Valentin Piquerez et Hugo Ducommun
 * Date: 23/05/2019
 
-## Description
+# Sommaire
 
-### Introduction
+1. [Introduction](#introduction)
+    * [Côté poétique](#côté-poétique)
+2. [Explication du jeu](#explication-du-jeu)
+3. [Structure du programme](#structure-du-programme)
+    * [classes.py](#classespy)
+        * [Window](#window)
+        * [Player](#player)
+        * [Feather](#feather)
+        * [RotatingSprite](#rotatingsprite)
+        * [Poetry](#poetry)
+    * [circles.py](#circlespy)
+4. [Conclusion](#conclusion)
 
+# Description
 
+## Introduction
 
-### Explication du jeu
-Le but du jeu est de compléter les lacunes d'un poèmes. Pour celà, le joueur est muni d'un encrier qui tire des plumes. Cet encrier est au centre d'un cercle constitué de 15 mots qui tourne. Il faut tirer sur le mot qui manque dans le vers affiché pour passer au vers suivant jusqu'à ce que le poème soit complété.
-#### Touches
-* Barre espace : tirer les projectiles
-* Flèches gauche-droite : faire tourner l'encrier
-### Structure du programme
-Notre jeu est composé de deux fichiers: le __classes.py__ et le __Circles.py__.
-#### classes.py
-Dans ce fichiers, nous définissins toutes les classes utiles à la création du jeu.
-* Dans un premier temps, nous importons pyglet ainsi que quelques autres modules utiles
-```python
-import pyglet, random, math, time
-from pyglet.window import key, FPSDisplay
+Nous vivons dans un monde où l’Informatique prend de plus en plus d’importance dans notre vie. Que ce soit pour notre loisir ou notre confort, nous sommes constamment face à des dispositifs qui font aujourd’hui partie de notre vie quotidienne. Le travail d’un informaticien est celui de permettre l’interaction entre un être humain et une machine. Il conçoit des logiciels qui lient le monde réel et le monde constitué de 1 et 0.
+
+Tout comme les informaticiens, nous aimons créer des choses. Nous avons ce plaisir de concevoir des programmes qui pourront être utilisés par la suite seulement pour l’amour de l’art. C’est pour cela que nous avons choisi Informatique comme Option complémentaire. Nous avons eu l’opportunité de créer pour notre examen final un jeu vidéo interactif et défendre celui-ci devant deux experts qui jugeront notre rendu final.
+
+Pour ce projet, des conditions ont été imposées par notre enseignant. En effet, la difficulté de ce dernier était de créer un jeu vidéo ayant un côté poétique en raison de la semaine de la poésie dans le Gymnase du Bugnon. Nous devions imaginer, structurer et créer un jeu vidéo à partir de rien.
+
+Ce travail nous a donc permis de remettre en question nos idées et nos capacités : on a été emmené à discuter entre nous afin d’arriver à terrain d’entente qui satisfasse tous les membres du groupe et nous devions penser à un gameplay divertissant, mais étant en accord avec nos connaissances du langage.
+
+### Côté poétique
+
+Le sujet de ce travail de fin d’année consistait à créer un projet dans lequel la poésie jouait un rôle important. Ceci était donc notre critère primordial, nous devions donc concevoir un jeu avec une atmosphère "poétique".
+
+Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un poème, tout en restant dans thème poétique. Le choix de nos sprites a donc été méthodique pour le respecter.
+
+<p align="center">
+  <img src="./img/table.png">
+</p>
+
+Nous avons donc ajouté des sprites représentants l’écriture : un encrier étant la source des projectiles, un parchemin étant l'endroit sur lequel on écrit et une musique classique représentant la douceur de cet art.
+
+## Explication du jeu
+
+Le but du jeu est de compléter les lacunes d'un poème. Pour cela, le joueur est muni d'un encrier qui tire des plumes. Dans notre jeu, le joueur est représenté par un encrier qui tire des plumes. Cet encrier est au centre d'un cercle constitué de 15 mots qui tournent.
+
+![Capture 1 - Partie commencée](./img/capture_1.png)
+
+Il faut tirer sur le mot qui manque dans le vers affiché pour passer au vers suivant jusqu'à ce que le poème de 15 vers soit complété.
+
+![Capture 1 - Partie commencée](./img/capture_2.png)
+
+Au début de chaque partie, le joueur a un total de 3 vies. Si le joueur se trompe de mot, il en perdra une. S'il commet 3 erreur, la partie est terminée.
+
+### Touches et interactions
+
+* __Gauche__, __Doite__: servent à faire tourner l'encrier.
+* __Espace__: sert à tirer un projectile 
+
+## Structure du programme
+
+Notre jeu est composé de deux fichiers: le `classes.py` et le `circles.py`.
+ Commencons tout d'abord par analyser la structure générale des classes.
+
+### classes.py
+
+Pour mieux se représenter la structure du programme, voici un diagramme UML (Unified Modeling Language). Il illustre les classes, leurs attributs et leurs méthodes de manière graphique.
+
+![UML Diagram](./img/circles_uml_diagram.png)
+
+Nous pouvons noter que chaque classe possède une méthode `update` qui permet d'actualiser chaque attribut de l'instance et par conséquent rendre le jeu dynamique.
+
+#### *Window*
+
+Nous avons créé une classe permettant de définir notre fenêtre de jeu. Elle hérite des méthodes de pyglet.window.Window ([Pyglet Window Documentation](https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/window.html?highlight=window)) elle a donc pour attribut d'instance :
+* frame_rate : Qui est mis par défaut à 1/60 pour tourner en 60 Hz
+* set_fullscreen : Car notre jeu se joue en plein écran (True)
+
+#### *Player*
+
+Notre jeu est donc composé de la classe **Player**, attribuée au joueur. Elle gère les mouvements de ce dernier (grâce aux méthodes `on_key_press` et `on_key_release`) et les tirs du joueur (méthode `fire`). Elle hérite également des méthodes de Sprite de pyglet ([Pyglet Sprite Documentation](https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/sprite.html))
+
+Cette classe a pour attribut :
+* image : L'image associée à l'instance (encrier)
+* rotate_speed : Il s'agit d'une constante qui définit la vitesse de rotation du joueur
+* keys : Assigne la valeur `False` aux flèches droite et gauche qui contrôle le mouvement.
+* timer : Un attribut pratique pour récupérer l'angle actuel du joueur (peut être négatif)
+* angle : = timer * rotate_speed. C'est l'angle que forme la position du joueur.
+* reloading : Le temps que prend le joueur à recharger un projectile. Attention cet attribut décrémente de 1 chaque 60ème de seconde.
+
+#### *Feather*
+
+Cette classe fille de la classe Sprite de pyglet, est attribuée aux projectiles (plumes) que lance le joueur à chaque fois qu'il appuie sur la barre espace. Elle ne possède que la méthode `update` car les plumes sont des objets qui, une fois lancées, n'interagissent pas avec les actions du joueur. Leur seule interaction est lorsque ces dernières touchent un segment, elles s'arrêtent et se transforment en `RotatingSprite`, que nous définirons plus tard.
+
+Cette classe a pour attribut de classe :
+* feathers : C'est une liste sous forme d'attribut de classe qui contient tous les projectiles lancés.
+* speed : _Norme_ de la vitesse
+
+Cette classe a pour attribut d'instance :
+* image : Image du projectile
+* dx : Projection de _Feather.speed_ sur l'axe X.
+* dy : Projection de _Feather.speed_ sur l'axe Y.
+* angle : L'angle du joueur lorsque ce dernier a tiré
+* dead : Définit si la plume est morte, dans le cas échéant, l'instancie dans RotatingSprite pour qu'elle soit comme plantée dans un segment.
+
+#### *RotatingSprite*
+
+Cette classe fille de la classe Sprite de pyglet, est attribuée aux sprites tournants (plumes mortes, segments de cercle et segments de cercle morts).
+
+Ses méthodes sont :
+* relive() : Permet de faire revivre un segment mort lorsqu'on appuie sur le bouton Restart.
+* update(dt) : Vérifie si le segment est devenu mort, si oui lui supprime son mot assigné et rectifie son image en dead segment. Puis met à jour l'angle de l'instance pour qu'elle tourne. Ensuite, elle appelle la méthode `update_position`.
+* update_position() : Assigne la nouvelle position à l'instance ainsi qu'au mot qui lui est assigné si elle en possède un (par exemple les dead_segments et les projectiles n'ont pas de mot qui leur sont assignés).
+
+Cette classe a pour attribut de classe :
+* segments : La liste des segments vivants
+* dead_segments : La liste des segments morts
+* inert_objects : La liste des projectiles morts qui tournent désormais
+* angular_velocity : Une constante qui définit la vitesse angulaire des instances.
+* words : La liste de 15 mots qui rempliront les lacunes
+
+Cette classe a pour attribut d'instance :
+* word : Correspond au mot de l'instance si c'est un segment vivant. Fait partie de `RotatingSprite.words`
+* angle : C'est l'angle actuel de l'instance
+* xc : La coordonnée X du centre autour duquel tourne le sprite
+* yc : La coordonnée Y du centre autour duquel tourne le sprite
+* r : Le rayon de la rotation. Donc la distance entre le centre et l'instance qui tourne
+* scale : La mise à l'échelle de l'instance
+* label : Le label auquel est affecté le `self.word`
+* dead : L'état de l'instance, mort ou vivant (True ou False)
+
+#### *Poetry*
+
+Cette classe est la seule qui n'a pas d'héritage, est attribuée au poème choisi de 15 vers auquel nous allons sélectionner 1 mot pour chaque vers. Pour le moment, notre jeu fonctionne avec un choix de 15 mots, pas plus ni moins, car il est composé de 15 segments.
+
+Ses méthodes sont :
+* split_poetry() : Coupe chaque vers du poème. Le poème devient donc une liste dans une liste. Chaque vers est un élément de la liste primaire et chaque mot est un élément de la liste secondaire.
+* choose_words() : Choisit de manière aléatoire 15 mots de longueur 3 lettres ou plus. Un mot par vers est choisi.
+* save_words() : Enregistre les 15 mots choisis dans le fichier `words.txt`. Chaque mot est enregistré dans une ligne différente.
+* open_words() : Ouvre le fichier `words.txt` pour sa lecture.
+* remove_words() : Enleve chaque mot choisi précédemment dans son vers correspondant. On obtient donc une liste des vers ayant `........` à la place des mots.
+* initialize() : Fonction permettant l'initialisation de `Poetry` qui nous permettra d'écrire le poème.
+
+Cette classe a pour attribut de classe :
+* towards : Est une liste vide qui sera utilisée pour contenir les vers du poème.
+* words : Sera la liste des mots choisis au hasard.
+
+Cette classe a pour attribut d'instance :
+* poetry : Correspond au poème qui sera utilisé dans le jeu. Ce poème doit avoir seulement 15 vers.
+
+### circles.py
+
+Voici désormais le programme générale du jeu. Voici un organigramme des principales actions de ce programme.
+
+<p align="center">
+  <img src="./img/circles-py.png">
+</p>
+
+Tout d'abord le sujet *Load* concerne la déclaration des variables. Il déclare les variables principales et crée les instances qu'il faut pour le bon fonctionnement du jeu.
+
+Pour ce qui est des fonctions dites normales. Il en existe 4 dont voici la description :
+* chargeBar : Charge la barre de rechargement en dessous du joueur
+* in_sprite : Vérifie si les paramètres x et y sont comprises dans le sprite donné en paramètre
+* write_towards : Ecrit la phrase qu'il faut remplir sur le parchemin
+* game_restart : Une fonction qui remet tous les segments à l'état vivant et remet à zéro toutes les variables pour recommencer à jouer.
+
+Il existe un autre type de fonctions, celles qui s'actualise à 60 Hz. Il en existe trois, dont `on_draw()` est la plus importante. Les deux fonctions concernant `mouse` servent à détecter si la souris survole ou appuie sur les deux bouttons "Quit" et "Restart".
+
+Pour ce qui est de `on_draw()`, elle 'dessine' les sprites du jeu. Elle procède de cette manière et dans cet ordre :
 ```
-Ensuite, nous définissons deux fonctions qui nous serons utiles par la suite.
-* center_image
-
-Cette fonction permet de définir la position d'images en fonction de leur centre.
-  ```python
-  def center_image(image):
-    image.anchor_x = image.width // 2 # The center is placed at half of width
-    image.anchor_y = image.height // 2 # The center is placed at half of height
-  ```
-* distance
-
-Cette fonction permet de calculer la distance entre deux points.
-```python
-def distance(point_1=(0, 0), point_2=(0, 0)):
-    return math.sqrt(
-        (point_1[0] - point_2[0]) ** 2 +
-        (point_1[1] - point_2[1]) ** 2)
+game_window.clear()
+wallpaper_sprite.draw()
+if game:
+    restart.draw()
+    close.draw()
+    game_window.fps_display.draw()
+    parchment.draw()
+    #Draw the player and the segments
+    batch.draw()
+    write_towards(poem)
+    #Draw the segments
+    for segment in RotatingSprite.segments:
+        segment.label.draw()
+    #Draw the reloading line
+    chargeBar(player_sprite, player_image)
+    #Draw every projectile
+    for feather in Feather.feathers:
+        feather.draw()
+    #Draw the dead feathers
+    for obj in RotatingSprite.intert_objects:
+        obj.draw()
+else:
+    intro_text.draw()
 ```
 
-Par la suite, nous commencons à définir les `class` utiles pour le jeu.
-* Window
+La variable *game* indique l'état du jeu, s'il n'a pas encore commencé, il affiche le texte d'introduction, sinon, il affiche tous les objets du jeu.
 
-Cette classe définit une fenêtre de jeu en __pleine écran__ à __60 FPS__, et les FPS sont affichés.
-```python
-class Window(pyglet.window.Window):
-    def __init__(self, *args, **kwargs):
-        super(Window, self).__init__(*args, **kwargs)
+## Conclusion
+Tout d’abord, ce jeu nous a non seulement permis de mettre en pratique tout ce que l’on a appris jusqu’à ce jour sur le langage Python mais il nous a également emmené à chercher des solutions aux problèmes rencontrés durant la conception de celui-ci. On devait trouver des issues sur Internet compréhensibles pour nous, dans le but de pouvoir les expliquer par la suite.
 
-        self.set_fullscreen(True)
-        self.frame_rate = 1/60.0
-        self.fps_display = FPSDisplay(self)
-```
-* Player
+De plus, cette activité nous a fait faire face à un projet demandant une grande coordination de notre part. Le travail d'équipe était indispensable pour le bon déroulement. Chaque élève du groupe devait faire des concessions, devait s’organiser et devait faire tout son possible pour pouvoir expliquer le code écrit lors d’une unification avec le reste des membres. L'existence des contraintes rajoutait une difficulté supplémentaire qu’il fallait franchir.
+Grâce à ce projet, nous nous sommes mis dans la peau d’une équipe d’informaticiens réalisant une commande pour une entreprise quelconque.
 
-Cette classe définit le joueur, c'est-à-dire l'encrier, qui est commandé avec les touches _left_, _right_ et _space_.
-Dans un premier temps, nous donnons plusieurs variables à notre joueur en définissant `__init__`.
-```python
-class Player(pyglet.sprite.Sprite):
-    def __init__(self, *args, **kwargs):
-        super(Player, self).__init__(*args, **kwargs)
-
-        self.image = pyglet.resource.image('resources/sprites/player.png')
-        self.rotate_speed = 200
-        self.keys = {'left':False, 'right':False, 'space':False} #keys used to control the player
-        self.timer = 0 #the timer is an attribute to helps the feather to know the angular position of the player
-        self.angle = 0 #angle of the player at the beginning
-        self.scale = 0.56*screen.width/1200 # size of the player
-        self.reloading = 0
-```
-Ensuite, nous définissons `on_key_release`et `on_key_press` afin de savoir quans les touches du clavier sont utilisées pour contrôler le joueur.
-```python
-    def on_key_press(self, symbol, modifiers):
-        if symbol == key.LEFT:
-            self.keys['left'] = True
-        elif symbol == key.RIGHT:
-            self.keys['right'] = True
-        elif symbol == key.SPACE:
-            self.keys['space'] = True
-
-    def on_key_release(self, symbol, modifiers):
-        if symbol == key.LEFT:
-            self.keys['left'] = False
-        elif symbol == key.RIGHT:
-            self.keys['right'] = False
-        elif symbol == key.SPACE:
-            self.keys['space'] = False
- ```
- Nous définissons ensuite une fonction `fire` qui sert au moment ou le joueur tire une plume, c'est-à-dire notre projectile. Nous lui donnons comme variables la rotation, qui est égale à la même que celle du joueur, ainsi que la position du projectile en fonction de l'angle de tir. Nous ajoutons aussi un bruit lorsqu'une plume est tirée.
- ```python
-     def fire(self):
-        self.angle = self.timer * self.rotate_speed
-
-        feather = Feather(player=self, img=Feather.feather, x=self.x, y=self.y)
-        feather.x = self.x + self.width * math.sin(math.radians(self.angle))
-        feather.y = self.y + self.height * math.cos(math.radians(self.angle))
-        feather.rotation = self.angle
-        Feather.feathers.append(feather)
-        
-        fire_sound.queue(fire)
-        fire_sound.play()
-
-        self.reloading = 30 # = 0,5 sec car il descend de 1 chaque 1/60 sec
-```
+En conclusion, c’est un bon moyen pour mettre à l'épreuve non seulement nos compétences de coding, mais également pour tester nos capacités d’adaptation et travail en équipe.
