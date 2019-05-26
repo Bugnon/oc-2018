@@ -6,18 +6,18 @@
 ## Description
 
 ### Introduction
-Dans notre Gymnase du Bugnon Ours, on a pu participer au Printemps de la poésie, soutenue par l'UNIL. Dans l'option complémentaire informatique, on a dû créer un jeu ayant un rapport avec la poésie, à présenter lors de la semaine ou le gymanse Bugnon ours participez à ce projet du Printemps de la poésie. Pour plus d'informations vous pouvez visiter le site : [Printemps de la poésie UNIL](http://printempspoesie.ch/wordpress/)
+Dans notre Gymnase du Bugnon Ours, nous avons pu participer au Printemps de la poésie, soutenu par l'UNIL. Dans l'option complémentaire informatique, nous avons dû créer un jeu ayant un rapport avec la poésie, à présenter lors de la semaine pendant laquelle le gymnnase du Bugnon, site de l'Ours participait à ce projet du Printemps de la poésie. Plus d'informations sont disponibles sur ce site: [Printemps de la poésie UNIL](http://printempspoesie.ch/wordpress/)
 
-Inkvader est un jeu style rétro gaming. On s'est inspirés du jeu clasique [Asteroids](https://en.wikipedia.org/wiki/Asteroids_(video_game)) pour le créer. Il s'agit de se déplacer avec une plume et de tirer des tâches d'encre sur des mots flottants sur l'écran. Ces mots sont de deux sortes. D'un côté, ils ont un vocabulaire poétique. Et de l'autre, ce sont des mots choisis au hasard. Le but est de tirer sur les mots poétiques, afin qu'un poème s'écrive progressivement. 
+Inkvader est un jeu style rétro gaming. Nous nous sommes inspirés du jeu classique [Space Invaders](https://fr.wikipedia.org/wiki/Space_Invaders) pour le créer, ainsi que des jeux à scrolling forcé. Il s'agit de se déplacer avec une plume et de tirer des tâches d'encre sur des mots flottants sur l'écran. Ces mots sont de deux sortes. D'un côté, ils ont un vocabulaire poétique. Et de l'autre, ce sont des mots choisis au hasard. Le but est de tirer sur les mots poétiques, afin qu'un poème s'écrive progressivement. 
 
 ### Le côté Poétique
-Dans notre jeu, Inkvader, nous avons inséré le côté poétique de cette manière-ci. 
+Dans notre jeu, Inkvader, nous avons inséré le côté poétique des manières suivantes : 
 * Le fait que notre fusée soit une plume, et qu'elle lance des tâches d'encre sur des mots, donne un côté poétique à notre jeu.
-* Mais aussi, les mots flottants sur l'écran, ont un rapport avec la poésie. Il s'agit des mots donnant le côté poétique (ex: "syllabe", "rime"). 
-* Un autre côté poétique, est le fait que quand on tire sur un mot poétique, un poème apparaît progressivement. 
+* De plus, les mots flottants sur l'écran ont un rapport avec la poésie. Il s'agit des mots donnant le côté poétique (ex: "syllabe", "rime"). 
+* Un autre côté poétique est que lorsque l'on tire sur un mot poétique, un poème apparaît progressivement. 
 
 ### Structure du programme
-Nous allons pas vous présenter le code en entier, car il est très long. Néanmoins, nous allons vous expliquer les Variables, les Class et les méthodes principales pour pouvoir comprendre comment fonctionne le jeu. La boucle de notre jeu se trouve dans inkvader.py, ensuite inkgame,py contient toutes les classes pour le jeu et le menu, et inktilities.py contient les fonctions utiles. 
+Nous n'allons pas vous présenter le code en entier, car il est très long. Néanmoins, nous allons vous expliquer les Variables, les Class et les méthodes principales pour pouvoir comprendre comment fonctionne le jeu. La boucle de notre jeu se trouve dans inkvader.py, les entités dans inkentities.py, les différentes fenêtres de jeu et leur configuration et fonctionnement dans inkgame.py, et finalement quelques utilitaires dans inktilities.py.
 
 * Les Variables
 -> Objets principaux : stylo, mots, tâche d'encre
@@ -25,7 +25,7 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
 
 * Les méthodes 
 
-* La Fonction Main 
+* La Fonction Main
 
 ### Visuel
 

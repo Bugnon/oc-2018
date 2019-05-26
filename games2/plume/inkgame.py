@@ -315,6 +315,7 @@ class MenuWindow():
         )
     
     def update():
+        '''Makes the font "breathe"'''
         x = MenuWindow.font_breathe
         MenuWindow.font_breathe = x + 0.01
         if x > window_width / 5000:
@@ -323,6 +324,7 @@ class MenuWindow():
 
 
 class CurrentWindow():
+    '''Holds the variable for the window being used, and forwards some calls (like keys)'''
     window = MenuWindow.window
     batch = MenuWindow.batch
 

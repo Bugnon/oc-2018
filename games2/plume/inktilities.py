@@ -3,6 +3,7 @@ import math, pyglet
 touchtime = 0
 
 def screenInfo(z):
+    '''Returns the screen dimensions'''
     platform = pyglet.window.get_platform()
     display = platform.get_default_display()      
     screen = display.get_default_screen()
@@ -17,7 +18,7 @@ def distance(A, B):
     return math.sqrt((A[0] - B[0]) ** 2 + (A[1] - B[1]) ** 2)
 
 def init_ui(window_height, window_width):
-    '''Return a vertex_list of the top line at 1/20th of the window's height from the top.'''
+    '''Returns a vertex_list of the top line at 1/20th of the window's height from the top.'''
     return pyglet.graphics.vertex_list(
         2,
         ('v2f', (0, window_height-(window_height/20), window_width, window_height-(window_height/20))), 
@@ -25,10 +26,12 @@ def init_ui(window_height, window_width):
         )
 
 def init_chargebar():
+    '''Initializes the charge bar vertices'''
     return pyglet.graphics.vertex_list(
                 2, #draws a line for the fire effect
                 ("v2f", (1, 0, 0, 1))
             )
+
 def update_chargebar(pen, Pen):
     '''Returns a vertex_list of the charge bar on top of the pen'''
     pen_start = pen.x - pen.width / 2
