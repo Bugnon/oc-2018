@@ -20,11 +20,10 @@ Ce travail nous a donc permis de remettre en question nos idées et nos capacit�
 Le sujet de ce travail de fin d’année, consistait à créer un projet dans lequel la poésie jouait un rôle important. Ceci était donc notre critère primordial, nous devions donc concevoir un jeu avec une atmosphère "poétique".
 
 Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un poème, tout en restant dans thème poétique. Le choix de nos sprites a donc été méthodique pour le respecter.
-->
+
 | Projectile    | Player | Parchemin  |
 | :-------------: |:------:| :----------:|
 | ![Projectile](https://github.com/Bugnon/oc-2018/blob/master/usr/duc/good%20project/img/feather.png)      | ![Player](https://github.com/Bugnon/oc-2018/blob/master/usr/duc/good%20project/img/player.png) | ![Parchemin](https://github.com/Bugnon/oc-2018/blob/master/usr/duc/good%20project/img/parchment.png) |
-<- 
 
 À cela, nous avons ajouté des sprites représentants l’écriture : un encrier étant la source des projectiles, un parchemin étant l'endroit sur lequel on écrit et une musique classique représentant la douceur de cet art.
 
