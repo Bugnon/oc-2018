@@ -48,15 +48,15 @@ def random_level_generation():
     return grid
 ML = random_level_generation()
 def init_objects():
-    global image_store, window, menu_background, 
+    global image_store, window, new_word_print, score_print, background_image, selected_button, random_button, menu_background
     '''Creation of different games objects and libraries'''
     window = pyglet.window.Window(width, height, resizable = True, caption='Wordament')
     # Set of the written items to initial form :
     new_word_print = pyglet.text.Label('Word : ', font_size = 28, x = 5, y = 612)
     score_print = pyglet.text.Label('Score : 0', font_size = 28, x = 400, y = 612)
-    background_image = pyglet.image.load(game_location + '/images/Background.jpg')
-    selected_button = pyglet.image.load(game_location + '/images/bouton_selected.png')
-    random_button = pyglet.image.load(game_location + '/images/bouton_random.png')
+    background_image = pyglet.image.load(Path(game_location + '/images/Background.jpg'))
+    selected_button = pyglet.image.load(Path(game_location + '/images/bouton_selected.png'))
+    random_button = pyglet.image.load(Path(game_location + '/images/bouton_random.png'))
     menu_background = pyglet.image.load(Path(game_location + '/images/Menu_Background.jpg'))
     add_audio()
             
@@ -160,10 +160,9 @@ def on_mouse_release(x, y, button, modifiers):
             word_state = 1  
         else:
             word_state = 2
-
-        new_word = ""
         new_word_print.text = "Word : " + new_word
-    
+        new_word = ""
+        
     
 # Actions when the mouse is moving :
 
