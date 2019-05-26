@@ -169,7 +169,7 @@ Pour ce qui est des fonctions dites normales. Il en existe 4 dont voici la descr
 Il existe un autre type de fonctions, celles qui s'actualise à 60 Hz. Il en existe trois, dont `on_draw()` est la plus importante. Les deux fonctions concernant `mouse` servent à détecter si la souris survole ou appuie sur les deux bouttons "Quit" et "Restart".
 
 Pour ce qui est de `on_draw()`, elle 'dessine' les sprites du jeu. Elle procède de cette manière et dans cet ordre :
-```
+```python
 game_window.clear()
 wallpaper_sprite.draw()
 if game:
