@@ -27,7 +27,8 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
 
 * La Fonction Main 
 
-### Captures d'écran
+### Visuel
+
 ![photo début](../../games2/plume/clicktostart.JPG)
 
 ### Intéractions souris-clavier 
