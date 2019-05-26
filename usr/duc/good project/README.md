@@ -6,7 +6,7 @@
 # Glossaire
 
 1. [Introduction](#introduction)
-* [Côté poétique](#côté-poétique)
+    * [Côté poétique](#côté-poétique)
 2. [Explication du jeu](#explication-du-jeu)
 3. [Structure du programme](#structure-du-programme)
 4. [Conclusion]()
