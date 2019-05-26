@@ -11,7 +11,7 @@ import pyglet
 from levels import levels
 import codecs
 from pathlib import Path
-from random import randint
+from random  import randint
 ############################################
 ###   Initialization of game variables   ###
 ############################################
@@ -31,8 +31,8 @@ def random_level_generation():
     return grid
 random_level_generation()
 # Screen size variables :
-height = 650
-width = 600
+height = 850
+width = 800
 pattern_size = min(height, width)
 case_size = pattern_size/4
 
@@ -68,7 +68,6 @@ music_player.queue(looper)
 looper.loop = True
 music_player.play()
 music_player.volume = 0.25
-background_image = pyglet.image.load(Path(game_location + '/images/Background.jpg'))
 
 # Set of the written items to initial form :
 new_word_print = pyglet.text.Label('Word : ', font_size = 28, x = 5, y = 612)
@@ -79,6 +78,9 @@ score_print = pyglet.text.Label('Score : 0', font_size = 28, x = 400, y = 612)
 ############################################
 
 #Function that update the game board :
+background_image = pyglet.image.load(Path(game_location + '/images/Background.jpg'))
+selected_button = pyglet.image.load(Path(game_location + '/images/bouton_selected.png'))
+random_button = pyglet.image.load(Path(game_location + '/images/bouton_random.png'))
 @window.event
 def on_draw():
     if game_state == 0:
@@ -86,6 +88,9 @@ def on_draw():
         window.clear()
         # draws the image on the screen
         background_image.blit(x = 0, y = 0, height = window.height, width = window.width)
+        random_button.blit(x = window.width/11, y = window.height/2 + 60, width = window.width/2 - 2*window.width/11, height = (window.width/2 - 2*window.width/11) /3)
+        selected_button.blit(x = window.width/2 + window.width/11, y =  window.height/2 + 60, width = window.width/2 - 2*window.width/11, height = (window.width/2 - 2*window.width/11) /3)
+        
     if game_state == 1:
         global word_state
         global word_coordinate
@@ -116,15 +121,18 @@ def on_draw():
             pyglet.clock.schedule_once(update, 1)
         
 @window.event
-def on_mouse_press(x, y, b, m):
+def on_mouse_press(x, y, button, modifiers):
     global game_state
     if game_state == 0:
-        game_state = 1
-
-
-
-
+        if window.width / 11 < x  < window.width / 11 + window.width / 2 - 2 * window.width / 11:
+            if window.height / 2 + 60 < y < window.height / 2 + 60 + (window.width / 2 - 2 * window.width / 11) / 3:
+                game_state = 1
     
+    if game_state == 0:
+        if window.width / 2 + window.width / 11 < x  < window.width / 2 + window.width / 11 + window.width / 2 - 2 * window.width / 11:
+            if window.height / 2 + 60 < y < window.height / 2 + 60 + (window.width / 2 - 2 * window.width / 11) / 3:
+                game_state = 2
+                
  # Actions when the click of the mouse is release :
 @window.event
 def on_mouse_release(x, y, button, modifiers):
