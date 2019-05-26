@@ -33,7 +33,7 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
 ![starttoclick](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
  
  * Voici à quoi ressemble lorsqu'une partie est en cours.
- [play](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
+ ![play](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
  
  * En appuyant sur la touche enter, le jeux se met en pause.
  ![pause](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
