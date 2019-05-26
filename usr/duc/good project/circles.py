@@ -90,7 +90,6 @@ for i in range(15):
     segment = RotatingSprite(angle_radians=angle_radians,
                             r=r, xc=xc, yc=yc,
                             word=RotatingSprite.words[i], img=circle_segment, batch=batch)
-    segment.scale = r/540
     RotatingSprite.segments.append(segment) #add the segment to the list which is updated
 
 ##### POETRY #####
@@ -133,7 +132,7 @@ def chargeBar(player_sprite, player_image):
 
 def in_sprite(sprite, x, y):
     '''
-    Verify if the coordonates (x, y) are in the sprite
+    Verifies if the coordonates (x, y) are in the sprite
     :param sprite: sprite
     :param x: int
     :param y: int
@@ -180,7 +179,7 @@ def on_mouse_press(x, y, button, modifiers):
 @game_window.event
 def on_mouse_motion(x, y, dx, dy):
     '''
-    Control the animation of the two buttons.
+    Controls the animation of the two buttons.
     :return: None
     '''
     if restart.image == restart_img and in_sprite(restart, x, y): #turn the image in grey when mouse is on the restart button
@@ -206,6 +205,9 @@ def update(dt):
     :return: None
     '''
     player_sprite.update(dt)
+    if len(Feather.feathers) > 0:
+        for feather in Feather.feathers: # update position of all dead segments
+            feather.update_position(dt)
     if len(RotatingSprite.segments) > 0:
         for segment in RotatingSprite.segments: # update position of all segments
             segment.update(dt)

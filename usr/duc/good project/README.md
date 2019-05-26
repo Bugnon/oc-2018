@@ -9,11 +9,13 @@
     * [Côté poétique](#côté-poétique)
 2. [Explication du jeu](#explication-du-jeu)
 3. [Structure du programme](#structure-du-programme)
-    * [Window](#window)
-    * [Player](#player)
-    * [Feather](#feather)
-    * [RotatingSprite](#rotatingsprite)
-    * [Poetry](#poetry)
+    * [classes.py](#classes.py)
+        * [Window](#window)
+        * [Player](#player)
+        * [Feather](#feather)
+        * [RotatingSprite](#rotatingsprite)
+        * [Poetry](#poetry)
+    * [circles.py](#circles.py)
 4. [Conclusion](#conclusion)
 
 ## Description
@@ -33,30 +35,30 @@ Ce travail nous a donc permis de remettre en question nos idées et nos capacit�
 Le sujet de ce travail de fin d’année consistait à créer un projet dans lequel la poésie jouait un rôle important. Ceci était donc notre critère primordial, nous devions donc concevoir un jeu avec une atmosphère "poétique".
 
 Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un poème, tout en restant dans thème poétique. Le choix de nos sprites a donc été méthodique pour le respecter.
-<html>
-<center>
 
 | Projectile    | Player | Parchemin  |
 | :-------------: |:------:| :----------:|
 | ![Projectile](./img/feather.png)      | ![Joueur](./img/player.png) | ![Parchemin](./img/parchment.png) |
 
-</center>
-</html>
-
 Nous avons donc ajouté des sprites représentants l’écriture : un encrier étant la source des projectiles, un parchemin étant l'endroit sur lequel on écrit et une musique classique représentant la douceur de cet art.
 
 ### Explication du jeu
 
-Le but du jeu est de compléter les lacunes d'un poème. Pour cela, le joueur est muni d'un encrier qui tire des plumes. Cet encrier est au centre d'un cercle constitué de 15 mots qui tourne. Il faut tirer sur le mot qui manque dans le vers affiché pour passer au vers suivant jusqu'à ce que le poème soit complété.
+Dans notre jeu, le joueur est représenté par un encrier qui tire des plumes. Il est au centre d'un cercle constitué de 15 mots qui tournent. Le but du jeu est de complèter le vers affiché en tirant sur le mot correspondant. Il y a 15 vers à compléter en tout, ce qui donne un poème.
+
+![Projectile](./img/capture1-jeu.png)
 
 #### Touches et intéractions
 
-* Barre espace : tirer les projectiles
-* Flèches gauche-droite : faire tourner l'encrier
+* __Gauche__, __Doite__: servent à faire tourner l'encrier.
+* __Espace__: sert à tirer un projectile 
 
 ### Structure du programme
 
 Notre jeu est composé de deux fichiers: le `classes.py` et le `circles.py`.
+ Commencons tout d'abord par analyser la structure générale des classes.
+
+#### classes.py
 
 Pour mieux se représenter la structure du programme, voici un diagramme UML (Unified Modeling Language). Il illustre les classes, leurs attributs et leurs méthodes de manière graphique.
 
@@ -64,13 +66,13 @@ Pour mieux se représenter la structure du programme, voici un diagramme UML (Un
 
 Nous pouvons noter que chaque classe possède une méthode `update` qui permet d'actualiser chaque attribut de l'instance et par conséquent rendre le jeu dynamique.
 
-#### *Window*
+##### *Window*
 
 Nous avons créé une classe permettant de définir notre fenêtre de jeu. Elle hérite des méthodes de pyglet.window.Window ([Pyglet Window Documentation](https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/window.html?highlight=window)) elle a donc pour attribut d'instance :
 * frame_rate : Qui est mis par défaut à 1/60 pour tourner en 60 Hz
 * set_fullscreen : Car notre jeu se joue en plein écran (True)
 
-#### *Player*
+##### *Player*
 
 Notre jeu est donc composé de la classe **Player**, attribuée au joueur. Elle gère les mouvements de ce dernier (grâce aux méthodes `on_key_press` et `on_key_release`) et les tirs du joueur (méthode `fire`). Elle hérite également des méthodes de Sprite de pyglet ([Pyglet Sprite Documentation](https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/sprite.html))
 
@@ -82,7 +84,7 @@ Cette classe a pour attribut :
 * angle : = timer * rotate_speed. C'est l'angle que forme la position du joueur.
 * reloading : Le temps que prend le joueur à recharger un projectile. Attention cet attribut décrémente de 1 chaque 60ème de seconde.
 
-#### *Feather*
+##### *Feather*
 
 Cette classe fille de la classe Sprite de pyglet, est attribuée aux projectiles (plumes) que lance le joueur à chaque fois qu'il appuie sur la barre espace. Elle ne possède que la méthode `update` car les plumes sont des objets qui, une fois lancées, n'interagissent pas avec les actions du joueur. Leur seule interaction est lorsque ces dernières touchent un segment, elles s'arrêtent et se transforment en `RotatingSprite`, que nous définirons plus tard.
 
@@ -97,7 +99,7 @@ Cette classe a pour attribut d'instance :
 * angle : L'angle du joueur lorsque ce dernier a tiré
 * dead : Définit si la plume est morte, dans le cas échéant, l'instancie dans RotatingSprite pour qu'elle soit comme plantée dans un segment.
 
-#### *RotatingSprite*
+##### *RotatingSprite*
 
 Cette classe fille de la classe Sprite de pyglet, est attribuée aux sprites tournants (plumes mortes, segments de cercle et segments de cercle morts).
 
@@ -123,7 +125,7 @@ Cette classe a pour attribut d'instance :
 * label : Le label auquel est affecté le `self.word`
 * dead : L'état de l'instance, mort ou vivant (True ou False)
 
-#### *Poetry*
+##### *Poetry*
 
 Cette classe est la seule qui n'a pas d'héritage, est attribuée au poème choisi de 15 vers auquel nous allons sélectionner 1 mot pour chaque vers. Pour le moment, notre jeu fonctionne avec un choix de 15 mots, pas plus ni moins, car il est composé de 15 segments.
 
@@ -141,6 +143,10 @@ Cette classe a pour attribut de classe :
 
 Cette classe a pour attribut d'instance :
 * poetry : Correspond au poème qui sera utilisé dans le jeu. Ce poème doit avoir seulement 15 vers.
+
+#### circles.py
+
+Voici désormais le programme générale du jeu.
 
 ### Conclusion
 Tout d’abord, ce jeu nous a non seulement permis de mettre en pratique tout ce que l’on a appris jusqu’à ce jour sur le langage Python mais il nous a également emmené à chercher des solutions aux problèmes rencontrés durant la conception de celui-ci. On devait trouver des issues sur Internet compréhensibles pour nous, dans le but de pouvoir les expliquer par la suite.

@@ -78,10 +78,6 @@ class Player(pyglet.sprite.Sprite):
         self.angle = self.timer * self.rotate_speed # angle at which the feather appears in function of the angle of the player
 
         feather = Feather(player=self, img=Feather.feather, x=self.x, y=self.y)
-        feather.x = self.x + self.width * math.sin(math.radians(self.angle)) # position of the feather on X axis in function of angle
-        feather.y = self.y + self.height * math.cos(math.radians(self.angle)) # position of the feather on Y axis in function of angle
-        feather.rotation = self.angle
-        Feather.feathers.append(feather)
 
         fire_sound.queue(fire) # fire sound when a feather is shot
         fire_sound.play()
@@ -102,22 +98,6 @@ class Player(pyglet.sprite.Sprite):
         if self.reloading > 0: # set reloading back to 0 after a shot
             self.reloading -= 1
 
-        self.update_feather(dt)
-
-    def update_feather(self, dt):
-        for feather in Feather.feathers:
-            
-            Feather.update_position(feather, dt)
-
-            if feather.dead == True: # remove a feather when true
-                feather.die(self)
-                Feather.feathers.remove(feather)
-            
-            if feather.x <= 0 or feather.x >= screen.width: # feather dies before getting out of the screen
-                Feather.feathers.remove(feather)
-            elif feather.y <= 0 or feather.y >= screen.height:
-                Feather.feathers.remove(feather)
-
 ##### PROJECTILE CLASS #####
 class Feather(pyglet.sprite.Sprite):
     """Class which defines the projectiles thrown by the player with the space bar."""
@@ -130,6 +110,13 @@ class Feather(pyglet.sprite.Sprite):
 
     def __init__(self, player, *args, **kwargs):
         super(Feather, self).__init__(*args, **kwargs)
+
+        Feather.feathers.append(self)
+
+        self.x = player.x + player.width * math.sin(math.radians(player.angle)) # position of the feather on X axis in function of angle
+        self.y = player.y + player.height * math.cos(math.radians(player.angle)) # position of the feather on Y axis in function of angle
+        self.rotation = player.angle
+        
 
         self.image = Feather.feather
         self.xc = player.x
@@ -146,12 +133,14 @@ class Feather(pyglet.sprite.Sprite):
         self.dead = False
 
     def update_position(self, dt):
-
+        if self.dead:
+            self.die()
         self.x += self.dx * dt
         self.y += self.dy * dt
 
-    def die(self, player):
-        self = RotatingSprite(angle_radians=math.radians(player.angle),
+    def die(self):
+        Feather.feathers.remove(self)
+        self = RotatingSprite(angle_radians=math.radians(self.angle),
                             r=self.r - self.height, xc=self.xc, yc=self.yc,
                             word=None, img=self.image)
         RotatingSprite.intert_objects.append(self)
@@ -263,9 +252,9 @@ class RotatingSprite(pyglet.sprite.Sprite):
         self.yc = yc
         self.r = r
         if self.word != None: #If the sprite is a segment or an intert object (dead feather)
-            self.scale = 0.56*screen.width/1200
+            self.scale = screen.width/3240
         else:
-            self.scale = 0.02*screen.width/1200
+            self.scale = 2*screen.width/120000
 
         self.dead = False
 
