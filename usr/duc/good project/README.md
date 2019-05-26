@@ -139,6 +139,8 @@ Cette classe a pour attribut d'instance :
 
 ### Conclusion
 Tout d’abord, ce jeu nous a non seulement permis de mettre en pratique tout ce que l’on a appris jusqu’à ce jour sur le langage Python mais il nous a également emmené à chercher des solutions aux problèmes rencontrés durant la conception de celui-ci. On devait trouver des issues sur Internet compréhensibles pour nous, dans le but de pouvoir les expliquer par la suite.
+
 De plus, cette activité nous a fait faire face à un projet demandant une grande coordination de notre part. Le travail d'équipe était indispensable pour le bon déroulement. Chaque élève du groupe devait faire des concessions, devait s’organiser et devait faire tout son possible pour pouvoir expliquer le code écrit lors d’une unification avec le reste des membres. L'existence des contraintes rajoutait une difficulté supplémentaire qu’il fallait franchir.
 Grâce à ce projet, nous nous sommes mis dans la peau d’une équipe d’informaticiens réalisant une commande pour une entreprise quelconque.
+
 En conclusion, c’est un bon moyen pour mettre à l'épreuve non seulement nos compétences de coding, mais également pour tester nos capacités d’adaptation et travail en équipe.
