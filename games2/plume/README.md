@@ -30,7 +30,7 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
 ### Visuel
 
 * Pour démarrer le jeu il faut cliquer sur l'écran à l'aide de la souris.
-![starttoclick](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
+![clicktostart](../../../games2/plume/clicktostart.JPG)
  
  * Voici à quoi ressemble le jeu lorsqu'une partie est en cours.
  ![play](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
