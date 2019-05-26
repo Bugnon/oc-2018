@@ -42,3 +42,5 @@ Le but du jeu est de complèter des vers à l'aide des 15 mots se trouvant
 ![Projectile](./img/capture1-jeu.png)
 
 ### Structure du programme
+
+### Conclusion
