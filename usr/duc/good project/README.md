@@ -3,7 +3,7 @@
 * Authors: Massimo Stefani, Valentin Piquerez et Hugo Ducommun
 * Date: 23/05/2019
 
-# Glossaire
+# Sommaire
 
 1. [Introduction](#introduction)
     * [Côté poétique](#côté-poétique)
