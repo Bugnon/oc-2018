@@ -1,4 +1,5 @@
 import math, pyglet, inktilities
+import random
 from pyglet.window import key, mouse
 
 ###### RESSOURCES ######
@@ -23,6 +24,7 @@ class Pen(pyglet.sprite.Sprite):
     pen_image.anchor_x = pen_image.width / 2
     pen_image.anchor_y = pen_image.height / 2
 
+    spawnink = False
     fire_treshold = 60
     has_fired = 0
 
@@ -32,8 +34,8 @@ class Pen(pyglet.sprite.Sprite):
         self.y = window_height / 2
         self.scale = window_width / (self.image.width * 16)
 
-        self.key_handler = key.KeyStateHandler()
-        self.event_handlers = [self, self.key_handler]
+        self.anchor_x = self.image.width / 2
+        self.anchor_y = self.image.height / 2
 
         self.react_to_ink = False
         self.is_ink = False
@@ -41,9 +43,6 @@ class Pen(pyglet.sprite.Sprite):
 
         self.touchtime = 0
         self.limits = [window_width / 5, window_width / 2]
-        
-        self.new_objects = []
-
 
     def update(self, keys):
         if keys[key.UP] and not keys[pyglet.window.key.DOWN]:
@@ -75,24 +74,10 @@ class Pen(pyglet.sprite.Sprite):
 
     def keypress(self, pressed_key):
         if pressed_key == pyglet.window.key.SPACE and Pen.has_fired==0:
-            self.fire()
             Pen.has_fired = Pen.fire_treshold
-            print('fired')
+            Pen.spawnink = True
         else:
             pass   
-
-    # Create and launch ink
-    def fire(self):
-        pass
-        '''
-        ink_x = self.x + self.width / 2
-        ink_y = self.y
-        ink = Ink(x = ink_x, y = ink_y, batch = batch)
-        ink.scale = Ink.ink_scale
-        self.new_objects.append(ink)
-        fire_sound[randint(1, 6)].play()
-        '''
-
 
 class FloatingLabel(pyglet.text.Label):
 
@@ -100,26 +85,25 @@ class FloatingLabel(pyglet.text.Label):
     def __init__(self, *arg, **kwargs):
         # calling parent constructor function
         super().__init__(*arg, **kwargs)
-        self.x = randint(int(2/3*window_width),window_width)
-        self.y = randint(0,window_height/2)
+        self.x = window_width
+        self.y = random.randint(0, window_height / 2)
+        self.anchor_y = 'center'
         self.dead = False
 
-        self.dx = randint(-2, -1)
-        self.dy = randint(-2, 2)
+        self.font_size = random.randint(int(window_height/75), int(window_height/25))
+        self.dx = random.randint(-2, -1)
+        self.dy = random.choice([-2, -1, 1, 2])
 
         self.react_to_ink = True
         self.is_ink = False
 
-        self.new_objects = []
-
-        self.kind = bool
+        self.kind = 0
 
     def update(self, dt):
-        w, h = window.width, window.height
         self.x += self.dx
         self.y += self.dy
-        self.x %= w
-        if self.y >= h - (h / 15) or self.y < 0:
+        self.x %= window_width
+        if self.y >= window_height - (window_height / 15) - (self.content_height / 2) or self.y < 0:
             self.dy = -self.dy
 
 class Ink(pyglet.sprite.Sprite):
@@ -127,19 +111,19 @@ class Ink(pyglet.sprite.Sprite):
     def __init__(self, *args, **kwargs):
         super().__init__(img=ink_image, *args, **kwargs)
         # Ink speed is proportional to the window's width and itselfs, and is affected by the pen's current speed
-        self.dx = (2*window_width / self.width + pen.dx / 3)
+        self.dx = 0.1
+        self.scale = window_width / (self.image.width * 64)
+        self.anchor_x = self.width / 2
+        self.anchor_y = self.height / 2
 
         # Kills the ink blob after it has had the time to travel through the map
-        pyglet.clock.schedule_once(self.die, window_width/(9/10*self.dx*60))
+        pyglet.clock.schedule_once(self.die, window_width / ( 9 / 10 * self.dx * 60))
         self.is_ink = True
         
         # Collision attributes
         self.react_to_ink = True
         self.is_ink = True
         self.dead = False
-
-        self.new_objects = []
-
 
     def update(self, dt):
         self.x += self.dx
@@ -148,15 +132,13 @@ class Ink(pyglet.sprite.Sprite):
     def die(self, dt):
         self.dead = True
 
-    def splatter(self):
-        global ink_scale
+    def splatter(self, batch):
         splatter_x = self.x
         splatter_y = self.y
         splatter = Splatter(x=splatter_x, y=splatter_y, batch=batch)
         splatter.scale = 0.1
-        splatter.rotation = randint(1, 360)
-        self.new_objects.append(splatter)
-        splatter_sound[randint(1, 6)].play()
+        splatter.rotation = random.randint(1, 360)
+        return splatter
 
 class Splatter(pyglet.sprite.Sprite):
 
@@ -171,9 +153,6 @@ class Splatter(pyglet.sprite.Sprite):
         self.react_to_ink = False
         self.is_ink = True
         self.dead = False
-
-        self.new_objects = []
-
 
     def update(self, dt):
         self.scale = abs(self.scale - self.dx)
