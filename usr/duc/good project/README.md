@@ -23,7 +23,7 @@ Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un p
 
 | Projectile    | Player | Parchemin  |
 | :-------------: |:------:| :----------:|
-| ![Projectile](https://github.com/Bugnon/oc-2018/blob/master/usr/duc/good%20project/img/feather.png)      | ![Player](https://github.com/Bugnon/oc-2018/blob/master/usr/duc/good%20project/img/player.png) | ![Parchemin](https://github.com/Bugnon/oc-2018/blob/master/usr/duc/good%20project/img/parchment.png) |
+| ![Projectile](https://github.com/Bugnon/oc-2018/blob/master/usr/duc/good%20project/img/feather.png)      | ![Joueur](https://github.com/Bugnon/oc-2018/blob/master/usr/duc/good%20project/img/player.png) | ![Parchemin](https://github.com/Bugnon/oc-2018/blob/master/usr/duc/good%20project/img/parchment.png) |
 
 À cela, nous avons ajouté des sprites représentants l’écriture : un encrier étant la source des projectiles, un parchemin étant l'endroit sur lequel on écrit et une musique classique représentant la douceur de cet art.
 
