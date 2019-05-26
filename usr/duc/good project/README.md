@@ -1,8 +1,3 @@
-<style>
-table {
-    width:100%;
-}
-</style>
 # Circles
 
 * Authors: Massimo Stefani, Valentin Piquerez et Hugo Ducommun
