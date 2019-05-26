@@ -42,7 +42,16 @@ Nous avons donc ajouté des sprites représentants l’écriture : un encrier é
 
 ### Explication du jeu
 
-Le but du jeu est de compléter les lacunes d'un poème. Pour cela, le joueur est muni d'un encrier qui tire des plumes. Cet encrier est au centre d'un cercle constitué de 15 mots qui tourne. Il faut tirer sur le mot qui manque dans le vers affiché pour passer au vers suivant jusqu'à ce que le poème soit complété.
+Le but du jeu est de compléter les lacunes d'un poème. Pour cela, le joueur est muni d'un encrier qui tire des plumes. Cet encrier est au centre d'un cercle constitué de 15 mots qui tourne.
+
+![Capture 1 - Partie commencée](./img/capture_1.png)
+
+Il faut tirer sur le mot qui manque dans le vers affiché pour passer au vers suivant jusqu'à ce que le poème soit complété.
+
+![Capture 1 - Partie commencée](./img/capture_2.png)
+
+Au début de chaque partie, le joueur a un total de 3 vies. Si le joueur se trompe de mot, il en perdra une. S'il commet 3 erreur, la partie est terminée.
+
 
 #### Touches
 
