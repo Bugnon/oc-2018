@@ -154,7 +154,9 @@ Cette classe a pour attribut d'instance :
 
 Voici désormais le programme générale du jeu. Voici un organigramme des principales actions de ce programme.
 
-![circles.py](./img/circles-py.png)
+<p align="center">
+  <img src="./img/circles-py.png">
+</p>
 
 Tout d'abord le sujet *Load* concerne la déclaration des variables. Il déclare les variables principales et crée les instances qu'il faut pour le bon fonctionnement du jeu.
 
