@@ -34,9 +34,13 @@ Le sujet de ce travail de fin d’année consistait à créer un projet dans leq
 
 Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un poème, tout en restant dans thème poétique. Le choix de nos sprites a donc été méthodique pour le respecter.
 
+<center>
+
 | Projectile    | Player | Parchemin  |
 | :-------------: |:------:| :----------:|
 | ![Projectile](./img/feather.png)      | ![Joueur](./img/player.png) | ![Parchemin](./img/parchment.png) |
+
+</center>
 
 Nous avons donc ajouté des sprites représentants l’écriture : un encrier étant la source des projectiles, un parchemin étant l'endroit sur lequel on écrit et une musique classique représentant la douceur de cet art.
 
@@ -44,7 +48,7 @@ Nous avons donc ajouté des sprites représentants l’écriture : un encrier é
 
 Le but du jeu est de compléter les lacunes d'un poème. Pour cela, le joueur est muni d'un encrier qui tire des plumes. Cet encrier est au centre d'un cercle constitué de 15 mots qui tourne. Il faut tirer sur le mot qui manque dans le vers affiché pour passer au vers suivant jusqu'à ce que le poème soit complété.
 
-#### Touches
+#### Touches et intéractions
 
 * Barre espace : tirer les projectiles
 * Flèches gauche-droite : faire tourner l'encrier
@@ -124,7 +128,7 @@ Cette classe est la seule qui n'a pas d'héritage, est attribuée au poème choi
 
 Ses méthodes sont :
 * split_poetry() : Coupe chaque vers du poème. Le poème devient donc une liste dans une liste. Chaque vers est un élément de la liste primaire et chaque mot est un élément de la liste secondaire.
-* choose_words() : Choisit de manière aléatoire 15 mots. Un mot par vers est choisi.
+* choose_words() : Choisit de manière aléatoire 15 mots de longueur 3 lettres ou plus. Un mot par vers est choisi.
 * save_words() : Enregistre les 15 mots choisis dans le fichier `words.txt`. Chaque mot est enregistré dans une ligne différente.
 * open_words() : Ouvre le fichier `words.txt` pour sa lecture.
 * remove_words() : Enleve chaque mot choisi précédemment dans son vers correspondant. On obtient donc une liste des vers ayant `........` à la place des mots.
