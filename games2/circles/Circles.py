@@ -106,9 +106,11 @@ intro_text = pyglet.text.Label('Press left mouse button to start',
                     anchor_x='center', anchor_y='center')
 
 ##### GAME FUNCTIONS #####
+ligne = 0 # line of the poetry
 def write_towards(poetry):
+    global ligne
     toward = poetry.split_poetry()
-    msg = ' '.join(toward[0]) #take the first verse
+    msg = ' '.join(toward[ligne]) #take the first verse
     label = pyglet.text.Label(str(msg),
             font_name='Times New Roman',
             font_size=18,
@@ -220,6 +222,7 @@ def update(dt):
     :param dt: float
     :return: None
     '''
+    global ligne
     if game:
         player_sprite.update(dt)
         if len(Feather.feathers) > 0:
@@ -245,13 +248,13 @@ def update(dt):
                         if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.26 * r * math.sin(math.radians(360/15)/2): # check which segments is hit by the feather
                             if not already_dead: # kill the segment if the feather has not kill one already
                                 if segment.word == RotatingSprite.words[0]:
-                                    print('juste')
+                                    ligne += 1 # increment in the list towards to show the next line
                                     segment.dead = True
                                     segment.update(dt) # update the next segment in segment list (to prevent a bug)
                                     already_dead = True
+                                    
                                 else:
-                                    print('faux')
-                                    print(RotatingSprite.words)
+                                    pass
                 else:
                     print('Win')
     else:
