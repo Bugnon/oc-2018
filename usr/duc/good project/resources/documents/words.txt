@@ -1,9 +1,23 @@
 soleil
+<<<<<<< HEAD
 sentir
 tout
 moment
 fatigue
 passe
+=======
+pointe
+mon
+d’un
+m’envahit
+cuillère,
+l’école
+matières
+français
+cours…
+beaucoup
+fin
+>>>>>>> b563d1cf0df79378b8747afa7e7553e791f235e7
 l’école
 m’attendent
 cours
