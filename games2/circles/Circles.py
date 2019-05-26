@@ -246,12 +246,12 @@ def update(dt):
                             if not already_dead: # kill the segment if the feather has not kill one already
                                 if segment.word == RotatingSprite.words[0]:
                                     print('juste')
+                                    segment.dead = True
+                                    segment.update(dt) # update the next segment in segment list (to prevent a bug)
+                                    already_dead = True
                                 else:
                                     print('faux')
                                     print(RotatingSprite.words)
-                                segment.dead = True
-                                segment.update(dt) # update the next segment in segment list (to prevent a bug)
-                                already_dead = True
                 else:
                     print('Win')
     else:
