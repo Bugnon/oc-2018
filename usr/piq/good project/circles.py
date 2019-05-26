@@ -11,8 +11,8 @@ def center_image(image):
     :param image: image
     :return: None
     """
-    image.anchor_x = image.width // 2
-    image.anchor_y = image.height // 2
+    image.anchor_x = image.width // 2 # put the anchor of the image at the half of its width
+    image.anchor_y = image.height // 2 # put the anchor of the image at the half of its height
 
 def distance(point_1=(0, 0), point_2=(0, 0)):
     '''
@@ -23,7 +23,7 @@ def distance(point_1=(0, 0), point_2=(0, 0)):
     '''
     return math.sqrt(
         (point_1[0] - point_2[0]) ** 2 +
-        (point_1[1] - point_2[1]) ** 2)
+        (point_1[1] - point_2[1]) ** 2) # pythagore
 
 ##### FONT #####
 #font.add_file('resources/font/Angelface.otf')
@@ -49,13 +49,13 @@ wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
 close_img = pyglet.resource.image('resources/sprites/close_game.png')
 close_img2 = pyglet.resource.image('resources/sprites/close_game_grey.png')
 close_scale = close_img.height/close_img.width
-close = pyglet.sprite.Sprite(img=close_img, x=close_img.width*close_scale//4, y=y-int(2*close_img.height*close_scale))
+close = pyglet.sprite.Sprite(img=close_img, x=close_img.width*close_scale//4, y=y-int(2*close_img.height*close_scale)) #set position of close image
 close.scale = close_scale
 
 restart_img = pyglet.resource.image('resources/sprites/restart_game.png')
 restart_img2 = pyglet.resource.image('resources/sprites/restart_game_grey.png')
 restart_scale = restart_img.height/restart_img.width
-restart = pyglet.sprite.Sprite(img=restart_img, x=restart_img.width*restart_scale//4, y=y-int(3.5*restart_img.height*restart_scale))
+restart = pyglet.sprite.Sprite(img=restart_img, x=restart_img.width*restart_scale//4, y=y-int(3.5*restart_img.height*restart_scale)) #set position of restart image
 restart.scale = restart_scale
 
 ##### BATCH #####
@@ -64,13 +64,13 @@ batch = pyglet.graphics.Batch()
 ##### PARCHMENT #####
 parchment_image = pyglet.resource.image('resources/sprites/parchment.png')
 center_image(parchment_image)
-parchment_scale = parchment_image.height/parchment_image.width #Scale of the parchment
-parchment = pyglet.sprite.Sprite(img=parchment_image, x=x//2, y=parchment_image.height//2 + 20)
+parchment_scale = parchment_image.height/parchment_image.width # scale of the parchment
+parchment = pyglet.sprite.Sprite(img=parchment_image, x=x//2, y=parchment_image.height//2 + 20) #set poition of parchement
 
 ##### PLAYER #####
 player_image = pyglet.resource.image('resources/sprites/player.png')
 center_image(player_image)
-player_sprite = Player(img=player_image, x=x//2, y=(y+2*parchment.y)//2, batch=batch)
+player_sprite = Player(img=player_image, x=x//2, y=(y+2*parchment.y)//2, batch=batch) # set position of player
 game_window.push_handlers(player_sprite)
 
 ##### CIRCLE SEGMENTS #####
@@ -78,15 +78,15 @@ circle_segment = pyglet.resource.image("resources/sprites/circle_segment.png")
 center_image(circle_segment)
 #Load the 15 segments with the RotatingSprite class
 for i in range(15):
-    angle_degrees = (360/15)*i
+    angle_degrees = (360/15)*i # set angle of every segment
     angle_radians = math.radians(angle_degrees)
     xc, yc = (x//2, (y+2*parchment.y)//2)
-    r = x//6
+    r = x//6 # radius of the circle
     segment = RotatingSprite(angle_radians=angle_radians,
                             r=r, xc=xc, yc=yc,
-                            word=RotatingSprite.words[i], img=circle_segment, batch=batch)
+                            word=RotatingSprite.words[i], img=circle_segment, batch=batch) #set position of every segments
     segment.scale = r/540
-    RotatingSprite.segments.append(segment)
+    RotatingSprite.segments.append(segment) #add segments to segments list
 
 ##### POETRY #####
 Poetry().remove_words()
@@ -94,13 +94,13 @@ Poetry().remove_words()
 ##### GAME FUNCTIONS #####
 def write_towards(poetry):
         toward = poetry.split_poetry()
-        msg = ' '.join(toward[0])
+        msg = ' '.join(toward[0]) # take first verse
         label = pyglet.text.Label(str(msg),
                           font_name='Times New Roman',
                           font_size=18,
                           color=(75, 0, 130, 255),
                           x=parchment.x, y=parchment.y,
-                          anchor_x='center', anchor_y='center')
+                          anchor_x='center', anchor_y='center') #write the poerty on the parchment
         label.draw()
 
 def chargeBar(player_sprite, player_image):
@@ -166,9 +166,9 @@ def on_draw():
 @game_window.event
 def on_mouse_press(x, y, button, modifiers):
         if mouse.LEFT == True:
-            if in_sprite(restart, x, y): #condition to press on the button
+            if in_sprite(restart, x, y): # check if mouse is on restart
                 game_restart()
-            elif in_sprite(close, x, y):
+            elif in_sprite(close, x, y): # check if mouse is on close
                 pyglet.app.exit()
 
 @game_window.event
@@ -177,20 +177,20 @@ def on_mouse_motion(x, y, dx, dy):
     Control the animation of the two buttons.
     :return: None
     '''
-    if restart.image == restart_img and in_sprite(restart, x, y):
+    if restart.image == restart_img and in_sprite(restart, x, y): # turn text in grey when mouse is on restart
         restart.image = restart_img2
-    elif restart.image != restart_img and not in_sprite(restart, x, y):
+    elif restart.image != restart_img and not in_sprite(restart, x, y): # turn text in white when mouse isn't on restart
         restart.image = restart_img
 
-    if close.image == close_img and in_sprite(close, x, y):
+    if close.image == close_img and in_sprite(close, x, y): # turn text in grey when mouse is on close
         close.image = close_img2
-    elif close.image != close_img and not in_sprite(close, x, y):
+    elif close.image != close_img and not in_sprite(close, x, y): # turn text in white when mouse isn't on close
         close.image = close_img
 
 def game_restart():
-    for segment in RotatingSprite.dead_segments:
+    for segment in RotatingSprite.dead_segments: # transform all dead segments back in segments
         segment.relive()
-    RotatingSprite.dead_segments.clear()
+    RotatingSprite.dead_segments.clear() # clear the dead_segment list when restart
     RotatingSprite.intert_objects.clear()
 
 def update(dt):
@@ -201,26 +201,26 @@ def update(dt):
     '''
     player_sprite.update(dt)
     if len(RotatingSprite.segments) > 0:
-        for segment in RotatingSprite.segments:
+        for segment in RotatingSprite.segments: # update position of all segments
             segment.update(dt)
-    if len(RotatingSprite.dead_segments) > 0:
+    if len(RotatingSprite.dead_segments) > 0: # update position of all dead segments
         for dead_segment in RotatingSprite.dead_segments:
             dead_segment.update(dt)
-    if len(RotatingSprite.intert_objects) > 0:
+    if len(RotatingSprite.intert_objects) > 0: #update position of all other objects
         for obj in RotatingSprite.intert_objects:
             obj.update(dt)
  
     ### Collision condition
     for feather in Feather.feathers:
-        already_dead = False #prevent the delete of two segments with the same feather
-        if distance(point_1=(feather.x, feather.y), point_2=(xc, yc)) > r - circle_segment.height//2:
-            feather.dead = True
+        already_dead = False # prevent the delete of two segments with the same feather
+        if distance(point_1=(feather.x, feather.y), point_2=(xc, yc)) > r - circle_segment.height//2: # check when a feather reaches the segments 
+            feather.dead = True # stop the feather
             if len(RotatingSprite.segments) > 0:
                 for segment in RotatingSprite.segments:
-                    if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.26 * r * math.sin(math.radians(360/15)/2):
-                        if not already_dead:
+                    if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.26 * r * math.sin(math.radians(360/15)/2): # check which segments is hit by the feather
+                        if not already_dead: # kill the segment if not dead
                             segment.dead = True
-                            segment.update(dt)
+                            segment.update(dt) # update the next segment in segment list (to prevent a bug)
                             already_dead = True
             else:
                 print('Win')
