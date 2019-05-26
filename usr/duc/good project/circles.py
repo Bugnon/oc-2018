@@ -209,7 +209,7 @@ def update(dt):
     if len(RotatingSprite.intert_objects) > 0:
         for obj in RotatingSprite.intert_objects:
             obj.update(dt)
-
+ 
 
     ### Collision condition
     for feather in Feather.feathers:
