@@ -10,7 +10,6 @@ from levels import levels
 import codecs
 from pathlib import Path
 from random  import randint
-from time import sleep
 ############################################
 ###   Initialization of game variables   ###
 ############################################
