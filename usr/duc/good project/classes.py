@@ -36,7 +36,7 @@ def distance(point_1=(0, 0), point_2=(0, 0)):
 ##### GAME WINDOW CLASS #####
 # Create a class for the game_window
 class Window(pyglet.window.Window):
-    """Classe définissant une fenêtre de jeu en pleine écran à 60 FPS."""
+    """Class which defines the fullscreen game window at 60 Hz."""
     def __init__(self, *args, **kwargs):
         super(Window, self).__init__(*args, **kwargs)
 
@@ -46,17 +46,17 @@ class Window(pyglet.window.Window):
 
 ##### PLAYER CLASS #####
 class Player(pyglet.sprite.Sprite):
-    """Classe définissant le joueur qui sera contrôlé avec les flèches gauche et droite."""
+    """Class which defines the player which be controlled with left and right arrows."""
     def __init__(self, *args, **kwargs):
         super(Player, self).__init__(*args, **kwargs)
 
         self.image = pyglet.resource.image('resources/sprites/player.png')
         self.rotate_speed = 200
-        self.keys = {'left':False, 'right':False, 'space':False}
+        self.keys = {'left':False, 'right':False, 'space':False} # keys used to controll the player
         self.timer = 0 #the timer is an attribute to helps the feather to know the angular position of the player
-        self.angle = 0
-        self.scale = 0.56*screen.width/1200
-        self.reloading = 0
+        self.angle = 0 # angle of the player at the beginning of the game
+        self.scale = 0.56*screen.width/1200 # scale of the inkwell in function of the size of the window
+        self.reloading = 0 # default value of reloading
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.LEFT:
@@ -75,31 +75,31 @@ class Player(pyglet.sprite.Sprite):
             self.keys['space'] = False
 
     def fire(self):
-        self.angle = self.timer * self.rotate_speed
+        self.angle = self.timer * self.rotate_speed # angle at which the feather appears in function of the angle of the player
 
         feather = Feather(player=self, img=Feather.feather, x=self.x, y=self.y)
-        feather.x = self.x + self.width * math.sin(math.radians(self.angle))
-        feather.y = self.y + self.height * math.cos(math.radians(self.angle))
+        feather.x = self.x + self.width * math.sin(math.radians(self.angle)) # position of the feather on X axis in function of angle
+        feather.y = self.y + self.height * math.cos(math.radians(self.angle)) # position of the feather on Y axis in function of angle
         feather.rotation = self.angle
         Feather.feathers.append(feather)
 
-        fire_sound.queue(fire)
+        fire_sound.queue(fire) # fire sound when a feather is shot
         fire_sound.play()
 
-        self.reloading = 30 # = 0,5 sec car il descend de 1 chaque 1/60 sec
+        self.reloading = 30 # = 0,5 sec because it decreases by 1 every 1/60 of a second
 
     def update(self, dt):
-        if self.keys['left']:
+        if self.keys['left']: # turn the inkwell to the left when left key is pressed
             self.rotation -= self.rotate_speed * dt
             self.timer -= 1 * dt
-        elif self.keys['right']:
+        elif self.keys['right']: # turn the inkwell to the right when right key is pressed
             self.rotation += self.rotate_speed * dt
             self.timer += 1 * dt
         
-        if self.keys['space'] and self.reloading == 0:
+        if self.keys['space'] and self.reloading == 0: # fire a feather when space is pressed
             self.fire()
         
-        if self.reloading > 0:
+        if self.reloading > 0: # set reloading back to 0 after a shot
             self.reloading -= 1
 
         self.update_feather(dt)
@@ -109,24 +109,24 @@ class Player(pyglet.sprite.Sprite):
             
             Feather.update_position(feather, dt)
 
-            if feather.dead == True:
+            if feather.dead == True: # remove a feather when true
                 feather.die(self)
                 Feather.feathers.remove(feather)
             
-            if feather.x <= 0 or feather.x >= screen.width:
+            if feather.x <= 0 or feather.x >= screen.width: # feather dies before getting out of the screen
                 Feather.feathers.remove(feather)
             elif feather.y <= 0 or feather.y >= screen.height:
                 Feather.feathers.remove(feather)
 
 ##### PROJECTILE CLASS #####
 class Feather(pyglet.sprite.Sprite):
-    """Classe définissant les projectiles que le joueur lancera avec la barre espace."""
+    """Class which defines the projectiles thrown by the player with the space bar."""
 
     #Create the projectile (feathers)
     feather = pyglet.resource.image('resources/sprites/feather.png')
     center_image(feather)
     speed = 500 # Norm of the velocity
-    feathers = []
+    feathers = [] #list of all the feathers thrown
 
     def __init__(self, player, *args, **kwargs):
         super(Feather, self).__init__(*args, **kwargs)
@@ -135,14 +135,13 @@ class Feather(pyglet.sprite.Sprite):
         self.xc = player.x
         self.yc = player.y
         self.r = screen.width // 6
-        self.timer = player.timer
 
-        self.scale = 0.02*screen.width/1200
+        self.scale = 0.02*screen.width/1200 #scale of a feather in function of the screen size
 
-        self.angle = player.angle
+        self.angle = player.angle # angle of the feather same as the angle of the inkwell
 
-        self.dx = math.sin(math.radians(player.angle)) * Feather.speed
-        self.dy = math.cos(math.radians(player.angle)) * Feather.speed
+        self.dx = math.sin(math.radians(player.angle)) * Feather.speed # speed of the feather on X axis
+        self.dy = math.cos(math.radians(player.angle)) * Feather.speed # speed of the feather on X axis
 
         self.dead = False
 
@@ -159,9 +158,9 @@ class Feather(pyglet.sprite.Sprite):
 
 ##### POETRY #####
 class Poetry():
-    """Classe permettant de lire, couper, choisir et utiliser les vers et les mots."""
-    towards = []
-    words = []
+    """Class which allows to read, cut, choose and use verses and words of a poetry."""
+    towards = [] # list with the verses
+    words = [] # list with the words to shoot
     poetry = open("resources/documents/poeme.txt", encoding='utf8')
     towards_splited = poetry.read().split('\n')
 
@@ -237,11 +236,11 @@ Poetry().save_words()
 
 ##### ROTATINGSPRITE CLASS #####
 class RotatingSprite(pyglet.sprite.Sprite):
-    """A class which defines the circle's segments and the turning words."""
+    """Class which defines the circle's segments (dead or alive), the dead feathers and the turning words."""
 
     #Set the class attributes
-    segments = []
-    dead_segments = []
+    segments = [] # list of living segments
+    dead_segments = [] # list of all segments when they are shot
     intert_objects = [] #a list of the dead feather
 
     words = Poetry().open_words() #a list of the words of the poetry
@@ -285,20 +284,20 @@ class RotatingSprite(pyglet.sprite.Sprite):
         self.rotation = math.degrees(self.angle)
         if self.word != None: #update the label
             self.label.begin_update()
-            self.label.x = self.x
+            self.label.x = self.x 
             self.label.y = self.y
             self.label.end_update()
 
     def relive(self):
         self.image = RotatingSprite.circle_segment
-        RotatingSprite.words.append(self.word)
-        RotatingSprite.segments.append(self)
+        RotatingSprite.words.append(self.word) # add removed word back to the list words
+        RotatingSprite.segments.append(self) # add removed segment back to the living segment list
 
     def update(self, dt):
         if self.dead:
-            RotatingSprite.segments.remove(self)
+            RotatingSprite.segments.remove(self) # remove the dead segment fron the living segment list
             RotatingSprite.words.remove(self.word) #destroy the word assigns to the dead segment
-            RotatingSprite.dead_segments.append(self)
+            RotatingSprite.dead_segments.append(self) # add the dead segment to the dead_segment list
             self.image = RotatingSprite.dead_segment #replace the image by a dead segment image
             self.dead = False #Stay as a RotatingSprite to update itself
         else:
