@@ -64,6 +64,8 @@ Nous avons ensuite tenté de joindre nos travaux ensemble afin de rendre notre j
 
 Cependant, notre équipe a rencontré un problème majeur qui ne nous a pas permis d'aboutir à une version jouable. Effectivement,  nos programmeurs, ayant des ordinateurs sous système d'exploitation *Windows*, n'ont pas pu installer le module *Pyglet* sur leur ordinateur personnel, malgré leurs efforts et la demande d'assistance à des personnes travaillant dans ce milieu. De ce fait, le travail n'a pu être avancé que difficilement en cours ou sur des périodes restreintes hors cours rendant notre avancement compliqué. Néanmoins, il nous a été possible d'assembler la partie *Player* ainsi que la partie *Balle* ensemble afin de donner un premier rendu du travail accompli.
 
+Veuillez trouver une [image du jeu avec balle en mouvement](https://github.com/Bugnon/oc-2018/blob/master/games2/breakout/Game_Breaker/images/in_game.png) ainsi qu'une [image du jeu à son initialisation](https://github.com/Bugnon/oc-2018/blob/master/games2/breakout/Game_Breaker/images/initialisation.png)
+
 L'enjeu poétique n'a pas pu non plus être accompli du fait des complications nommées ci-dessus. 
 
 Nous vous remercions de votre lecture.
