@@ -17,7 +17,7 @@ Dans notre jeu, Inkvader, nous avons inséré le côté poétique de cette mani�
 * Un autre côté poétique, est le fait que quand on tire sur un mot poétique, un poème apparaît progressivement. 
 
 ### Structure du programme
-Nous allons pas vous présenter le code en entier, car il est très long. Néanmoins, nous allons vous expliquer les Variables, les Class et les méthodes principales pour pouvoir comprendre comment fonctionne le jeu. 
+Nous allons pas vous présenter le code en entier, car il est très long. Néanmoins, nous allons vous expliquer les Variables, les Class et les méthodes principales pour pouvoir comprendre comment fonctionne le jeu. Le code principal est inkvader.py, ensuite inkgame,py contient toutes les classes pour le jeu et le menu, et inktilities.py contient les fonctions utiles. 
 
 * Les Variables
 -> Objets principaux : stylo, mots, tâche d'encre
