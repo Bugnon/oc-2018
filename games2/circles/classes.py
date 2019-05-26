@@ -265,11 +265,11 @@ class RotatingSprite(pyglet.sprite.Sprite):
         self.dead = False
 
         if self.word != None: #assign a word as a label to the sprite if it's a segment
-                    self.label = pyglet.text.Label(self.word.upper(),
-                                font_name='Times New Roman',
-                                font_size=self.r/30,
-                                color=(75, 0, 130, 255),
-                                anchor_x='center', anchor_y='center', batch=RotatingSprite.lbls)
+            self.label = pyglet.text.Label(self.word.upper(),
+                        font_name='Times New Roman',
+                        font_size=self.r/30,
+                        color=(75, 0, 130, 255),
+                        anchor_x='center', anchor_y='center', batch=RotatingSprite.lbls)
 
     def update_position(self):
         #Set the self label onto the self segment
@@ -284,6 +284,7 @@ class RotatingSprite(pyglet.sprite.Sprite):
         
     def relive(self):
         self.image = RotatingSprite.circle_segment
+        self.label.text = self.word.upper()
         RotatingSprite.words.append(self.word)
         RotatingSprite.segments.append(self)
 
@@ -293,6 +294,7 @@ class RotatingSprite(pyglet.sprite.Sprite):
             RotatingSprite.words.remove(self.word) #destroy the word assigns to the dead segment
             RotatingSprite.dead_segments.append(self)
             self.image = RotatingSprite.dead_segment #replace the image by a dead segment image
+            self.label.text = ''
             self.dead = False #Stay as a RotatingSprite to update itself
         else:
             self.angle += RotatingSprite.angular_velocity * dt
