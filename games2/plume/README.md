@@ -6,7 +6,7 @@
 ## Description
 
 ### Introduction
-Dans notre Gymnase du Bugnon Ours, on a pu participer à la semaine de la poésie, lancée par la ville de Lausanne. Dans l'option complémentaire informatique, on a dû créer un jeu ayant un rapport avec la poésie, pour cette semaine-là. [Printemps de la poésie UNIL](http://printempspoesie.ch/wordpress/)
+Dans notre Gymnase du Bugnon Ours, on a pu participer au Printemps de la poésie, soutenue par l'UNIL. Dans l'option complémentaire informatique, on a dû créer un jeu ayant un rapport avec la poésie, à présenter lors de la semaine ou le gymanse Bugnon ours participez à ce projet du Printemps de la poésie. Pour plus d'informations vous pouvez visiter le site : [Printemps de la poésie UNIL](http://printempspoesie.ch/wordpress/)
 
 Inkvader est un jeu style rétro gaming. On s'est inspirés du jeu clasique [Asteroids](https://en.wikipedia.org/wiki/Asteroids_(video_game)) pour le créer. Il s'agit de se déplacer avec une plume et de tirer des tâches d'encre sur des mots flottants sur l'écran. Ces mots sont de deux sortes. D'un côté, ils ont un vocabulaire poétique. Et de l'autre, ce sont des mots choisis au hasard. Le but est de tirer sur les mots poétiques, afin qu'un poème s'écrive progressivement. 
 
@@ -17,7 +17,7 @@ Dans notre jeu, Inkvader, nous avons inséré le côté poétique de cette mani�
 * Un autre côté poétique, est le fait que quand on tire sur un mot poétique, un poème apparaît progressivement. 
 
 ### Structure du programme
-Nous allons pas vous présenter le code en entier, car il est très long. Néanmoins, nous allons vous expliquer les Variables, les Class et les méthodes principales pour pouvoir comprendre comment fonctionne le jeu. 
+Nous allons pas vous présenter le code en entier, car il est très long. Néanmoins, nous allons vous expliquer les Variables, les Class et les méthodes principales pour pouvoir comprendre comment fonctionne le jeu. La boucle de notre jeu se trouve dans inkvader.py, ensuite inkgame,py contient toutes les classes pour le jeu et le menu, et inktilities.py contient les fonctions utiles. 
 
 * Les Variables
 -> Objets principaux : stylo, mots, tâche d'encre
@@ -50,14 +50,15 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
 ### Intéractions souris-clavier 
 Dans Inkvader, on utilise la souris et le clavier de cette manière-ci.
 
-* La souris s'utillise pour... (insérer code) 
+* La souris s'utillise pour lancer le jeu. (insérer code) 
 
 * Dans le clavier, on utilise ces quatre flèches pour déplacer la plume
 =>
 On utilise la touche "space bar" pour tirer les tâches d'encre sur les mots. (insérer code) 
+On utilise la touche "enter" afin de mettre sur pause.
 
 ### Explication du jeu 
 
 * Le but: Le but du jeu est d'écrire le poème "Le Dormeur du Val" de Rimbaud.
 
-Premierement on doit mettre en marche le jeu. Ensuite nous devons nous deplacer a l'aide des quatres flèches sur le clavier, montrées ci-dessus, afin de se positionner sur l'écran de maniere a pouvoir tirer sur un mot poétique. Il faut ensuite appuyer sur la barre d'espace pour tirer une tâche d'encre sur un mot. Il faut viser les mots poétiques, car a chaque fois qu'on en touche un, le poème s'écrit mot a mot en haut de l'écran.
+Premierement on doit mettre en marche le jeu, en cliquant avec la souris sur l'écrans. Ensuite nous devons nous deplacer à l'aide des quatres flèches sur le clavier, montrées ci-dessus, afin de se positionner sur l'écran de maniere à pouvoir tirer sur un mot poétique. Il faut ensuite appuyer sur la barre d'espace pour tirer une tâche d'encre sur un mot. Il faut viser les mots poétiques, car à chaque fois qu'on en touche un, le poème s'écrit mot à mot en haut de l'écran.

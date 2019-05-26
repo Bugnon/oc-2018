@@ -98,11 +98,11 @@ def on_draw():
         window.clear()
         # draws the image on the screen
         menu_background.blit(x = 0, y = 0, height = window.height, width = window.width)
-        selected_button.update(x=window.width/15, y=window.height/2 - 130,scale=window.width/800*0.7)
-        random_button.update(x=window.width - window.width/15 - selected_button.width, y=window.height/2 - 130,scale=window.width/800*0.7)
+        selected_button.update(x = window.width / 15, y=window.height / 2 - 130, scale = window.width / 800 * 0.7)
+        random_button.update(x = window.width - window.width / 15 - selected_button.width, y = window.height / 2 - 130,scale=window.width / 800 * 0.7)
         selected_button.draw()
         random_button.draw()
-        title = pyglet.text.Label('Wordament', font_size = 80, x = window.width//2, y = window.height / 2 + 50, anchor_x = 'center', font_name = 'Times New Roman',bold = True,  color = [0, 0, 0, 255])
+        title = pyglet.text.Label('Wordament', font_size = 80, x = window.width//2, y = window.height / 2 + 50, anchor_x = 'center', font_name = 'Times New Roman', bold = True,  color = [0, 0, 0, 255])
         title.draw()
     else:
         global word_state
@@ -155,7 +155,7 @@ def on_mouse_press(x, y, button, modifiers):
                 ML = random_level_generation()
                 image_store = create_image_store(ML)
     if game_state == 2:
-        if  window.width - (window.width - window.height)- 145  < x <  window.width - (window.width - window.height)- 145 + next_level_button.width and \
+        if  window.width - (window.width - window.height) - 145 + delta_center < x <  window.width - (window.width - window.height) - 145 + next_level_button.width + delta_center and \
             window.height - 53 < y < window.height - 53 + next_level_button.height:
             new_level()
                 
@@ -178,7 +178,7 @@ def on_mouse_release(x, y, button, modifiers):
             word_state = 2
         new_word_print.text = "Word : " + new_word
         new_word = ""
-        if score >=5:
+        if score >=50:
             new_level()
         
     
@@ -194,7 +194,7 @@ def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
         if buttons & pyglet.window.mouse.LEFT:
             for k in range(4):
                 for i in range(4):
-                    if case_size / 10 + case_size * k < y < ((k + 1) * case_size ) - case_size / 10 and  case_size / 10 + case_size * i < x < ((i + 1) * case_size) - case_size / 10:
+                    if case_size / 10 + case_size * k < y < ((k + 1) * case_size) - case_size / 10 and  case_size / 10 + case_size * i + delta_center < x < ((i + 1) * (case_size )) - case_size / 10 + delta_center:
                         if [k, i] not in word_coordinate and (word_coordinate == [] or ((word_coordinate[-1][0] - 2) < k < (word_coordinate[-1][0] + 2) and (word_coordinate[-1][1] - 2) < i < (word_coordinate[-1][1] + 2))): 
                                 word_coordinate.append([k, i])
                                 new_word += (ML[3 - k][i])

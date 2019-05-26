@@ -1,5 +1,6 @@
 lève
 qu’il
+<<<<<<< HEAD
 pour
 lève.
 fatigue
@@ -10,6 +11,18 @@ cours
 est
 Les
 journée.
+=======
+Sous
+moment
+fatigue
+vite
+douche
+matières
+>>>>>>> 0994120ca6814666d7d2d52f12cd84e2dcb40230
 l’école
+Récréation,
+apprennent
+journée.
+incroyable
 Immensité
 que

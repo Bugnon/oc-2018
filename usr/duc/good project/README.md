@@ -9,18 +9,18 @@
     * [Côté poétique](#côté-poétique)
 2. [Explication du jeu](#explication-du-jeu)
 3. [Structure du programme](#structure-du-programme)
-    * [classes.py](#classes.py)
+    * [classes.py](#classespy)
         * [Window](#window)
         * [Player](#player)
         * [Feather](#feather)
         * [RotatingSprite](#rotatingsprite)
         * [Poetry](#poetry)
-    * [circles.py](#circles.py)
+    * [circles.py](#circlespy)
 4. [Conclusion](#conclusion)
 
-## Description
+# Description
 
-### Introduction
+## Introduction
 
 Nous vivons dans un monde où l’Informatique prend de plus en plus d’importance dans notre vie. Que ce soit pour notre loisir ou notre confort, nous sommes constamment face à des dispositifs qui font aujourd’hui partie de notre vie quotidienne. Le travail d’un informaticien est celui de permettre l’interaction entre un être humain et une machine. Il conçoit des logiciels qui lient le monde réel et le monde constitué de 1 et 0.
 
@@ -30,19 +30,19 @@ Pour ce projet, des conditions ont été imposées par notre enseignant. En effe
 
 Ce travail nous a donc permis de remettre en question nos idées et nos capacités : on a été emmené à discuter entre nous afin d’arriver à terrain d’entente qui satisfasse tous les membres du groupe et nous devions penser à un gameplay divertissant, mais étant en accord avec nos connaissances du langage.
 
-#### Côté poétique
+### Côté poétique
 
 Le sujet de ce travail de fin d’année consistait à créer un projet dans lequel la poésie jouait un rôle important. Ceci était donc notre critère primordial, nous devions donc concevoir un jeu avec une atmosphère "poétique".
 
 Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un poème, tout en restant dans thème poétique. Le choix de nos sprites a donc été méthodique pour le respecter.
 
-| Projectile    | Player | Parchemin  |
-| :-------------: |:------:| :----------:|
-| ![Projectile](./img/feather.png)      | ![Joueur](./img/player.png) | ![Parchemin](./img/parchment.png) |
+<p align="center">
+  <img src="./img/table.png">
+</p>
 
 Nous avons donc ajouté des sprites représentants l’écriture : un encrier étant la source des projectiles, un parchemin étant l'endroit sur lequel on écrit et une musique classique représentant la douceur de cet art.
 
-### Explication du jeu
+## Explication du jeu
 
 Le but du jeu est de compléter les lacunes d'un poème. Pour cela, le joueur est muni d'un encrier qui tire des plumes. Dans notre jeu, le joueur est représenté par un encrier qui tire des plumes. Cet encrier est au centre d'un cercle constitué de 15 mots qui tournent.
 
@@ -54,17 +54,17 @@ Il faut tirer sur le mot qui manque dans le vers affiché pour passer au vers su
 
 Au début de chaque partie, le joueur a un total de 3 vies. Si le joueur se trompe de mot, il en perdra une. S'il commet 3 erreur, la partie est terminée.
 
-#### Touches et intéractions
+### Touches et interactions
 
 * __Gauche__, __Doite__: servent à faire tourner l'encrier.
 * __Espace__: sert à tirer un projectile 
 
-### Structure du programme
+## Structure du programme
 
 Notre jeu est composé de deux fichiers: le `classes.py` et le `circles.py`.
  Commencons tout d'abord par analyser la structure générale des classes.
 
-#### classes.py
+### classes.py
 
 Pour mieux se représenter la structure du programme, voici un diagramme UML (Unified Modeling Language). Il illustre les classes, leurs attributs et leurs méthodes de manière graphique.
 
@@ -72,13 +72,13 @@ Pour mieux se représenter la structure du programme, voici un diagramme UML (Un
 
 Nous pouvons noter que chaque classe possède une méthode `update` qui permet d'actualiser chaque attribut de l'instance et par conséquent rendre le jeu dynamique.
 
-##### *Window*
+#### *Window*
 
 Nous avons créé une classe permettant de définir notre fenêtre de jeu. Elle hérite des méthodes de pyglet.window.Window ([Pyglet Window Documentation](https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/window.html?highlight=window)) elle a donc pour attribut d'instance :
 * frame_rate : Qui est mis par défaut à 1/60 pour tourner en 60 Hz
 * set_fullscreen : Car notre jeu se joue en plein écran (True)
 
-##### *Player*
+#### *Player*
 
 Notre jeu est donc composé de la classe **Player**, attribuée au joueur. Elle gère les mouvements de ce dernier (grâce aux méthodes `on_key_press` et `on_key_release`) et les tirs du joueur (méthode `fire`). Elle hérite également des méthodes de Sprite de pyglet ([Pyglet Sprite Documentation](https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/sprite.html))
 
@@ -90,7 +90,7 @@ Cette classe a pour attribut :
 * angle : = timer * rotate_speed. C'est l'angle que forme la position du joueur.
 * reloading : Le temps que prend le joueur à recharger un projectile. Attention cet attribut décrémente de 1 chaque 60ème de seconde.
 
-##### *Feather*
+#### *Feather*
 
 Cette classe fille de la classe Sprite de pyglet, est attribuée aux projectiles (plumes) que lance le joueur à chaque fois qu'il appuie sur la barre espace. Elle ne possède que la méthode `update` car les plumes sont des objets qui, une fois lancées, n'interagissent pas avec les actions du joueur. Leur seule interaction est lorsque ces dernières touchent un segment, elles s'arrêtent et se transforment en `RotatingSprite`, que nous définirons plus tard.
 
@@ -105,7 +105,7 @@ Cette classe a pour attribut d'instance :
 * angle : L'angle du joueur lorsque ce dernier a tiré
 * dead : Définit si la plume est morte, dans le cas échéant, l'instancie dans RotatingSprite pour qu'elle soit comme plantée dans un segment.
 
-##### *RotatingSprite*
+#### *RotatingSprite*
 
 Cette classe fille de la classe Sprite de pyglet, est attribuée aux sprites tournants (plumes mortes, segments de cercle et segments de cercle morts).
 
@@ -131,7 +131,7 @@ Cette classe a pour attribut d'instance :
 * label : Le label auquel est affecté le `self.word`
 * dead : L'état de l'instance, mort ou vivant (True ou False)
 
-##### *Poetry*
+#### *Poetry*
 
 Cette classe est la seule qui n'a pas d'héritage, est attribuée au poème choisi de 15 vers auquel nous allons sélectionner 1 mot pour chaque vers. Pour le moment, notre jeu fonctionne avec un choix de 15 mots, pas plus ni moins, car il est composé de 15 segments.
 
@@ -150,11 +150,54 @@ Cette classe a pour attribut de classe :
 Cette classe a pour attribut d'instance :
 * poetry : Correspond au poème qui sera utilisé dans le jeu. Ce poème doit avoir seulement 15 vers.
 
-#### circles.py
+### circles.py
 
-Voici désormais le programme générale du jeu.
+Voici désormais le programme générale du jeu. Voici un organigramme des principales actions de ce programme.
 
-### Conclusion
+<p align="center">
+  <img src="./img/circles-py.png">
+</p>
+
+Tout d'abord le sujet *Load* concerne la déclaration des variables. Il déclare les variables principales et crée les instances qu'il faut pour le bon fonctionnement du jeu.
+
+Pour ce qui est des fonctions dites normales. Il en existe 4 dont voici la description :
+* chargeBar : Charge la barre de rechargement en dessous du joueur
+* in_sprite : Vérifie si les paramètres x et y sont comprises dans le sprite donné en paramètre
+* write_towards : Ecrit la phrase qu'il faut remplir sur le parchemin
+* game_restart : Une fonction qui remet tous les segments à l'état vivant et remet à zéro toutes les variables pour recommencer à jouer.
+
+Il existe un autre type de fonctions, celles qui s'actualise à 60 Hz. Il en existe trois, dont `on_draw()` est la plus importante. Les deux fonctions concernant `mouse` servent à détecter si la souris survole ou appuie sur les deux bouttons "Quit" et "Restart".
+
+Pour ce qui est de `on_draw()`, elle 'dessine' les sprites du jeu. Elle procède de cette manière et dans cet ordre :
+```
+game_window.clear()
+wallpaper_sprite.draw()
+if game:
+    restart.draw()
+    close.draw()
+    game_window.fps_display.draw()
+    parchment.draw()
+    #Draw the player and the segments
+    batch.draw()
+    write_towards(poem)
+    #Draw the segments
+    for segment in RotatingSprite.segments:
+        segment.label.draw()
+    #Draw the reloading line
+    chargeBar(player_sprite, player_image)
+    #Draw every projectile
+    for feather in Feather.feathers:
+        feather.draw()
+    #Draw the dead feathers
+    for obj in RotatingSprite.intert_objects:
+        obj.draw()
+else:
+    intro_text.draw()
+```
+
+La variable *game* indique l'état du jeu, s'il n'a pas encore commencé, il affiche le texte d'introduction, sinon, il affiche tous les objets du jeu.
+
+## Conclusion
 Tout d’abord, ce jeu nous a non seulement permis de mettre en pratique tout ce que l’on a appris jusqu’à ce jour sur le langage Python mais il nous a également emmené à chercher des solutions aux problèmes rencontrés durant la conception de celui-ci. On devait trouver des issues sur Internet compréhensibles pour nous, dans le but de pouvoir les expliquer par la suite.
 
 De plus, cette activité nous a fait faire face à un projet demandant une grande coordination de notre part. Le travail d'équipe était indispensable pour le bon déroulement. Chaque élève du groupe devait faire des concessions, devait s’organiser et devait faire tout son possible pour pouvoir expliquer le code écrit lors d’une unification avec le reste des membres. L'existence des contraintes rajoutait une difficulté supplémentaire qu’il fallait franchir.
