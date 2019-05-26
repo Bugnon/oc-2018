@@ -2,6 +2,9 @@
 import pyglet, random, math, time
 from pyglet.window import key, FPSDisplay
 
+##### POETRY #####
+poetry = open("resources/documents/poeme.txt", encoding='utf8') # open the poem
+
 ##### MEDIA #####
 fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
 fire_sound = pyglet.media.Player()
