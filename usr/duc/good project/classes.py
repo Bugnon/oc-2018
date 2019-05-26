@@ -193,8 +193,6 @@ class Poetry():
                 if len(random_choice) > 2:
                     i += 1
                     self.words.append(random_choice)
-                else: 
-                    random_choice = random.choice(self.towards[i])
         return self.words
 
     def save_words(self):
