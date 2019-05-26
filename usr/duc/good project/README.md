@@ -9,7 +9,12 @@
     * [Côté poétique](#côté-poétique)
 2. [Explication du jeu](#explication-du-jeu)
 3. [Structure du programme](#structure-du-programme)
-4. [Conclusion]()
+    * [Window](#window)
+    * [Player](#player)
+    * [Feather](#feather)
+    * [RotatingSprite](#rotatingsprite)
+    * [Poetry](#poetry)
+4. [Conclusion](#conclusion)
 
 ## Description
 
@@ -54,6 +59,12 @@ Pour mieux se représenter la structure du programme, voici un diagramme UML (Un
 ![UML Diagram](./img/circles_uml_diagram.png)
 
 Nous pouvons noter que chaque classe possède une méthode `update` qui permet d'actualiser chaque attributs de l'instance et par conséquent rendre le jeu dynamique.
+
+#### *Window*
+
+Nous avons créé une classe permettant de définir notre fenêtre de jeu. Elle hérite des méthodes de pyglet.window.Window ([Pyglet Window Documentation](https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/window.html?highlight=window)) Elle a donc pour attribut d'instance :
+* frame_rate : Qui est mis par défaut à 1/60 pour tourner en 60 Hz
+* set_fullscreen : Car notre jeu se joue en plein écran (True)
 
 #### *Player*
 

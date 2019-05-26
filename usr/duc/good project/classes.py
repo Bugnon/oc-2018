@@ -208,11 +208,15 @@ class Poetry():
     def open_words(self):
         '''
         Open the file with the words in it
-        :return: str
+        :return: list
         '''
         return open("resources/documents/words.txt", encoding='utf8').read().split('\n')
 
     def remove_words(self):
+        '''
+        Remove the word chosen in the toward.
+        :return: list
+        '''
         i = 0
         words_to_remove = self.open_words()
         towards = self.towards
