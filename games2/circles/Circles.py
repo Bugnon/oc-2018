@@ -94,7 +94,8 @@ for i in range(15):
     RotatingSprite.segments.append(segment) #add the segment to the list which is updated
 
 ##### POETRY #####
-poem = Poetry()
+poetry = open("resources/documents/poeme.txt", encoding='utf8') # open the poem
+poem = Poetry(poetry)
 poem.initialize()
 
 ##### INRODUCTION LABEL #####
