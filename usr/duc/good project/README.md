@@ -6,9 +6,9 @@
 # Glossaire
 
 * [Introduction](#introduction)
-* [Côté poétique]()
-* [Explication du jeu]()
-* [Structure du programme]()
+* [Côté poétique](#côté-poétique)
+* [Explication du jeu](#explication-du-jeu)
+* [Structure du programme](#structure-du-programme)
 * [Captures d'écran]()
 * [Intéractions clavier, souris]()
 * [Explication du jeu]()
