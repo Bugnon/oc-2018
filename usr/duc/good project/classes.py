@@ -2,6 +2,10 @@
 import pyglet, random, math, time
 from pyglet.window import key, FPSDisplay
 
+
+##### POETRY #####
+poetry = open("resources/documents/poeme.txt", encoding='utf8')
+
 ##### MEDIA #####
 fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
 fire_sound = pyglet.media.Player()
@@ -162,11 +166,10 @@ class Poetry():
     """Classe permettant de lire, couper, choisir et utiliser les vers et les mots."""
     towards = []
     words = []
-    poetry = open("resources/documents/poeme.txt", encoding='utf8')
-    towards_splited = poetry.read().split('\n')
 
-    def __init__(self):
-        self.poetry = Poetry.towards_splited
+    def __init__(self, poetry):
+        self.towards_splited = poetry.read().split('\n')
+        self.poetry = self.towards_splited
         self.towards = Poetry.towards
         self.words = Poetry.words
 
@@ -233,7 +236,7 @@ class Poetry():
         '''
         self.remove_words()
 
-Poetry().save_words()
+Poetry(poetry=poetry).save_words()
 
 ##### ROTATINGSPRITE CLASS #####
 class RotatingSprite(pyglet.sprite.Sprite):
@@ -244,7 +247,7 @@ class RotatingSprite(pyglet.sprite.Sprite):
     dead_segments = []
     intert_objects = [] #a list of the dead feather
 
-    words = Poetry().open_words() #a list of the words of the poetry
+    words = Poetry(poetry=poetry).open_words() #a list of the words of the poetry
     words.pop() # delete the last empty line
     angular_velocity = math.pi/5
 

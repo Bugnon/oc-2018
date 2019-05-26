@@ -89,7 +89,8 @@ for i in range(15):
     RotatingSprite.segments.append(segment)
 
 ##### POETRY #####
-poem = Poetry()
+poetry = open("resources/documents/poeme.txt", encoding='utf8')
+poem = Poetry(poetry=poetry)
 poem.initialize()
 
 ##### GAME FUNCTIONS #####
