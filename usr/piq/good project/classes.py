@@ -3,7 +3,7 @@ import pyglet, random, math, time
 from pyglet.window import key, FPSDisplay
 
 ##### MEDIA #####
-fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
+fire = pyglet.media.load('resources/sound/fire.wav', streaming=False) # sound when a feather is shot
 fire_sound = pyglet.media.Player()
 fire_sound.volume = 0.001
 
@@ -19,8 +19,8 @@ def center_image(image):
     :param image: image
     :return: None
     """
-    image.anchor_x = image.width // 2
-    image.anchor_y = image.height // 2
+    image.anchor_x = image.width // 2 # put the anchor of the image at the half of its width
+    image.anchor_y = image.height // 2 # put the anchor of the image at the half of its height
 
 def distance(point_1=(0, 0), point_2=(0, 0)):
     '''
@@ -31,7 +31,7 @@ def distance(point_1=(0, 0), point_2=(0, 0)):
     '''
     return math.sqrt(
         (point_1[0] - point_2[0]) ** 2 +
-        (point_1[1] - point_2[1]) ** 2)
+        (point_1[1] - point_2[1]) ** 2) # pythagore
 
 ##### GAME WINDOW CLASS #####
 # Create a class for the game_window
@@ -52,11 +52,11 @@ class Player(pyglet.sprite.Sprite):
 
         self.image = pyglet.resource.image('resources/sprites/player.png')
         self.rotate_speed = 200
-        self.keys = {'left':False, 'right':False, 'space':False}
-        self.timer = 0 #the timer is an attribute to helps the feather to know the angular position of the player
-        self.angle = 0
-        self.scale = 0.56*screen.width/1200
-        self.reloading = 0
+        self.keys = {'left':False, 'right':False, 'space':False} # keys used to controll the player
+        self.timer = 0 # the timer is an attribute to helps the feather to know the angular position of the player
+        self.angle = 0 # angle of the player at the beginning of the game
+        self.scale = 0.56*screen.width/1200 # scale of the inkwell in function of the size of the window
+        self.reloading = 0 # default value of reloading
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.LEFT:
@@ -75,18 +75,18 @@ class Player(pyglet.sprite.Sprite):
             self.keys['space'] = False
 
     def fire(self):
-        self.angle = self.timer * self.rotate_speed
+        self.angle = self.timer * self.rotate_speed # angle at which the feather appears in function of the angle of the player
 
         feather = Feather(player=self, img=Feather.feather, x=self.x, y=self.y)
-        feather.x = self.x + self.width * math.sin(math.radians(self.angle))
-        feather.y = self.y + self.height * math.cos(math.radians(self.angle))
+        feather.x = self.x + self.width * math.sin(math.radians(self.angle)) # position of the feather on X axis in function of angle
+        feather.y = self.y + self.height * math.cos(math.radians(self.angle)) # position of the feather on Y axis in function of angle
         feather.rotation = self.angle
         Feather.feathers.append(feather)
 
-        fire_sound.queue(fire)
+        fire_sound.queue(fire) # fire sound when a feather is shot
         fire_sound.play()
 
-        self.reloading = 30 # = 0,5 sec car il descend de 1 chaque 1/60 sec
+        self.reloading = 30 # = 0,5 sec because it decreases by 1 every 1/60 of a second
 
     def update(self, dt):
         if self.keys['left']:
