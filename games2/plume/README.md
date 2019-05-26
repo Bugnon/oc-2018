@@ -6,7 +6,7 @@
 ## Description
 
 ### Introduction
-Dans notre Gymnase du Bugnon Ours, on a pu participer au Printemps de la poésie, soutenue par l'UNIL. Dans l'option complémentaire informatique, on a dû créer un jeu ayant un rapport avec la poésie, à présenter lors de la semaine ou le gymanse Bugnon ours participez à ce projet du Printemps de la poésie. Pour plus d'information vous pouvez visiter le site : [Printemps de la poésie UNIL](http://printempspoesie.ch/wordpress/)
+Dans notre Gymnase du Bugnon Ours, on a pu participer au Printemps de la poésie, soutenue par l'UNIL. Dans l'option complémentaire informatique, on a dû créer un jeu ayant un rapport avec la poésie, à présenter lors de la semaine ou le gymanse Bugnon ours participez à ce projet du Printemps de la poésie. Pour plus d'informations vous pouvez visiter le site : [Printemps de la poésie UNIL](http://printempspoesie.ch/wordpress/)
 
 Inkvader est un jeu style rétro gaming. On s'est inspirés du jeu clasique [Asteroids](https://en.wikipedia.org/wiki/Asteroids_(video_game)) pour le créer. Il s'agit de se déplacer avec une plume et de tirer des tâches d'encre sur des mots flottants sur l'écran. Ces mots sont de deux sortes. D'un côté, ils ont un vocabulaire poétique. Et de l'autre, ce sont des mots choisis au hasard. Le but est de tirer sur les mots poétiques, afin qu'un poème s'écrive progressivement. 
 
