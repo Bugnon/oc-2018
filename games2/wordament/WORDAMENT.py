@@ -88,8 +88,11 @@ def on_draw():
         window.clear()
         # draws the image on the screen
         background_image.blit(x = 0, y = 0, height = window.height, width = window.width)
-        random_button.blit(x = window.width/11, y = window.height/2 + 60, width = window.width/2 - 2*window.width/11, height = (window.width/2 - 2*window.width/11) /3)
-        selected_button.blit(x = window.width/2 + window.width/11, y =  window.height/2 + 60, width = window.width/2 - 2*window.width/11, height = (window.width/2 - 2*window.width/11) /3)
+        random_button.blit(x = window.width/11, y = window.height/2, width = window.width/2 - 2*window.width/11, height = (window.width/2 - 2*window.width/11) /3)
+        selected_button.blit(x = window.width/2 + window.width/11, y =  window.height/2, width = window.width/2 - 2*window.width/11, height = (window.width/2 - 2*window.width/11) /3)
+        
+        title = pyglet.text.Label('Wordament', font_size = 50, x = window.width//2, y = window.height / 2 + 250, anchor_x = 'center', font_name = 'Times New Roman')
+        title.draw()
         
     if game_state == 1:
         global word_state
@@ -125,12 +128,12 @@ def on_mouse_press(x, y, button, modifiers):
     global game_state
     if game_state == 0:
         if window.width / 11 < x  < window.width / 11 + window.width / 2 - 2 * window.width / 11:
-            if window.height / 2 + 60 < y < window.height / 2 + 60 + (window.width / 2 - 2 * window.width / 11) / 3:
+            if window.height / 2 < y < window.height / 2 + (window.width / 2 - 2 * window.width / 11) / 3:
                 game_state = 1
     
     if game_state == 0:
         if window.width / 2 + window.width / 11 < x  < window.width / 2 + window.width / 11 + window.width / 2 - 2 * window.width / 11:
-            if window.height / 2 + 60 < y < window.height / 2 + 60 + (window.width / 2 - 2 * window.width / 11) / 3:
+            if window.height / 2 < y < window.height / 2 + (window.width / 2 - 2 * window.width / 11) / 3:
                 game_state = 2
                 
  # Actions when the click of the mouse is release :
