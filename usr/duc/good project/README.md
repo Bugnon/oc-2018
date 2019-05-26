@@ -36,15 +36,9 @@ Le sujet de ce travail de fin d’année consistait à créer un projet dans leq
 
 Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un poème, tout en restant dans thème poétique. Le choix de nos sprites a donc été méthodique pour le respecter.
 
-<html>
-
-<center>
-
-![Tableau Sprites](./img/table.png)
-
-</center>
-
-</html>
+<p align="center">
+  <img src="./img/table.png">
+</p>
 
 Nous avons donc ajouté des sprites représentants l’écriture : un encrier étant la source des projectiles, un parchemin étant l'endroit sur lequel on écrit et une musique classique représentant la douceur de cet art.
 
