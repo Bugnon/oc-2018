@@ -125,13 +125,13 @@ class Feather(pyglet.sprite.Sprite):
     #Create the projectile (feathers)
     feather = pyglet.resource.image('resources/sprites/feather.png')
     center_image(feather)
-
+    speed = 500 # Norm of the velocity
     feathers = []
 
     def __init__(self, player, *args, **kwargs):
         super(Feather, self).__init__(*args, **kwargs)
 
-        self.image = pyglet.resource.image('resources/sprites/feather.png')
+        self.image = Feather.feather
         self.xc = player.x
         self.yc = player.y
         self.r = screen.width // 6
@@ -139,12 +139,10 @@ class Feather(pyglet.sprite.Sprite):
 
         self.scale = 0.02*screen.width/1200
 
-        self.speed = 500 # Norm of the velocity
-
         self.angle = player.angle
 
-        self.dx = math.sin(math.radians(player.angle)) * self.speed
-        self.dy = math.cos(math.radians(player.angle)) * self.speed
+        self.dx = math.sin(math.radians(player.angle)) * Feather.speed
+        self.dy = math.cos(math.radians(player.angle)) * Feather.speed
 
         self.dead = False
 
@@ -165,9 +163,9 @@ class Poetry():
     towards = []
     words = []
     poetry = open("resources/documents/poeme.txt", encoding='utf8')
-    towards_unsplited = poetry.read().split('\n')
+    towards_splited = poetry.read().split('\n')
     def __init__(self):
-        self.poetry = Poetry.towards_unsplited
+        self.poetry = Poetry.towards_splited
         self.towards = Poetry.towards
         self.words = Poetry.words
 

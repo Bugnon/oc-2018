@@ -110,7 +110,6 @@ def chargeBar(player_sprite, player_image):
         :param player_image: image
         :return: None
         '''
-
         player_start = player_sprite.x - player_sprite.width // 2
 
         pyglet.graphics.draw(2, pyglet.gl.GL_LINES,
