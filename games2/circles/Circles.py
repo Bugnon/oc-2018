@@ -94,9 +94,9 @@ for i in range(15):
     RotatingSprite.segments.append(segment) #add the segment to the list which is updated
 
 ##### POETRY #####
-poetry = open("resources/documents/poeme.txt", encoding='utf8') # open the poem
-poem = Poetry(poetry)
-poem.initialize()
+poem = open("resources/documents/poeme.txt", encoding='utf8') # open the poem
+poetry = Poetry(poem)
+poetry.initialize()
 
 ##### INRODUCTION LABEL #####
 intro_text = pyglet.text.Label('Press left mouse button to start',
@@ -166,7 +166,7 @@ def on_draw():
         parchment.draw()
         #Draw the player and the segments
         batch.draw()
-        write_towards(poem)
+        write_towards(poetry)
         #Draw the segments
         for segment in RotatingSprite.segments:
             segment.label.draw()
