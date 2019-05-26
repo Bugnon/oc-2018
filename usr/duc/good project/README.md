@@ -21,6 +21,7 @@ Le sujet de ce travail de fin d’année, consistait à créer un projet dans le
 
 Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un poème, tout en restant dans thème poétique. Le choix de nos sprites a donc été méthodique pour le respecter.
 <center>
+<p>a</p>
 
 | Projectile    | Player | Parchemin  |
 | :-------------: |:------:| :----------:|
