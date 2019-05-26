@@ -25,7 +25,7 @@ Notre jeu est donc une adaptation du casse-brique afin que l'on puisse y retrouv
 Notre jeu est composé d'un fichier nommé **BreakoutGame.py** ainsi que d'un dossier nommé **images** contenant 
 toutes les images utilisées pour la programmation de notre jeu. Vous trouverez tout cela dans le dossier nommé **Game_Breaker**.
 
-# Fonctionnement général du programme
+### Fonctionnement général du programme
 
 Pour que notre programme puisse être fonctionnel, nous devons procéder en plusieurs étapes:
 
@@ -45,9 +45,9 @@ from pyglet.window import FPSDisplay
     
 Pour plus de précision, veuillez vous référer au code et à ses explications[](https://github.com/Bugnon/oc-2018/blob/master/games2/breakout/Game_Breaker/BreakoutGame.py)
 
-Finalement, nous définissons une fonction ```on:draw() ``` qui aura pour but de lancer le jeu.
+Finalement, nous définissons une fonction ```on_draw() ``` qui aura pour but de lancer le jeu.
 
-# Intéractions clavier
+### Intéractions clavier
 
 Nous avons choisi de n'utiliser que 3 touches pour pouvoir utiliser notre jeu.
 * **les flèches directionnelles droite et gauche**, qui permettront au joueur de faire se déplacer la barre vers la gauche ou vers la droite.
