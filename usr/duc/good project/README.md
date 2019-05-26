@@ -30,7 +30,7 @@ Ce travail nous a donc permis de remettre en question nos idées et nos capacit�
 
 #### Côté poétique
 
-Le sujet de ce travail de fin d’année, consistait à créer un projet dans lequel la poésie jouait un rôle important. Ceci était donc notre critère primordial, nous devions donc concevoir un jeu avec une atmosphère "poétique".
+Le sujet de ce travail de fin d’année consistait à créer un projet dans lequel la poésie jouait un rôle important. Ceci était donc notre critère primordial, nous devions donc concevoir un jeu avec une atmosphère "poétique".
 
 Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un poème, tout en restant dans thème poétique. Le choix de nos sprites a donc été méthodique pour le respecter.
 
@@ -38,12 +38,11 @@ Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un p
 | :-------------: |:------:| :----------:|
 | ![Projectile](./img/feather.png)      | ![Joueur](./img/player.png) | ![Parchemin](./img/parchment.png) |
 
-
 Nous avons donc ajouté des sprites représentants l’écriture : un encrier étant la source des projectiles, un parchemin étant l'endroit sur lequel on écrit et une musique classique représentant la douceur de cet art.
 
 ### Explication du jeu
 
-Le but du jeu est de compléter les lacunes d'un poèmes. Pour celà, le joueur est muni d'un encrier qui tire des plumes. Cet encrier est au centre d'un cercle constitué de 15 mots qui tourne. Il faut tirer sur le mot qui manque dans le vers affiché pour passer au vers suivant jusqu'à ce que le poème soit complété.
+Le but du jeu est de compléter les lacunes d'un poème. Pour cela, le joueur est muni d'un encrier qui tire des plumes. Cet encrier est au centre d'un cercle constitué de 15 mots qui tourne. Il faut tirer sur le mot qui manque dans le vers affiché pour passer au vers suivant jusqu'à ce que le poème soit complété.
 
 #### Touches
 
@@ -58,11 +57,11 @@ Pour mieux se représenter la structure du programme, voici un diagramme UML (Un
 
 ![UML Diagram](./img/circles_uml_diagram.png)
 
-Nous pouvons noter que chaque classe possède une méthode `update` qui permet d'actualiser chaque attributs de l'instance et par conséquent rendre le jeu dynamique.
+Nous pouvons noter que chaque classe possède une méthode `update` qui permet d'actualiser chaque attribut de l'instance et par conséquent rendre le jeu dynamique.
 
 #### *Window*
 
-Nous avons créé une classe permettant de définir notre fenêtre de jeu. Elle hérite des méthodes de pyglet.window.Window ([Pyglet Window Documentation](https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/window.html?highlight=window)) Elle a donc pour attribut d'instance :
+Nous avons créé une classe permettant de définir notre fenêtre de jeu. Elle hérite des méthodes de pyglet.window.Window ([Pyglet Window Documentation](https://pyglet.readthedocs.io/en/pyglet-1.3-maintenance/modules/window.html?highlight=window)) elle a donc pour attribut d'instance :
 * frame_rate : Qui est mis par défaut à 1/60 pour tourner en 60 Hz
 * set_fullscreen : Car notre jeu se joue en plein écran (True)
 
@@ -76,14 +75,14 @@ Cette classe a pour attribut :
 * keys : Assigne la valeur `False` aux flèches droite et gauche qui contrôle le mouvement.
 * timer : Un attribut pratique pour récupérer l'angle actuel du joueur (peut être négatif)
 * angle : = timer * rotate_speed. C'est l'angle que forme la position du joueur.
-* reloading : Le temps que prends le joueur à recharger un projectile. Attention cet attribut décremente de 1 chaque 60ème de seconde.
+* reloading : Le temps que prend le joueur à recharger un projectile. Attention cet attribut décrémente de 1 chaque 60ème de seconde.
 
 #### *Feather*
 
-Cette classe fille de la classe Sprite de pyglet, est attribuée aux projectiles (plumes) que lance le joueur à chaque fois qu'il appuie sur la barre espace. Elle ne possède que la méthode `update` car les plumes sont des objets qui, une fois lancées, n'intéragissent pas avec les actions du joueur. Leur seule intéraction est lorsque ces dernières touchent un segment, elles s'arrêtent et se transforment en `RotatingSprite`, que nous définirons plus tard.
+Cette classe fille de la classe Sprite de pyglet, est attribuée aux projectiles (plumes) que lance le joueur à chaque fois qu'il appuie sur la barre espace. Elle ne possède que la méthode `update` car les plumes sont des objets qui, une fois lancées, n'interagissent pas avec les actions du joueur. Leur seule interaction est lorsque ces dernières touchent un segment, elles s'arrêtent et se transforment en `RotatingSprite`, que nous définirons plus tard.
 
 Cette classe a pour attribut de classe :
-* feathers : C'est une liste sous forme d'attibut de classe qui contient tout les projectiles lancés.
+* feathers : C'est une liste sous forme d'attribut de classe qui contient tous les projectiles lancés.
 * speed : _Norme_ de la vitesse
 
 Cette classe a pour attribut d'instance :
@@ -95,25 +94,25 @@ Cette classe a pour attribut d'instance :
 
 #### *RotatingSprite*
 
-Cette classe fille de la classe Sprite de pyglet, est attribuée aux sprites tournant (plumes mortes, segments de cercle et segments de cercle morts).
+Cette classe fille de la classe Sprite de pyglet, est attribuée aux sprites tournants (plumes mortes, segments de cercle et segments de cercle morts).
 
 Ses méthodes sont :
 * relive() : Permet de faire revivre un segment mort lorsqu'on appuie sur le bouton Restart.
-* update(dt) : Vérifie si le segment est devenu mort, si oui lui supprime son mot assigné et réctifie son image en dead segment. Puis met à jour l'angle de l'instance pour qu'elle tourne. Ensuite appelle la méthode `update_position`.
-* update_position() : Assigne la nouvelle position à l'instance ainsi qu'au mot qui lui ai assigné si elle en possède un (par exemple les dead_segments et les projectiles n'ont pas de mot qui leur sont assigné).
+* update(dt) : Vérifie si le segment est devenu mort, si oui lui supprime son mot assigné et rectifie son image en dead segment. Puis met à jour l'angle de l'instance pour qu'elle tourne. Ensuite, elle appelle la méthode `update_position`.
+* update_position() : Assigne la nouvelle position à l'instance ainsi qu'au mot qui lui est assigné si elle en possède un (par exemple les dead_segments et les projectiles n'ont pas de mot qui leur sont assignés).
 
 Cette classe a pour attribut de classe :
 * segments : La liste des segments vivants
 * dead_segments : La liste des segments morts
-* inert_objects : La liste des projectils morts qui tournent désormais
+* inert_objects : La liste des projectiles morts qui tournent désormais
 * angular_velocity : Une constante qui définit la vitesse angulaire des instances.
 * words : La liste de 15 mots qui rempliront les lacunes
 
 Cette classe a pour attribut d'instance :
 * word : Correspond au mot de l'instance si c'est un segment vivant. Fait partie de `RotatingSprite.words`
 * angle : C'est l'angle actuel de l'instance
-* xc : La coordonée X du centre autour duquel tourne le sprite
-* yc : La coordonée Y du centre autour duquel tourne le sprite
+* xc : La coordonnée X du centre autour duquel tourne le sprite
+* yc : La coordonnée Y du centre autour duquel tourne le sprite
 * r : Le rayon de la rotation. Donc la distance entre le centre et l'instance qui tourne
 * scale : La mise à l'échelle de l'instance
 * label : Le label auquel est affecté le `self.word`
@@ -121,27 +120,25 @@ Cette classe a pour attribut d'instance :
 
 #### *Poetry*
 
-Cette classe est la seule qui n'a pas d'héritage, est attribuée au poème choisi de 15 vers auquel nous allons séléctionner 1 mot pour chaque vers. Pour le moment, notre jeu fonctionne avec un choix de 15 mots, pas plus ni moins, car il est composé de 15 segments.
+Cette classe est la seule qui n'a pas d'héritage, est attribuée au poème choisi de 15 vers auquel nous allons sélectionner 1 mot pour chaque vers. Pour le moment, notre jeu fonctionne avec un choix de 15 mots, pas plus ni moins, car il est composé de 15 segments.
 
 Ses méthodes sont :
-* split_poetry(): Coupe le poeme 
-* choose_words():
-* 
+* split_poetry() : Coupe chaque vers du poème. Le poème devient donc une liste dans une liste. Chaque vers est un élément de la liste primaire et chaque mot est un élément de la liste secondaire.
+* choose_words() : Choisit de manière aléatoire 15 mots. Un mot par vers est choisi.
+* save_words() : Enregistre les 15 mots choisis dans le fichier `words.txt`. Chaque mot est enregistré dans une ligne différente.
+* open_words() : Ouvre le fichier `words.txt` pour sa lecture.
+* remove_words() : Enleve chaque mot choisi précédemment dans son vers correspondant. On obtient donc une liste des vers ayant `........` à la place des mots.
+* initialize() : Fonction permettant l'initialisation de `Poetry` qui nous permettra d'écrire le poème.
+
 Cette classe a pour attribut de classe :
-* segments : La liste des segments vivants
-* dead_segments : La liste des segments morts
-* inert_objects : La liste des projectils morts qui tournent désormais
-* angular_velocity : Une constante qui définit la vitesse angulaire des instances.
-* words : La liste de 15 mots qui rempliront les lacunes
+* towards : Est une liste vide qui sera utilisée pour contenir les vers du poème.
+* words : Sera la liste des mots choisis au hasard.
 
 Cette classe a pour attribut d'instance :
-* word : Correspond au mot de l'instance si c'est un segment vivant. Fait partie de `RotatingSprite.words`
-* angle : C'est l'angle actuel de l'instance
-* xc : La coordonée X du centre autour duquel tourne le sprite
-* yc : La coordonée Y du centre autour duquel tourne le sprite
-* r : Le rayon de la rotation. Donc la distance entre le centre et l'instance qui tourne
-* scale : La mise à l'échelle de l'instance
-* label : Le label auquel est affecté le `self.word`
-* dead : L'état de l'instance, mort ou vivant (True ou False)
+* poetry : Correspond au poème qui sera utilisé dans le jeu. Ce poème doit avoir seulement 15 vers.
 
 ### Conclusion
+Tout d’abord, ce jeu nous a non seulement permis de mettre en pratique tout ce que l’on a appris jusqu’à ce jour sur le langage Python mais il nous a également emmené à chercher des solutions aux problèmes rencontrés durant la conception de celui-ci. On devait trouver des issues sur Internet compréhensibles pour nous, dans le but de pouvoir les expliquer par la suite.
+De plus, cette activité nous a fait faire face à un projet demandant une grande coordination de notre part. Le travail d'équipe était indispensable pour le bon déroulement. Chaque élève du groupe devait faire des concessions, devait s’organiser et devait faire tout son possible pour pouvoir expliquer le code écrit lors d’une unification avec le reste des membres. L'existence des contraintes rajoutait une difficulté supplémentaire qu’il fallait franchir.
+Grâce à ce projet, nous nous sommes mis dans la peau d’une équipe d’informaticiens réalisant une commande pour une entreprise quelconque.
+En conclusion, c’est un bon moyen pour mettre à l'épreuve non seulement nos compétences de coding, mais également pour tester nos capacités d’adaptation et travail en équipe.
