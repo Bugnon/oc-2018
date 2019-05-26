@@ -3,6 +3,17 @@
 * Authors: Massimo Stefani, Valentin Piquerez et Hugo Ducommun
 * Date: 23/05/2019
 
+# Glossaire
+
+* [Introduction](#introduction)
+* [Côté poétique]()
+* [Explication du jeu]()
+* [Structure du programme]()
+* [Captures d'écran]()
+* [Intéractions clavier, souris]()
+* [Explication du jeu]()
+* [Conclusion]()
+
 ## Description
 
 ### Introduction
