@@ -61,4 +61,4 @@ On utilise la touche "enter" afin de mettre sur pause.
 
 * Le but: Le but du jeu est d'écrire le poème "Le Dormeur du Val" de Rimbaud.
 
-Premierement on doit mettre en marche le jeu, en cliquanr avec la souris sur l'écrans. Ensuite nous devons nous deplacer a l'aide des quatres flèches sur le clavier, montrées ci-dessus, afin de se positionner sur l'écran de maniere a pouvoir tirer sur un mot poétique. Il faut ensuite appuyer sur la barre d'espace pour tirer une tâche d'encre sur un mot. Il faut viser les mots poétiques, car a chaque fois qu'on en touche un, le poème s'écrit mot a mot en haut de l'écran.
+Premierement on doit mettre en marche le jeu, en cliquant avec la souris sur l'écrans. Ensuite nous devons nous deplacer à l'aide des quatres flèches sur le clavier, montrées ci-dessus, afin de se positionner sur l'écran de maniere à pouvoir tirer sur un mot poétique. Il faut ensuite appuyer sur la barre d'espace pour tirer une tâche d'encre sur un mot. Il faut viser les mots poétiques, car à chaque fois qu'on en touche un, le poème s'écrit mot à mot en haut de l'écran.
