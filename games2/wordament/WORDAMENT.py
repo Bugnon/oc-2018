@@ -10,28 +10,34 @@ from levels import levels
 import codecs
 from pathlib import Path
 from random  import randint
+from time import sleep
 ############################################
 ###   Initialization of game variables   ###
 ############################################
+def init():
+    '''game startpoint'''
+    global height, width, pattern_size, case_size, game_state, game_location, delta_center
+    width = 800
+    height = 850
+    pattern_size = min(height - 55, width)
+    game_location = str(Path(__file__).absolute().parent)
+    game_state = 0
+    delta_center = (width - pattern_size)/2
+    case_size = pattern_size/4
+    case_pos = pattern_size/4 + delta_center
+    init_var()
+    init_objects()
+
 def init_var():
     '''Imported variables'''
-
-    global height, width, pattern_size, case_size, new_word, score, word_coordinate,\
-     taken_words, old_case, game_location, word_state, game_state
-    height = 850
-    width = 800
-    pattern_size = min(height, width)
-    case_size = pattern_size/4
+    global  new_word, score, word_coordinate, taken_words, old_case, word_state
     new_word = ''
     score = 0
     word_coordinate = []
     taken_words = []
     old_case = [-1, -1]
-    game_location = str(Path(__file__).absolute().parent)
-    game_state = 0
     word_state = 0
-    init_objects()
-
+    
 def random_level_generation():
     '''Create a random grid level'''
     all_letter = []
@@ -46,18 +52,20 @@ def random_level_generation():
             line.append(changed_letter)
         grid.append(line)
     return grid
-ML = random_level_generation()
+
 def init_objects():
-    global image_store, window, new_word_print, score_print, background_image, selected_button, random_button, menu_background
+    global right, next_level_button, window, new_word_print, score_print, background_image, selected_button, random_button, menu_background
     '''Creation of different games objects and libraries'''
     window = pyglet.window.Window(width, height, resizable = True, caption='Wordament')
     # Set of the written items to initial form :
-    new_word_print = pyglet.text.Label('Word : ', font_size = 28, x = 5, y = 612)
-    score_print = pyglet.text.Label('Score : 0', font_size = 28, x = 400, y = 612)
+    new_word_print = pyglet.text.Label('Word : ', font_size = 28, x = 150, y = 612)
+    score_print = pyglet.text.Label('Score : 0', font_size = 28, x = 5, y = 612)
     background_image = pyglet.image.load(Path(game_location + '/images/Background.jpg'))
-    selected_button = pyglet.image.load(Path(game_location + '/images/bouton_selected.png'))
-    random_button = pyglet.image.load(Path(game_location + '/images/bouton_random.png'))
+    selected_button = pyglet.sprite.Sprite(pyglet.image.load(Path(game_location + '/images/bouton_selected.png')))
+    random_button = pyglet.sprite.Sprite(pyglet.image.load(Path(game_location + '/images/bouton_random.png')))
+    next_level_button = pyglet.sprite.Sprite(pyglet.image.load(Path(game_location + '/images/next_level.png')))
     menu_background = pyglet.image.load(Path(game_location + '/images/Menu_Background.jpg'))
+    
     add_audio()
             
 # Set of the music during the game :
@@ -75,7 +83,7 @@ def add_audio():
     music_player.volume = 0.25
 
 
-init_var()
+init()
 
 
 ############################################
@@ -84,6 +92,7 @@ init_var()
 
 #Function that update the game board :
 
+
 @window.event
 def on_draw():
     if game_state == 0:
@@ -91,14 +100,16 @@ def on_draw():
         window.clear()
         # draws the image on the screen
         menu_background.blit(x = 0, y = 0, height = window.height, width = window.width)
-        random_button.blit(x = window.width/11, y = window.height/2 + 60, width = window.width/2 - 2*window.width/11, height = (window.width/2 - 2*window.width/11) /3)
-        selected_button.blit(x = window.width/2 + window.width/11, y =  window.height/2 + 60, width = window.width/2 - 2*window.width/11, height = (window.width/2 - 2*window.width/11) /3)
-        
-    if game_state == 1:
+        selected_button.update(x=window.width/15, y=window.height/2 - 130,scale=window.width/800*0.7)
+        random_button.update(x=window.width - window.width/15 - selected_button.width, y=window.height/2 - 130,scale=window.width/800*0.7)
+        selected_button.draw()
+        random_button.draw()
+        title = pyglet.text.Label('Wordament', font_size = 80, x = window.width//2, y = window.height / 2 + 50, anchor_x = 'center', font_name = 'Times New Roman',bold = True,  color = [0, 0, 0, 255])
+        title.draw()
+    else:
         global word_state
         global word_coordinate
         window.clear()
-        print(word_state)
         # draws the image on the screen
         background_image.blit(x = 0, y = 0, height = window.height, width = window.width)
         for u in range(4):
@@ -106,16 +117,22 @@ def on_draw():
                 letter = image_store[ML[3 - n][u]]
                 if word_state == 1 and [n, u] in word_coordinate:
                     letter_print = letter[1]
-                    letter_print.blit(x = case_size * u, y = case_size * n, height = case_size, width = case_size)
+                    letter_print.blit(x = delta_center + case_size * u, y = case_size * n, height = case_size, width = case_size)
                 elif word_state == 2 and [n, u] in word_coordinate:
                     letter_print = letter[3]
-                    letter_print.blit(x = case_size * u, y = case_size * n, height = case_size, width = case_size)
+                    letter_print.blit(x = delta_center + case_size * u, y = case_size * n, height = case_size, width = case_size)
                 elif [n,u] in word_coordinate :
                     letter_print = letter[2]
-                    letter_print.blit(x = case_size * u, y = case_size * n, height = case_size, width = case_size)
+                    letter_print.blit(x = delta_center + case_size * u, y = case_size * n, height = case_size, width = case_size)
                 else:
                     letter_print = letter[0]
-                    letter_print.blit(x = case_size * u, y = case_size * n, height = case_size, width = case_size)
+                    letter_print.blit(x = delta_center + case_size * u, y = case_size * n, height = case_size, width = case_size)
+        if game_state == 2:
+            if window.width >= 800:
+                next_level_button.update(x = delta_center + window.width - (window.width - window.height)- 145 , y = window.height - 53)
+            else:
+                next_level_button.update(x = delta_center + window.width - 93, y = window.height - 53)
+            next_level_button.draw()
         new_word_print.draw()
         score_print.draw()
         if word_state != 0:
@@ -125,29 +142,30 @@ def on_draw():
         
 @window.event
 def on_mouse_press(x, y, button, modifiers):
-    global game_state
+    global game_state, ML, image_store, level
+    width, height = window.width, window.height
     if game_state == 0:
-        if window.width / 11 < x  < window.width / 11 + window.width / 2 - 2 * window.width / 11:
-            if window.height / 2 + 60 < y < window.height / 2 + 60 + (window.width / 2 - 2 * window.width / 11) / 3:
+        if width / 15 < x  < width / 15 + selected_button.width:
+            if height / 2 - 130 < y < height / 2 - 130 + selected_button.height:
                 game_state = 1
-                
-                
-    
-    if game_state == 0:
-        if window.width / 2 + window.width / 11 < x  < window.width / 2 + window.width / 11 + window.width / 2 - 2 * window.width / 11:
-            if window.height / 2 + 60 < y < window.height / 2 + 60 + (window.width / 2 - 2 * window.width / 11) / 3:
+                ML = levels.L1
+                level = 1
+                image_store = create_image_store(ML)
+        if width - width / 15 - random_button.width < x  < width + width / 15:
+            if height / 2 - 130 < y < height / 2 - 130 + random_button.height:
                 game_state = 2
-                
+                ML = random_level_generation()
+                image_store = create_image_store(ML)
+    if game_state == 2:
+        if  window.width - (window.width - window.height)- 145  < x <  window.width - (window.width - window.height)- 145 + next_level_button.width and \
+            window.height - 53 < y < window.height - 53 + next_level_button.height:
+            new_level()
                 
  # Actions when the click of the mouse is release :
 @window.event
 def on_mouse_release(x, y, button, modifiers):
-    if game_state == 1:
-        global old_case
-        global new_word
-        global word_coordinate
-        global score
-        global word_state
+    if game_state != 0:
+        global old_case, new_word, word_coordinate, score, word_state, right
         old_case = [-1, -1]
         if new_word not in taken_words and check_existence(new_word) and len(new_word) > 2:
             right = pyglet.media.load(Path(game_location + '/images/right.wav'))
@@ -162,6 +180,8 @@ def on_mouse_release(x, y, button, modifiers):
             word_state = 2
         new_word_print.text = "Word : " + new_word
         new_word = ""
+        if score >=5:
+            new_level()
         
     
 # Actions when the mouse is moving :
@@ -169,12 +189,11 @@ def on_mouse_release(x, y, button, modifiers):
 
 @window.event
 def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
-    if game_state == 1:
+    if game_state != 0:
         global new_word
         global word_coordinate
         global old_case
         if buttons & pyglet.window.mouse.LEFT:
-        #print(x, y, dx, dy, buttons, modifiers)
             for k in range(4):
                 for i in range(4):
                     if case_size / 10 + case_size * k < y < ((k + 1) * case_size ) - case_size / 10 and  case_size / 10 + case_size * i < x < ((i + 1) * case_size) - case_size / 10:
@@ -190,10 +209,11 @@ def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
 
 @window.event 
 def on_resize(width, height):
-    global case_size, new_word_print, score_print
-    pattern_size = min(width, height - 50)
-    new_word_print = pyglet.text.Label('Word : ', font_size = 28, x = 5, y = height - 38)
-    score_print = pyglet.text.Label('Score : ' + str(score), font_size =28, x = pattern_size - 200, y = height - 38)
+    global case_size, new_word_print, score_print, delta_center
+    pattern_size = min(width, height - 55)
+    delta_center = (width - pattern_size)/2
+    new_word_print = pyglet.text.Label('Word : ', font_size = 28, x =  delta_center + 9/23*pattern_size, y = height - 38)
+    score_print = pyglet.text.Label('Score : ' + str(score), font_size =28, x = delta_center + 5, y = height - 38)
     case_size = pattern_size/4
     
 
@@ -206,6 +226,29 @@ def check_existence(search):
     if search in string:
         return True
 
+def create_image_store(ML):
+    image_store = {}
+    for u in range(4):
+        for n in range(4):
+            print(ML[3 - n][u])
+            init = pyglet.image.load(Path(game_location + '/images/' + ML[3 - n][u] + '.png'))
+            init_grid = pyglet.image.ImageGrid(init, 1, 4)
+            image_store[ML[3 - n][u]] = init_grid
+    return image_store
+
+def new_level():
+    global image_store, level, ML
+    init_var()
+    if game_state ==  1:
+        level += 1
+        var = "L" + str(level)
+        ML = getattr(levels, var)
+    else:
+        ML = random_level_generation()
+    print(ML)
+    image_store = {}
+    image_store = create_image_store(ML)
+        
 
 
 
