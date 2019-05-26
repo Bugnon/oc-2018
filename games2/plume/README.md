@@ -28,6 +28,7 @@ Nous allons pas vous présenter le code en entier, car il est très long. Néanm
 * La Fonction Main 
 
 ### Captures d'écran
+![photo début](8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
 
 
 ### Intéractions souris-clavier 
