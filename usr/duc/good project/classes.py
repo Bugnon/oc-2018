@@ -279,7 +279,6 @@ class RotatingSprite(pyglet.sprite.Sprite):
             self.label.x = self.x
             self.label.y = self.y
             self.label.end_update()
-        
 
     def relive(self):
         self.image = RotatingSprite.circle_segment
