@@ -329,15 +329,18 @@ class CurrentWindow():
     batch = MenuWindow.batch
 
     def keypress(pressed_key):
+        '''Forwards pressed keys to GameWindow'''
         if CurrentWindow.window == GameWindow.window :
             GameWindow.keypress(pressed_key)
 
     def update(keys):
+        '''Forwards held keys to the relevant window'''
         if CurrentWindow.window == MenuWindow.window : 
             MenuWindow.update()
         elif CurrentWindow.window == GameWindow.window : 
             GameWindow.update(keys)
         
     def slow_update(dt):
+        '''Calls the slower paced update function'''
         if CurrentWindow.window == GameWindow.window :
             GameWindow.slow_update()

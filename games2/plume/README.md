@@ -17,7 +17,7 @@ Dans notre jeu, Inkvader, nous avons inséré le côté poétique des manières 
 * Un autre côté poétique est que lorsque l'on tire sur un mot poétique, un poème apparaît progressivement. 
 
 ### Structure du programme
-Nous n'allons pas vous présenter le code en entier, car il est très long. Néanmoins, nous allons vous expliquer les Variables, les Class et les méthodes principales pour pouvoir comprendre comment fonctionne le jeu. La boucle de notre jeu se trouve dans inkvader.py, les entités dans inkentities.py, les différentes fenêtres de jeu et leur configuration et fonctionnement dans inkgame.py, et finalement quelques utilitaires dans inktilities.py.
+Nous n'allons pas vous présenter le code en entier, car il est très long et complexe. Néanmoins, nous allons vous expliquer les *variables*, les *classes* et les *méthodes* principales pour pouvoir comprendre comment fonctionne le jeu. La boucle de notre jeu se trouve dans inkvader.py, les entités dans inkentities.py, les différentes fenêtres de jeu et leur configuration et fonctionnement dans inkgame.py, et finalement quelques utilitaires dans inktilities.py.
 
 * Les Variables
 -> Objets principaux : stylo, mots, tâche d'encre
@@ -48,14 +48,62 @@ Nous n'allons pas vous présenter le code en entier, car il est très long. Néa
  ![échèque](/downloads/8d062285-658f-45a2-8de1-e8676fbc54e0.JPG)
 
 ### Intéractions souris-clavier 
-Dans Inkvader, on utilise la souris et le clavier de cette manière-ci.
+Dans Inkvader, nous utilisons la souris et le clavier de ces manières:
 
-* La souris s'utillise pour lancer le jeu. (insérer code) 
+* La souris s'utillise pour lancer le jeu.
+```python
+'''Starts the game on mouseclick'''
+def on_mouse_press(x, y, button, modifiers):
+    if inkgame.CurrentWindow.window == inkgame.MenuWindow.window :
+        MainSequence.game()
+```
 
-* Dans le clavier, on utilise ces quatre flèches pour déplacer la plume
-=>
-On utilise la touche "space bar" pour tirer les tâches d'encre sur les mots. (insérer code) 
-On utilise la touche "enter" afin de mettre sur pause.
+* Les *flèches directionnelles* pour déplacer la plume. L'event est redirigé à *Inkgame.py*, puis à l'instance *GameWindow.pen* directement, qui l'utilisera dans des conditions.
+```python
+def update(keys):
+    '''Forwards the held keys update to the pen and update all the game objects and vertices'''
+    inkentities.Pen.update(GameWindow.pen, keys)
+```
+```python
+def update(self, keys):
+    if keys[key.UP] and not keys[pyglet.window.key.DOWN]:
+```
+* *Espace* pour tirer les tâches d'encre sur les mots, en ayant redirigé précédemment l'event keypress de *Inkvader.py* à *Inkgame.py*, puis à la fonction *keypress* de *GameWindow*, et finalement à l'instane *pen* provenant de la classe *Pen* de *Inkentities.py*. Celle-ci utilisera ensuite des conditions pour savoir quoi en faire.
+
+```python
+inkgame.CurrentWindow.keypress(pressed_key)
+```
+```python
+def keypress(pressed_key):
+    '''Forwards pressed keys to GameWindow'''
+    if CurrentWindow.window == GameWindow.window :
+    GameWindow.keypress(pressed_key)
+```
+```python
+def keypress(pressed_key):
+    '''Forwards pressed keys to the pen'''
+    inkentities.Pen.keypress(GameWindow.pen, pressed_key)
+```
+```python
+def keypress(self, pressed_key):
+    if pressed_key == pyglet.window.key.SPACE and Pen.has_fired==0:
+```
+
+* *Enter* afin de mettre le jeu sur pause.
+* *Escape* pour quitter le jeu.
+```python
+def on_key_press(pressed_key, modifiers):
+    '''Forwards the pressed keys appropriately and pauses/resumes/quits the game.'''
+    inkgame.CurrentWindow.keypress(pressed_key)
+    if pressed_key == pyglet.window.key.RETURN and inkgame.CurrentWindow.window == inkgame.PauseWindow.window:
+        MainSequence.resume()
+    elif pressed_key == pyglet.window.key.RETURN and inkgame.CurrentWindow.window == inkgame.GameWindow.window:
+        MainSequence.pause()
+    elif pressed_key == pyglet.window.key.RETURN and inkgame.CurrentWindow.window == inkgame.WinWindow.window:
+        exit()
+    elif pressed_key == pyglet.window.key.ESCAPE:
+        exit()
+```
 
 ### Explication du jeu 
 

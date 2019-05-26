@@ -14,6 +14,7 @@ window.push_handlers(keys)
 pyglet.gl.glLineWidth(4)
 
 class MainSequence():
+    '''Handles the setting up and switching of windows, soundtracks and batches between different game states'''
     def game():
         inkgame.SoundPlayer.playMusic('game')
         inkgame.GameWindow.level_creation()
@@ -50,6 +51,7 @@ class MainSequence():
 
 @window.event
 def on_draw():
+    '''Refreshes and updates the window'''
     global window
     global batch
 
@@ -62,11 +64,13 @@ def on_draw():
 
 @window.event
 def on_mouse_press(x, y, button, modifiers):
+    '''Starts the game on mouseclick'''
     if inkgame.CurrentWindow.window == inkgame.MenuWindow.window :
         MainSequence.game()
 
 @window.event
 def on_key_press(pressed_key, modifiers):
+    '''Forwards the pressed keys appropriately and pauses/resumes/quits the game.'''
     inkgame.CurrentWindow.keypress(pressed_key)
     if pressed_key == pyglet.window.key.RETURN and inkgame.CurrentWindow.window == inkgame.PauseWindow.window:
         MainSequence.resume()
@@ -78,10 +82,12 @@ def on_key_press(pressed_key, modifiers):
         exit()
 
 def update(dt):
+    '''Calls the @window.event event, checks if the game has been won.'''
     if inkgame.GameWindow.won == 1:
         MainSequence.win()
 
 def collect(dt):
+    '''Calls the garbage collector'''
     gc.collect
 
 pyglet.clock.schedule_interval(update, 1/60)
