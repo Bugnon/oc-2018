@@ -168,35 +168,33 @@ class Poetry():
     words = []
 
     def __init__(self, poetry):
-        self.towards_splited = poetry.read().split('\n')
-        self.poetry = self.towards_splited
-        self.towards = Poetry.towards
-        self.words = Poetry.words
+        self.poetry = poetry
+        self.towards_splited = self.poetry.read().split('\n')
 
     def split_poetry(self):
         '''
         Split the poetry into a list of towards (vers)
         :return: list
         '''
-        for line in self.poetry:
+        for line in self.towards_splited:
             words_splited = line.split(' ')
-            self.towards.append(words_splited)
-        return self.towards
+            Poetry.towards.append(words_splited)
+        return Poetry.towards
 
     def choose_words(self):
         '''
         Choose randomly a word in each toward of the poetry
         :return: list
         '''
-        self.towards = self.split_poetry()
+        Poetry.towards = self.split_poetry()
         i = 0
-        for __ in self.towards:
+        for __ in Poetry.towards:
             while i < 15:
-                random_choice = random.choice(self.towards[i])
+                random_choice = random.choice(Poetry.towards[i])
                 if len(random_choice) > 2:
                     i += 1
-                    self.words.append(random_choice)
-        return self.words
+                    Poetry.words.append(random_choice)
+        return Poetry.words
 
     def save_words(self):
         '''
@@ -221,7 +219,7 @@ class Poetry():
         '''
         i = 0
         words_to_remove = self.open_words()
-        towards = self.towards
+        towards = Poetry.towards
         for toward in towards:
             loc = towards[i].index(words_to_remove[i])
             towards[i].remove(words_to_remove[i])
