@@ -39,6 +39,6 @@ Pour cela nous avons conçu un jeu qui consiste à compléter des lacunes d'un p
 ### Explication du jeu
 
 Le but du jeu est de complèter des vers à l'aide des 15 mots se trouvant
-![Projectile](./img/feather.png)
+![Projectile](./img/capture1-jeu.png)
 
 ### Structure du programme
