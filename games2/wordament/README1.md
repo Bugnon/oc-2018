@@ -34,10 +34,12 @@ Le jeux est constitué de deux modes. Le premier se nommant "Selected level" est
 
 ## Explication du jeu :
 
-Lorsque le jeu est lancé, il vous envoie directement dans le menu ou hub du jeu. Là, vous devez choisir le mode de jeu auquel vous désirer jouer. Il y a le mode _selected level_, qui vous donne des niveaux déjà programmés ou le _mode random level_ qui génère des niveaux aléatoires. 
+Lorsque le jeu est lancé, il vous envoie directement dans le menu ou hub du jeu. 
+![Hub du jeu Wordament](images/readme.jpg)
+Là, vous devez choisir le mode de jeu auquel vous désirer jouer. Il y a le mode _selected level_, qui vous donne des niveaux déjà programmés ou le _mode random level_ qui génère des niveaux aléatoires. 
 
 Dans ces deux modes de jeu, le but est identique. C’est de créer des mots sur la grille. Vous pouvez vous déplacer d’une case sur une des 8 cases adjacentes, soit en haut, à gauche, en bas, à droite ou encore dans les 4 diagonales. 
-
+![image de wordament en cours de partie](images/readme1.jpg)
 Pour faire un mot, vous placer le curseur de la souris  sur la première lettres de votre mot et vous appuyer sur le bouton gauche de la souris tout en maintenant le bouton enfoncé. Vous pourrez alors déplacer le curseur afin de compléter votre mot. Quand votre mot serra finit, il vous suffira de relâcher le bouton gauche de la souris pour valider le mot. Lorsque vous créez un mot, les cases utilisées deviennent de couleur jaunes. 
 
 Une fois terminé, si le mot existe, il deviendra vert, dans le cas contraire il deviendra rouge. De plus, si le mot a déjà été fait, il apparaîtra également en rouge. 
@@ -145,7 +147,12 @@ return True
 
 Pour finir, la fonction *check_existence* sert à controller si les mots soumis par l'utilisateur sont valide.Pour ce faire, il lit tout simplement le fichier texte *dico.txt*, est en crée une liste avec un élément par ligne. Ensuite une simple recherche dans ladite liste permet de valider, ou non, le mot de l'utilisateur.
 
+## Conseils de pros
 
-## Conclusion :
+ * Utilisez les pluriels
+ * Utilisez les conjugaison
+ * Attention, des mots peuvent en cacher d'autres (appeler contient peler)
+
+## Conclusion
 
 Pour conclure, la création de ce jeu nous a apprit à répartir la tâche de travail et à s’organiser de manière optimale. De plus ce fut intéressant de voir le jeu évoluer au fur et à mesure que nous l’avancions. 
