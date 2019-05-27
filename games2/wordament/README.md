@@ -60,9 +60,37 @@ Nos principales fonctions sont :
 * new_level()
 
 #### random_level_generation
+```python
+import pyglet
+from levels import levels
+import codecs
+from pathlib import Path
+from random import randint
+```
 #### check_existence
+```python
+import pyglet
+from levels import levels
+import codecs
+from pathlib import Path
+from random import randint
+```
 #### create_image_store
+```python
+import pyglet
+from levels import levels
+import codecs
+from pathlib import Path
+from random import randint
+```
 #### new_level
+```python
+import pyglet
+from levels import levels
+import codecs
+from pathlib import Path
+from random import randint
+```
 
 
 ## Explication du jeu :
