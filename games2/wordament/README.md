@@ -60,12 +60,22 @@ Nos principales fonctions sont :
 * new_level()
 
 #### random_level_generation
+Cette fonction a comme but de créer des matrices 4x4 composées de lettres. 
 ```python
-import pyglet
-from levels import levels
-import codecs
-from pathlib import Path
-from random import randint
+def random_level_generation():
+    '''Create a random grid level'''
+    all_letter = []
+    grid = []
+    for letter in levels.scrabble_letter:
+        for i in range(levels.scrabble_letter[letter]):
+            all_letter.append(letter)
+    for i in range(4):
+        line = []
+        for j in range(4):
+            changed_letter = all_letter.pop(randint(0, len(all_letter)-1-4*i-j))
+            line.append(changed_letter)
+        grid.append(line)
+    return grid
 ```
 #### check_existence
 ```python
