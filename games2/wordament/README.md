@@ -2,7 +2,18 @@
 
 * Auteurs: Fabian Roulin, Michael Greub et Mirko Pirona
 * Date: Le 25 mai 2019
-
+1. [Introduction](#introduction)
+    * [Côté poétique](#côté-poétique)
+2. [Explication du jeu](#explication-du-jeu)
+3. [Structure du programme](#structure-du-programme)
+    * [classes.py](#classespy)
+        * [Window](#window)
+        * [Player](#player)
+        * [Feather](#feather)
+        * [RotatingSprite](#rotatingsprite)
+        * [Poetry](#poetry)
+    * [circles.py](#circlespy)
+4. [Conclusion](#conclusion)
 ## Introduction
 
 Des lettres et des mots, tel est le concept. Le but du jeu est similaire à celui du scrabble, c'est à dire, de créer des mots avec des lettres prédéfini. Il existe de nombreuse variantes de ce jeu, mais nous avons décidé de prendre la plus pure, et la plus facile à expliquer et prendre en main.
