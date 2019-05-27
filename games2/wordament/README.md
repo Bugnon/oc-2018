@@ -69,6 +69,6 @@ Un nombre de point vous sera attribué à chaque mot correct en fonction des let
 
 Dans le mode random level, en haut à droite se trouve un bouton « next » qui vous permettra de changer de niveau si vous ne parvenez pas aux 50 points nécessaires.
 
-# Conclusion :
+## Conclusion :
 
 Pour conclure, la création de ce jeu nous a apprit à répartir la tâche de travail et à s’organiser de manière optimale. De plus ce fut intéressant de voir le jeu évoluer au fur et à mesure que nous l’avancions. 
