@@ -156,4 +156,4 @@ Pour finir, la fonction *check_existence* sert à controller si les mots soumis 
 
 ## Conclusion
 
-Pour conclure, la création de ce jeu nous a appris à répartir la tâche de travail et à s’organiser de manière optimale.Ce Ce fut, également, intéressant de voir le jeu évoluer au fur et à mesure que nous progressions. 
+Pour conclure, la création de ce jeu nous a appris à répartir la tâche de travail et à s’organiser de manière optimale. Ce fut, également, intéressant de voir le jeu évoluer au fur et à mesure que nous progressions. 
