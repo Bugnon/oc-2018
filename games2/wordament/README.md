@@ -146,7 +146,7 @@ def check_existence(search):
 return True
 ```
 
-Pour finir, la fonction *check_existence* sert à controller si les mots soumis par l'utilisateur sont valides.Pour ce faire, il lit tout simplement le fichier texte *dico.txt*, est en crée une liste avec un élément par ligne. Ensuite une simple recherche dans ladite liste permet de valider, ou non, le mot de l'utilisateur.
+Pour finir, la fonction *check_existence* sert à controller si les mots proposés par l'utilisateur sont valides. Pour ce faire, il lit tout simplement le fichier texte *dico.txt*, est en crée une liste avec un élément par ligne. Ensuite une simple recherche dans ladite liste permet de valider, ou non, le mot de l'utilisateur.
 
 ## Conseils de pros
 
