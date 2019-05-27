@@ -40,7 +40,7 @@ from random import randint
 La deuxième ligne quant à elle, importe le contenu du fichier ```levels``` qui contient les différents niveaux.
 La fonction Path a pour but de rendre l'arborescence de notre jeu compatible avec tous les systèmes d'exploitations. En effet, elle permet entre autres de trouver le chemin absolu du fichier et donc le repertoire dans lequel se trouve le jeu. 
 
-# Fonctions
+## Fonctions
 
 Les fonctions de notre programme sont appelées soit à l’initialisation du jeu soit lors des événements de la class ```window```.
 Nos principales fonctions sont :
@@ -55,7 +55,7 @@ Nos principales fonctions sont :
 
 
 
-# Explication du jeu :
+## Explication du jeu :
 
 Lorsque le jeu est lancé, il vous envoie directement dans le menu ou hub du jeu. Là, vous devez choisir le mode de jeu auquel vous désirer jouer. Il y a le mode selected level, qui vous donne des niveaux déjà programmés ou le mode random level qui génère des niveaux aléatoires. 
 Dans ces deux modes de jeu, le but est identique. C’est de créer des mots sur la grille. Vous pouvez vous déplacer d’une case sur une des 8 cases adjacentes, soit en haut, à gauche, en bas, à droite ou encore dans les 4 diagonales. 
