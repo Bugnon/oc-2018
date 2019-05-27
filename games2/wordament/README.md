@@ -4,7 +4,8 @@
 * Date: Le 25 mai 2019
 1. [Introduction](#introduction)
 2. [Côté poétique](#côté-poétique)
-3. [Structure du programme](#structure-du-programme)
+3. [But du jeu](#but-du-jeu)
+4. [Structure du programme](#structure-du-programme)
     * [Fonction](#fonctions)
         * [random_level_generation](#random_level_generation)
         * [check_existence](#check_existence)
@@ -21,7 +22,7 @@ Le côté poétique est apporté par le nombre de personnalisation possible du p
 Pour ce faire, en marge de notre jeu, nous avons aussi créé un petit script permettant de transformer un fichier texte en liste compatible avec notre jeu.
 Pour finir, notre jeu présente un interface simple est lisible, pour permettre la meilleur expérience possible. 
 
-## But du jeux
+## But du jeu
 
 Le jeux est constitué de deux modes. Le premier se nommant "Selected level" est un mode dans lequel il faut atteindre un score de 50 avec une grille de lettre 4 x 4 prédéfinie sachant que la valeur des lettres est écrite en dessous de ces dernières. Une fois le niveau terminé le suivant démarre jusqu'au niveau 10. Le deuxième mode s'appelant "Random Level" est un mode dans lequel le but est de faire le plus grand score possible dans une grille générée aléatoirement tout en gardant la base du mode "Selected levels".
 
