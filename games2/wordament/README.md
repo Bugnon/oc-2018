@@ -58,15 +58,16 @@ Nos principales fonctions sont :
 ## Explication du jeu :
 
 Lorsque le jeu est lancé, il vous envoie directement dans le menu ou hub du jeu. Là, vous devez choisir le mode de jeu auquel vous désirer jouer. Il y a le mode selected level, qui vous donne des niveaux déjà programmés ou le mode random level qui génère des niveaux aléatoires. 
+
 Dans ces deux modes de jeu, le but est identique. C’est de créer des mots sur la grille. Vous pouvez vous déplacer d’une case sur une des 8 cases adjacentes, soit en haut, à gauche, en bas, à droite ou encore dans les 4 diagonales. 
 
 Pour faire un mot, vous placer le curseur de la souris  sur la première lettres de votre mot et vous appuyer sur le bouton gauche de la souris tout en maintenant le bouton enfoncé. Vous pourrez alors déplacer le curseur afin de compléter votre mot. Quand votre mot serra finit, il vous suffira de relâcher le bouton gauche de la souris pour valider le mot. Lorsque vous créez un mot, les cases utilisées deviennent de couleur jaunes. 
+
 Une fois terminé, si le mot existe, il deviendra vert, dans le cas contraire il deviendra rouge. De plus, si le mot a déjà été fait, il apparaîtra également en rouge. 
 
 Un nombre de point vous sera attribué à chaque mot correct en fonction des lettres utilisées et de la longueur du mot. Le jeu passera au niveau suivants lorsque vous aurez atteint les 50 points. 
-Dans le mode random level, en haut à droite se trouve un bouton « next » qui vous permettra de changer de niveau si vous ne parvenez pas aux 50 points nécessaires.
 
-...
+Dans le mode random level, en haut à droite se trouve un bouton « next » qui vous permettra de changer de niveau si vous ne parvenez pas aux 50 points nécessaires.
 
 # Conclusion :
 
