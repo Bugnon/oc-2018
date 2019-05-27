@@ -3,16 +3,13 @@
 * Auteurs: Fabian Roulin, Michael Greub et Mirko Pirona
 * Date: Le 25 mai 2019
 1. [Introduction](#introduction)
-    * [Côté poétique](#côté-poétique)
-2. [Explication du jeu](#explication-du-jeu)
+2. [Côté poétique](#côté-poétique)
 3. [Structure du programme](#structure-du-programme)
-    * [classes.py](#classespy)
-        * [Window](#window)
-        * [Player](#player)
-        * [Feather](#feather)
-        * [RotatingSprite](#rotatingsprite)
-        * [Poetry](#poetry)
-    * [circles.py](#circlespy)
+    * [Fonction](#fonctions)
+        * [random_level_generation](#random_level_generation)
+        * [check_existence](#check_existence)
+        * [create_image_store](#create_image_store)
+        * [new_level](#new_level)
 4. [Conclusion](#conclusion)
 ## Introduction
 
@@ -26,7 +23,7 @@ Pour finir, notre jeu présente un interface simple est lisible, pour permettre 
 
 ## But du jeux
 
-Le jeux est constitué de deux modes. Le premier se nommant "levels" est un mode dans lequel il faut atteindre un score de 300 avec une grille de lettre 4 x 4 prédéfinie sachant que la valeur des lettres est écrite en dessous de ces dernières. Une fois le niveau terminé le suivant démarre jusqu'au niveau 10. Le deuxième mode s'appelant "endless mode" est un mode dans lequel le but est de faire le plus grand score possible dans une grille générée aléatoirement tout en gardant la base du mode "levels".
+Le jeux est constitué de deux modes. Le premier se nommant "Selected level" est un mode dans lequel il faut atteindre un score de 50 avec une grille de lettre 4 x 4 prédéfinie sachant que la valeur des lettres est écrite en dessous de ces dernières. Une fois le niveau terminé le suivant démarre jusqu'au niveau 10. Le deuxième mode s'appelant "Random Level" est un mode dans lequel le but est de faire le plus grand score possible dans une grille générée aléatoirement tout en gardant la base du mode "Selected levels".
 
 ## Stucture du programme
 
@@ -51,19 +48,20 @@ from random import randint
 La deuxième ligne quant à elle, importe le contenu du fichier ```levels``` qui contient les différents niveaux.
 La fonction Path a pour but de rendre l'arborescence de notre jeu compatible avec tous les systèmes d'exploitations. En effet, elle permet entre autres de trouver le chemin absolu du fichier et donc le repertoire dans lequel se trouve le jeu. 
 
-## Fonctions
+### Fonctions
 
 Les fonctions de notre programme sont appelées soit à l’initialisation du jeu soit lors des événements de la class ```window```.
 Nos principales fonctions sont :
 
 * random_level_generation()
-* on_resize()
 * check_existence()
 * create_image_store()
 * new_level()
 
-...
-
+#### random_level_generation :
+#### check_existence :
+#### create_image_store :
+#### new_level :
 
 
 ## Explication du jeu :
