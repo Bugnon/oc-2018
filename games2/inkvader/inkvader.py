@@ -94,5 +94,4 @@ pyglet.clock.schedule_interval(update, 1/60)
 pyglet.clock.schedule_interval(inkgame.CurrentWindow.slow_update, 1/10)
 pyglet.clock.schedule_interval(collect, 5)
 MainSequence.main_menu()
-pyglet.app.run()
-  
+pyglet.app.run()  
