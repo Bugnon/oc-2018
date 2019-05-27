@@ -60,7 +60,7 @@ Nos principales fonctions sont :
 * new_level()
 
 #### random_level_generation
-Cette fonction a comme but de créer des matrices 4x4 composées de lettres. 
+Cette fonction a comme but de créer des matrices 4x4 composées de lettres.
 ```python
 def random_level_generation():
     '''Create a random grid level'''
@@ -78,28 +78,44 @@ def random_level_generation():
     return grid
 ```
 #### check_existence
+Cette fonction est une des principales de notre programme car elle permet de vérifier si un mot qui a été fait par le joueur existe ou pas. Si le mot existe, la fonctzion va retourner ```python True```.
 ```python
-import pyglet
-from levels import levels
-import codecs
-from pathlib import Path
-from random import randint
+def check_existence(search):
+    search = str(search + '\r\n')
+    search = search.lower()
+    fo = codecs.open(game_location + '/levels/dico.txt', 'r', 'utf-8')
+    string = fo.readlines()
+    string = set(string)
+    if search in string:
+        return True
 ```
 #### create_image_store
 ```python
-import pyglet
-from levels import levels
-import codecs
-from pathlib import Path
-from random import randint
+def create_image_store(ML):
+    image_store = {}
+    for u in range(4):
+        for n in range(4):
+            print(ML[3 - n][u])
+            init = pyglet.image.load(Path(game_location + '/images/' + ML[3 - n][u] + '.png'))
+            init_grid = pyglet.image.ImageGrid(init, 1, 4)
+            image_store[ML[3 - n][u]] = init_grid
+    return image_store
 ```
 #### new_level
+Cette fonction est appelée lorsqu'unniveau est terminé et qu'une nouvelle martice de lettre va être créer. Elle va chercher le prochain niveau dans le fichier levels et va créer les images correspondant aux lettres.
 ```python
-import pyglet
-from levels import levels
-import codecs
-from pathlib import Path
-from random import randint
+def new_level():
+    global image_store, level, ML
+    init_var()
+    if game_state ==  1:
+        level += 1
+        var = "L" + str(level)
+        ML = getattr(levels, var)
+    else:
+        ML = random_level_generation()
+    print(ML)
+    image_store = {}
+    image_store = create_image_store(ML)
 ```
 
 
