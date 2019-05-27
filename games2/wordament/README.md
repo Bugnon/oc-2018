@@ -78,7 +78,7 @@ def random_level_generation():
     return grid
 ```
 #### check_existence
-Cette fonction est une des principales de notre programme car elle permet de vérifier si un mot qui a été fait par le joueur existe ou pas. Si le mot existe, la fonctzion va retourner ```python True```.
+Cette fonction est une des principales de notre programme car elle permet de vérifier si un mot qui a été fait par le joueur existe ou pas. Si le mot existe, la fonctzion va retourner ```True```.
 ```python
 def check_existence(search):
     search = str(search + '\r\n')
