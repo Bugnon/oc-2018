@@ -5,7 +5,7 @@
 1. [Introduction](#introduction)
 2. [Côté poétique](#côté-poétique)
 3. [But du jeu](#but-du-jeu)
-4. [Structure du programme](#structure-du-programme)
+4. [Structure du programme](#Stucture-du-programme)
     * [Fonction](#fonctions)
         * [random_level_generation](#random_level_generation)
         * [check_existence](#check_existence)
