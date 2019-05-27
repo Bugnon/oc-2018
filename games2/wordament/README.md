@@ -45,11 +45,11 @@ La fonction Path a pour but de rendre l'arborescence de notre jeu compatible ave
 Les fonctions de notre programme sont appelées soit à l’initialisation du jeu soit lors des événements de la class ```window```.
 Nos principales fonctions sont :
 
-*random_level_generation()
-*on_resize()
-*check_existence()
-*create_image_store()
-*new_level()
+* random_level_generation()
+* on_resize()
+* check_existence()
+* create_image_store()
+* new_level()
 
 ...
 
