@@ -13,6 +13,9 @@ Le côté poétique est apporté par le nombre de personnalisation possible du p
 Pour ce faire, en marge de notre jeu, nous avons aussi créé un petit script permettant de transformer un fichier texte en liste compatible avec notre jeu.
 Pour finir, notre jeu présente un interface simple est lisible, pour permettre la meilleur expérience possible. 
 
+## But du jeux
+
+Le jeux est constitué de deux modes. Le premier se nommant "levels" est un mode dans lequel il faut atteindre un score de 300 avec une grille de lettre 4 x 4 prédéfinie sachant que la valeur des lettres est écrite en dessous de ces dernières. Une fois le niveau terminé le suivant démarre jusqu'au niveau 10. Le deuxième mode s'appelant "endless mode" est un mode dans lequel le but est de faire le plus grand score possible dans une grille générée aléatoirement tout en gardant la base du mode "levels".
 
 ## Stucture du programme
 
@@ -23,8 +26,8 @@ Notre code a été codé de façon linéaire, sans utilisé la programmation ori
 Notre code commence donc par l'importation des quatre modules utilisés par la suite, soit:
 * Pyglet
 * Codecs
-* La fonction Path du module Pathlib
-* la fonction random du module randint
+* La fonction Path de Pathlib
+* Random
 
 par le code suivant:
 ```python
@@ -35,7 +38,6 @@ from pathlib import Path
 from random import randint
 ```
 La deuxième ligne quant à elle, importe le contenu du fichier ```levels``` qui contient les différents niveaux.
-La fonction Path a pour but de rendre l'arborescence de notre jeu compatible avec tous les systèmes d'exploitations. En effet, elle permet entre autres de trouver le chemin absolu du fichier et donc le repertoire dans lequel se trouve le jeu.
-Pour finir, le module random permet d'ajouter quelques effet aléatoires pour éviter une redondance du programme. Ce module a donc été utilisé pour par exemple changer la musique ou créer une grille de jeu aléatoire.
+La fonction Path a pour but de rendre l'arborescence de notre jeu compatible avec tous les systèmes d'exploitations. En effet, elle permet entre autres de trouver le chemin absolu du fichier et donc le repertoire dans lequel se trouve le jeu. 
 
 # A Continuer
