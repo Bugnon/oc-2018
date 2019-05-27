@@ -1,4 +1,4 @@
-﻿# Wordament
+# Wordament
 
 ![Hub du jeu Wordament](https://github.com/Bugnon/oc-2018/blob/master/games2/wordament/images/readme.JPG)
 
@@ -21,17 +21,17 @@
 
 ## Introduction
 
-Des lettres et des mots, tel est le concept. Le but du jeu est similaire à celui du scrabble, c'est à dire, de créer des mots avec des lettres prédéfini. Il existe de nombreuse variantes de ce jeu, mais nous avons décidé de prendre la plus pure, et la plus facile à expliquer et prendre en main.
+Des lettres et des mots, tel est le concept. Le but du jeu est similaire à celui du scrabble, c'est à dire de créer des mots avec des lettres prédéfinies. Il existe de nombreuses variantes de ce jeu, mais nous avons décidé de prendre la plus pure et la plus facile à expliquer et à prendre en main.
 
 ## Côté poétique
 
-Le côté poétique est apporté par le nombre de personnalisation possible du programme. En effet, pour le moment la liste des mots admis est une liste extraite du dictionnaire Gutenberg ([Source de la liste](http://www.pallier.org/liste-de-mots-francais.html)).  Cependant il est aussi possible de créer une liste avec les noms de tous les poètes, ou une liste des mots à connotation poétique.
+Le côté poétique est apporté par le nombre de personnalisation possible. En effet, pour le moment la liste des mots admis est une liste extraite du dictionnaire Gutenberg ([Source de la liste](http://www.pallier.org/liste-de-mots-francais.html)). Cependant il est aussi possible de créer une liste avec les noms de tous les poètes ou une liste des mots à connotation poétique.
 Pour ce faire, en marge de notre jeu, nous avons aussi créé un petit script permettant de transformer un fichier texte en liste compatible avec notre jeu.
-Pour finir, notre jeu présente un interface simple est lisible, pour permettre la meilleur expérience possible. 
+Pour finir, notre jeu présente un interface simple est lisible pour permettre la meilleure expérience possible. 
 
 ## But du jeux
 
-Le jeux est constitué de deux modes. Le premier se nommant "Selected level" est un mode dans lequel il faut atteindre un score de 100 avec une grille de lettre 4 x 4 prédéfinie sachant que la valeur des lettres est écrite en dessous de ces dernières. Une fois le niveau terminé le suivant démarre jusqu'au niveau 10. Le deuxième mode s'appelant "Random Level" est un mode dans lequel le but est de faire le plus grand score possible dans une grille générée aléatoirement tout en gardant la base du mode "Selected levels".
+Le jeux est constitué de deux modes. Le premier se nommant "Selected level" est un mode dans lequel il faut atteindre un score de 100 avec une grille de lettre 4 x 4 prédéfinie sachant que la valeur des lettres est écrite en dessous de ces dernières. Une fois le niveau terminé, le suivant démarre jusqu'au niveau 10. Le deuxième mode se nomme "Random Level" c'est un mode dans lequel le but est de faire le plus grand score possible dans une grille générée aléatoirement tout en gardant la base du mode "Selected level".
 
 ## Explication du jeu :
 
@@ -41,9 +41,9 @@ Là, vous devez choisir le mode de jeu auquel vous désirer jouer. Il y a le mod
 
 Dans ces deux modes de jeu, le but est identique. C’est de créer des mots sur la grille. Vous pouvez vous déplacer d’une case sur une des 8 cases adjacentes, soit en haut, à gauche, en bas, à droite ou encore dans les 4 diagonales. 
 ![image de wordament en cours de partie](https://github.com/Bugnon/oc-2018/blob/master/games2/wordament/images/readme1.JPG)
-Pour faire un mot, vous placer le curseur de la souris  sur la première lettres de votre mot et vous appuyer sur le bouton gauche de la souris tout en maintenant le bouton enfoncé. Vous pourrez alors déplacer le curseur afin de compléter votre mot. Quand votre mot serra finit, il vous suffira de relâcher le bouton gauche de la souris pour valider le mot. Lorsque vous créez un mot, les cases utilisées deviennent de couleur jaunes. 
+Pour faire un mot, vous placer le curseur de la souris  sur la première lettre de votre mot et vous appuyez sur le bouton gauche de la souris tout en maintenant le bouton enfoncé. Vous pourrez alors déplacer le curseur afin de compléter votre mot. Quand votre mot sera finit, il vous suffira de relâcher le bouton gauche de la souris pour valider le mot. Lorsque vous créez un mot, les cases utilisées deviennent de couleur jaune. 
 
-Une fois terminé, si le mot existe, il deviendra vert, dans le cas contraire il deviendra rouge. De plus, si le mot a déjà été fait, il apparaîtra également en rouge. 
+Une fois terminé, si le mot existe, il deviendra vert, dans le cas contraire il deviendra rouge. De plus, si le mot a déjà été composé, il apparaîtra également en rouge. 
 
 Un nombre de point vous sera attribué à chaque mot correct en fonction des lettres utilisées et de la longueur du mot. Le jeu passera au niveau suivants lorsque vous aurez atteint les 200 points. 
 
@@ -56,9 +56,9 @@ Les fonds d'écrans et les musiques peuvent être changés dans le dossier image
 
 ## Stucture du programme
 
-Notre programme est codé en python, avec une forte sollicitation du module ```Pyglet```. La fonction principale de ce module est de permettre les interactions directes avec l'utilisateurs, de gérer l'affichage des images et les quelques effets sonnores et musicaux utilisés. 
+Notre programme est codé en python, avec une forte sollicitation du module ```Pyglet```. La fonction principale de ce module est de permettre les interactions directes avec l'utilisateur, de gérer l'affichage des images et les quelques effets sonores et musicaux utilisés. 
 
-Notre code a été codé de façon linéaire, sans utilisé la programmation orienté objet (OOP).
+Notre code a été réalisé de façon linéaire, sans utiliser la programmation orienté objet (OOP).
 
 Notre code commence donc par l'importation des quatre modules utilisés par la suite, soit:
 * Pyglet
@@ -75,9 +75,9 @@ from pathlib import Path
 from random import randint
 ```
 La deuxième ligne quant à elle, importe le contenu du fichier ```levels``` qui contient les différents niveaux.
-La fonction Path a pour but de rendre l'arborescence de notre jeu compatible avec tous les systèmes d'exploitations. En effet, elle permet entre autres de trouver le chemin absolu du fichier et donc le repertoire dans lequel se trouve le jeu.
+La fonction Path a pour but de rendre l'arborescence de notre jeu compatible avec tous les systèmes d'exploitations. En effet, elle permet entre-autres de trouver le chemin absolu du fichier et donc le repertoire dans lequel se trouve le jeu.
 
-Pour finir, le module random permet d'ajouter quelques effet aléatoires pour éviter une redondance du programme. Ce module a donc été utilisé pour par exemple changer la musique ou créer une grille de jeu aléatoire. 
+Pour finir, le module random permet d'ajouter quelques effets aléatoires pour éviter une redondance du programme. Ce module a donc été utilisé, par exemple, pour changer la musique ou créer une grille de jeu aléatoire. 
 
 Les différentes fonctions de notre programme sont appelées soit à l’initialisation du jeu soit lors des événements de la class ```window```.
 Nos principales fonctions sont :
@@ -99,7 +99,7 @@ def create_image_store(ML):
 return image_store
 ```
 La fonction *create_image_store* est utile pour augmenter les performances du programme. En effet, cette fonction, appelée lors de la génération d'un niveau permet de garder en mémoire dans un dictionnaire les images des lettres de la grille. L'autre option aurait été d'ouvrir le fichier chaque fois qu'on en a besoin.
-À noter tout de même que les fichiers enrgesitré ne sont pas du type *abstract image*, mais du type *image grid*, ce qui permet aussi d'importer une seul image au lieu de quatre (pour les quatres couleurs du jeu).
+À noter tout de même que les fichiers enrgesitrés ne sont pas du type *abstract image*, mais du type *image grid*, ce qui permet aussi d'importer une seul image au lieu de quatre (pour les quatres couleurs du jeu).
 
 ### random_level_generation
 ```python
@@ -118,7 +118,7 @@ def random_level_generation():
 return grid
 ```
 La fonction *random_level_generation* retourne une grille de jeu generée de manière aléatoire, mais qui respecte quand même les limites de nombre de lettre du scrabble francophone.
-Afin de généré cette matrice, et pour ne pas dépasser le nombre de lettres limite, nous avons d'abord généré une liste contenant toutes les lettres de l'alphabet, et le nombre de fois correspondant. Ensuite une simple extraction aléatoire de cette liste nous donne notre grille.
+Afin de générer cette matrice et pour ne pas dépasser le nombre de lettres limite, nous avons d'abord généré une liste contenant toutes les lettres de l'alphabet, et le nombre de fois correspondant. Ensuite une simple extraction aléatoire de cette liste nous donne notre grille.
 
 ### new_level
 ```python
@@ -146,14 +146,14 @@ def check_existence(search):
 return True
 ```
 
-Pour finir, la fonction *check_existence* sert à controller si les mots soumis par l'utilisateur sont valide.Pour ce faire, il lit tout simplement le fichier texte *dico.txt*, est en crée une liste avec un élément par ligne. Ensuite une simple recherche dans ladite liste permet de valider, ou non, le mot de l'utilisateur.
+Pour finir, la fonction *check_existence* sert à controller si les mots soumis par l'utilisateur sont valides.Pour ce faire, il lit tout simplement le fichier texte *dico.txt*, est en crée une liste avec un élément par ligne. Ensuite une simple recherche dans ladite liste permet de valider, ou non, le mot de l'utilisateur.
 
 ## Conseils de pros
 
  * Utilisez les pluriels
- * Utilisez les conjugaison
+ * Utilisez les conjugaisons
  * Attention, des mots peuvent en cacher d'autres (appeler contient peler)
 
 ## Conclusion
 
-Pour conclure, la création de ce jeu nous a apprit à répartir la tâche de travail et à s’organiser de manière optimale. De plus ce fut intéressant de voir le jeu évoluer au fur et à mesure que nous l’avancions. 
+Pour conclure, la création de ce jeu nous a appris à répartir la tâche de travail et à s’organiser de manière optimale.Ce Ce fut, également, intéressant de voir le jeu évoluer au fur et à mesure que nous progressions. 
