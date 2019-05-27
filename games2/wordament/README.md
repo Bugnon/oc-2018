@@ -59,10 +59,10 @@ Nos principales fonctions sont :
 * create_image_store()
 * new_level()
 
-#### random_level_generation :
-#### check_existence :
-#### create_image_store :
-#### new_level :
+#### random_level_generation
+#### check_existence
+#### create_image_store
+#### new_level
 
 
 ## Explication du jeu :
