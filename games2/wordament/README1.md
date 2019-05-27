@@ -1,5 +1,7 @@
 # Wordament
 
+![Hub du jeu Wordament](images/readme.jpg)
+
 * Auteurs: Fabian Roulin, Michael Greub et Mirko Pirona
 * Date: Le 25 mai 2019
 1. [Introduction](#introduction)
@@ -8,7 +10,8 @@
 4. [Explication du jeu](#explication-du-jeu)
     * [Possibiltés de personnalisation](#Possibiltés-de-personnalisation)
 5. [Structure du programme](#Stucture-du-programme)
-    * [random_level_generation](#random_level_generation) [check_existence](#check_existence)
+    * [random_level_generation](#random_level_generation) 
+    * [check_existence](#check_existence)
     * [create_image_store](#create_image_store)
     * [new_level](#new_level)
 6. [Conclusion](#conclusion)
