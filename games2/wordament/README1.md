@@ -1,6 +1,6 @@
 # Wordament
 
-![Hub du jeu Wordament](images/readme.jpg)
+![Hub du jeu Wordament](https://github.com/Bugnon/oc-2018/blob/master/games2/wordament/images/readme.JPG)
 
 * Auteurs: Fabian Roulin, Michael Greub et Mirko Pirona
 * Date: Le 25 mai 2019
@@ -36,11 +36,11 @@ Le jeux est constitué de deux modes. Le premier se nommant "Selected level" est
 ## Explication du jeu :
 
 Lorsque le jeu est lancé, il vous envoie directement dans le menu ou hub du jeu. 
-![Hub du jeu Wordament](images/readme.jpg)
+![Hub du jeu Wordament](https://github.com/Bugnon/oc-2018/blob/master/games2/wordament/images/readme.JPG)
 Là, vous devez choisir le mode de jeu auquel vous désirer jouer. Il y a le mode _selected level_, qui vous donne des niveaux déjà programmés ou le _mode random level_ qui génère des niveaux aléatoires. 
 
 Dans ces deux modes de jeu, le but est identique. C’est de créer des mots sur la grille. Vous pouvez vous déplacer d’une case sur une des 8 cases adjacentes, soit en haut, à gauche, en bas, à droite ou encore dans les 4 diagonales. 
-![image de wordament en cours de partie](images/readme1.jpg)
+![image de wordament en cours de partie](https://github.com/Bugnon/oc-2018/blob/master/games2/wordament/images/readme1.JPG)
 Pour faire un mot, vous placer le curseur de la souris  sur la première lettres de votre mot et vous appuyer sur le bouton gauche de la souris tout en maintenant le bouton enfoncé. Vous pourrez alors déplacer le curseur afin de compléter votre mot. Quand votre mot serra finit, il vous suffira de relâcher le bouton gauche de la souris pour valider le mot. Lorsque vous créez un mot, les cases utilisées deviennent de couleur jaunes. 
 
 Une fois terminé, si le mot existe, il deviendra vert, dans le cas contraire il deviendra rouge. De plus, si le mot a déjà été fait, il apparaîtra également en rouge. 
