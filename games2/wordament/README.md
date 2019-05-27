@@ -23,8 +23,8 @@ Notre code a été codé de façon linéaire, sans utilisé la programmation ori
 Notre code commence donc par l'importation des quatre modules utilisés par la suite, soit:
 * Pyglet
 * Codecs
-* La fonction Path de Pathlib
-* Random
+* La fonction Path du module Pathlib
+* la fonction random du module randint
 
 par le code suivant:
 ```python
@@ -35,6 +35,7 @@ from pathlib import Path
 from random import randint
 ```
 La deuxième ligne quant à elle, importe le contenu du fichier ```levels``` qui contient les différents niveaux.
-La fonction Path a pour but de rendre l'arborescence de notre jeu compatible avec tous les systèmes d'exploitations. En effet, elle permet entre autres de trouver le chemin absolu du fichier et donc le repertoire dans lequel se trouve le jeu. 
+La fonction Path a pour but de rendre l'arborescence de notre jeu compatible avec tous les systèmes d'exploitations. En effet, elle permet entre autres de trouver le chemin absolu du fichier et donc le repertoire dans lequel se trouve le jeu.
+Pour finir, le module random permet d'ajouter quelques effet aléatoires pour éviter une redondance du programme. Ce module a donc été utilisé pour par exemple changer la musique ou créer une grille de jeu aléatoire.
 
 # A Continuer
