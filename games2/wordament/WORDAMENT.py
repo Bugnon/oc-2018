@@ -15,7 +15,7 @@ from random  import randint
 ############################################
 def init():
     '''game startpoint'''
-    global height, width, pattern_size, case_size, game_state, game_location, delta_center
+    global fo, height, width, pattern_size, case_size, game_state, game_location, delta_center
     width = 800
     height = 850
     pattern_size = min(height - 55, width)
@@ -23,6 +23,7 @@ def init():
     game_state = 0
     delta_center = (width - pattern_size)/2
     case_size = pattern_size/4
+    fo = codecs.open(game_location + '/levels/dico.txt', 'r', 'utf-8')
     init_var()
     init_objects()
 
@@ -178,7 +179,7 @@ def on_mouse_release(x, y, button, modifiers):
             word_state = 2
         new_word_print.text = "Word : " + new_word
         new_word = ""
-        if score >=50:
+        if score >=100:
             new_level()
         
     
@@ -218,7 +219,6 @@ def on_resize(width, height):
 def check_existence(search):
     search = str(search + '\r\n')
     search = search.lower()
-    fo = codecs.open(game_location + '/levels/dico.txt', 'r', 'utf-8')
     string = fo.readlines()
     string = set(string)
     if search in string:
