@@ -6,13 +6,15 @@
 2. [Côté poétique](#côté-poétique)
 3. [But du jeu](#but-du-jeu)
 4. [Explication du jeu](#explication-du-jeu)
-    4.1 [Possibiltés de personnalisation](#Possibiltés-de-personnalisation)
+    * [Possibiltés de personnalisation](#Possibiltés-de-personnalisation)
 5. [Structure du programme](#Stucture-du-programme)
-        5.1 [random_level_generation](#random_level_generation)
-        5.2 [check_existence](#check_existence)
-        5.3 [create_image_store](#create_image_store)
-        5.4 [new_level](#new_level)
+    * [random_level_generation](#random_level_generation) [check_existence](#check_existence)
+    * [create_image_store](#create_image_store)
+    * [new_level](#new_level)
 6. [Conclusion](#conclusion)
+
+********
+
 ## Introduction
 
 Des lettres et des mots, tel est le concept. Le but du jeu est similaire à celui du scrabble, c'est à dire, de créer des mots avec des lettres prédéfini. Il existe de nombreuse variantes de ce jeu, mais nous avons décidé de prendre la plus pure, et la plus facile à expliquer et prendre en main.
