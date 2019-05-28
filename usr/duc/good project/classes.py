@@ -78,6 +78,7 @@ class Player(pyglet.sprite.Sprite):
         self.angle = self.timer * self.rotate_speed # angle at which the feather appears in function of the angle of the player
 
         feather = Feather(player=self, img=Feather.feather, x=self.x, y=self.y)
+        Feather.feathers.append(feather)
 
         fire_sound.queue(fire) # fire sound when a feather is shot
         fire_sound.play()
@@ -110,8 +111,6 @@ class Feather(pyglet.sprite.Sprite):
 
     def __init__(self, player, *args, **kwargs):
         super(Feather, self).__init__(*args, **kwargs)
-
-        Feather.feathers.append(self)
 
         self.x = player.x + player.width * math.sin(math.radians(player.angle)) # position of the feather on X axis in function of angle
         self.y = player.y + player.height * math.cos(math.radians(player.angle)) # position of the feather on Y axis in function of angle
@@ -156,7 +155,6 @@ class Poetry():
     def __init__(self):
         self.poetry = Poetry.towards_splited
         self.towards = Poetry.towards
-        self.words = Poetry.words
 
     def split_poetry(self):
         '''
@@ -180,8 +178,8 @@ class Poetry():
                 random_choice = random.choice(self.towards[i])
                 if len(random_choice) > 2:
                     i += 1
-                    self.words.append(random_choice)
-        return self.words
+                    Poetry.words.append(random_choice)
+        return Poetry.words
 
     def save_words(self):
         '''
