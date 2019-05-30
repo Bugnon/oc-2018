@@ -14,7 +14,7 @@
     * [check_existence](#check_existence)
     * [create_image_store](#create_image_store)
     * [new_level](#new_level)
-6. [Conseils de pros](*conseils-de-pros)
+6. [Conseils de pros](#conseils-de-pros)
 7. [Conclusion](#conclusion)
 
 ********
