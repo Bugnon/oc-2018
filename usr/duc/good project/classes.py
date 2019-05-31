@@ -115,7 +115,6 @@ class Feather(pyglet.sprite.Sprite):
         self.x = player.x + player.width * math.sin(math.radians(player.angle)) # position of the feather on X axis in function of angle
         self.y = player.y + player.height * math.cos(math.radians(player.angle)) # position of the feather on Y axis in function of angle
         self.rotation = player.angle
-        
 
         self.image = Feather.feather
         self.xc = player.x
@@ -150,7 +149,7 @@ class Poetry():
     towards = [] # list with the verses
     words = [] # list with the words to shoot
     poetry = open("resources/documents/poeme.txt", encoding='utf8')
-    towards_splited = poetry.read().split('\n')
+    towards_splited = poetry.read().split('\n') # each toward is a line of the document
 
     def __init__(self):
         self.poetry = Poetry.towards_splited
@@ -161,7 +160,7 @@ class Poetry():
         Split the poetry into a list of towards (vers)
         :return: list
         '''
-        for line in self.poetry:
+        for line in self.poetry: # loop splitting each toward
             words_splited = line.split(' ')
             self.towards.append(words_splited)
         return self.towards
@@ -175,8 +174,8 @@ class Poetry():
         i = 0
         for __ in self.towards:
             while i < 15:
-                random_choice = random.choice(self.towards[i])
-                if len(random_choice) > 2:
+                random_choice = random.choice(self.towards[i]) #choose 15 words, each toward give a word
+                if len(random_choice) > 2: #choose words a len bigger than 2
                     i += 1
                     Poetry.words.append(random_choice)
         return Poetry.words
@@ -186,7 +185,7 @@ class Poetry():
         Save the 15 words chosen in choose_words in a created file called <words.txt>
         :return: None
         '''
-        with open('resources/documents/words.txt', 'w', encoding='utf8') as filehandle:
+        with open('resources/documents/words.txt', 'w', encoding='utf8') as filehandle: #save the words in a txt document
             for listitem in self.choose_words():
                 filehandle.write('%s\n' % listitem)
 
@@ -195,7 +194,7 @@ class Poetry():
         Open the file with the words in it
         :return: list
         '''
-        return open("resources/documents/words.txt", encoding='utf8').read().split('\n')
+        return open("resources/documents/words.txt", encoding='utf8').read().split('\n') #open the file containing the words
 
     def remove_words(self):
         '''
@@ -206,9 +205,9 @@ class Poetry():
         words_to_remove = self.open_words()
         towards = self.towards
         for toward in towards:
-            loc = towards[i].index(words_to_remove[i])
-            towards[i].remove(words_to_remove[i])
-            towards[i].insert(loc, '........')
+            loc = towards[i].index(words_to_remove[i]) #find the location of the word
+            towards[i].remove(words_to_remove[i]) # remove the word
+            towards[i].insert(loc, '........') # insert dots in the same location
             i += 1 
         return towards
 
@@ -229,6 +228,7 @@ class RotatingSprite(pyglet.sprite.Sprite):
     segments = [] # list of living segments
     dead_segments = [] # list of all segments when they are shot
     intert_objects = [] #a list of the dead feather
+    all_segments = [] # a list of all the segments
 
     words = Poetry().open_words() #a list of the words of the poetry
     words.pop() # delete the last empty line
