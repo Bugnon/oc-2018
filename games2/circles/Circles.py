@@ -79,6 +79,14 @@ player_sprite = Player(img=player_image,
                         batch=batch) # set position of player as a Player instance
 game_window.push_handlers(player_sprite)
 
+##### PLAYER LIVES #####
+player_lives = 3
+live = pyglet.text.Label('Lives : ' + str(player_lives),
+                        font_name='Times New Roman',
+                        font_size=x/30,
+                        x=x-x//10, y=y-y//15,
+                        anchor_x='center', anchor_y='center')
+
 ##### CIRCLE SEGMENTS #####
 circle_segment = pyglet.resource.image("resources/sprites/circle_segment.png")
 center_image(circle_segment)
@@ -92,13 +100,14 @@ for i in range(15):
                             r=r, xc=xc, yc=yc,
                             word=RotatingSprite.words[i], img=circle_segment, batch=batch)
     RotatingSprite.segments.append(segment) #add the segment to the list which is updated
+    RotatingSprite.all_segments.append(segment)
 
 ##### POETRY #####
-poem = open("resources/documents/poeme.txt", encoding='utf8') # open the poem
-poetry = Poetry(poem)
-poetry.initialize()
+poem = Poetry()
+poem.initialize()
+line = 0 #actual line of the poetry
 
-##### INRODUCTION LABEL #####
+##### INRODUCTION AND GAME OVER LABEL #####
 intro_text = pyglet.text.Label('Press left mouse button to start',
                     font_name='Times New Roman',
                     font_size=x/30,
@@ -106,11 +115,25 @@ intro_text = pyglet.text.Label('Press left mouse button to start',
                     x=x//2, y=y//2,
                     anchor_x='center', anchor_y='center')
 
+game_over = pyglet.text.Label('Game Over',
+                    font_name='Times New Roman',
+                    font_size=x/30,
+                    italic=True,
+                    x=x//2, y=y//2,
+                    anchor_x='center', anchor_y='center')
+
+restart_text = pyglet.text.Label('Press left mouse button to restart',
+                    font_name='Times New Roman',
+                    font_size=x/30,
+                    italic=True,
+                    x=x//2, y=y//3,
+                    anchor_x='center', anchor_y='center')
+
 ##### GAME FUNCTIONS #####
-global ligne
 def write_towards(poetry):
+    global line
     toward = poetry.split_poetry()
-    msg = ' '.join(toward[ligne]) #take the first verse
+    msg = ' '.join(toward[line]) #take the first verse
     label = pyglet.text.Label(str(msg),
             font_name='Times New Roman',
             font_size=18,
@@ -158,16 +181,18 @@ def on_draw():
     The draw function.
     :return: None
     '''
+    global game, player_lives
     game_window.clear()
     wallpaper_sprite.draw()
     if game:
         restart.draw()
         close.draw()
+        live.draw()
         game_window.fps_display.draw()
         parchment.draw()
         #Draw the player and the segments
         batch.draw()
-        write_towards(poetry)
+        write_towards(poem)
         #Draw the segments
         for segment in RotatingSprite.segments:
             segment.label.draw()
@@ -180,7 +205,11 @@ def on_draw():
         for obj in RotatingSprite.intert_objects:
             obj.draw()
     else:
-        intro_text.draw()
+        if player_lives > 0:
+            intro_text.draw()
+        else:
+            game_over.draw()
+            restart_text.draw()
 
 @game_window.event
 def on_mouse_press(x, y, button, modifiers):
@@ -192,8 +221,9 @@ def on_mouse_press(x, y, button, modifiers):
             elif in_sprite(close, x, y):
                 pyglet.app.exit()
         else:
+            game_restart()
             game = True
-
+            
 @game_window.event
 def on_mouse_motion(x, y, dx, dy):
     '''
@@ -211,10 +241,18 @@ def on_mouse_motion(x, y, dx, dy):
         close.image = close_img
 
 def game_restart():
-    for segment in RotatingSprite.dead_segments:  # transform all dead segments back in segments
+    '''
+    Restart the game and set all variables to their beginning state.
+    '''
+    global player_lives, line
+    RotatingSprite.dead_segments.reverse() #segments in the order of their death
+    for segment in RotatingSprite.dead_segments:  # transform all dead segments back in segments but in the right order (reverse)
         segment.relive()
+        RotatingSprite.words.insert(0, segment.word)
     RotatingSprite.dead_segments.clear() # clear the dead_segment list when restart
     RotatingSprite.intert_objects.clear() # clear the dead feathers when restart
+    player_lives = 3
+    line = 0
 
 def update(dt):
     '''
@@ -222,7 +260,7 @@ def update(dt):
     :param dt: float
     :return: None
     '''
-    global ligne
+    global line, player_lives, game, live
     if game:
         player_sprite.update(dt)
         if len(Feather.feathers) > 0:
@@ -237,23 +275,31 @@ def update(dt):
         if len(RotatingSprite.intert_objects) > 0:
             for obj in RotatingSprite.intert_objects: #update position of the dead feathers
                 obj.update(dt)
-    
+
+        if player_lives > 0:
+            live.text = 'Lives : ' + str(player_lives)
+        else:
+            game = False
+
         ### Collision
         for feather in Feather.feathers:
             already_dead = False #prevent the delete of two segments with the same feather
+            already_hit = False #prevent the delete of two lives with the same feather
             if distance(point_1=(feather.x, feather.y), point_2=(xc, yc)) > r - circle_segment.height//2: # check when a feather reaches the segments 
                 feather.dead = True # kill the feather
                 if len(RotatingSprite.segments) > 0:
-                    for segment in RotatingSprite.segments:
-                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.26 * r * math.sin(math.radians(360/15)/2): # check which segments is hit by the feather
+                    for segment in RotatingSprite.all_segments: #even the dead segments
+                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.27 * r * math.sin(math.radians(360/15)/2): # check which segments is hit by the feather
                             if not already_dead: # kill the segment if the feather has not kill one already
                                 if segment.word == RotatingSprite.words[0]:
-                                    ligne += 1
+                                    line += 1
                                     segment.dead = True
                                     segment.update(dt) # update the next segment in segment list (to prevent a bug)
                                     already_dead = True
-                                else:
-                                    pass
+                                elif not already_hit:
+                                    if player_lives > 0:
+                                        player_lives -= 1
+                                    already_hit = True
                 else:
                     print('Win')
     else:

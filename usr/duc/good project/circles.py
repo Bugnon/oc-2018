@@ -100,6 +100,7 @@ for i in range(15):
                             r=r, xc=xc, yc=yc,
                             word=RotatingSprite.words[i], img=circle_segment, batch=batch)
     RotatingSprite.segments.append(segment) #add the segment to the list which is updated
+    RotatingSprite.all_segments.append(segment)
 
 ##### POETRY #####
 poem = Poetry()
@@ -220,9 +221,9 @@ def on_mouse_press(x, y, button, modifiers):
             elif in_sprite(close, x, y):
                 pyglet.app.exit()
         else:
-            game = True
             game_restart()
-
+            game = True
+            
 @game_window.event
 def on_mouse_motion(x, y, dx, dy):
     '''
@@ -240,12 +241,18 @@ def on_mouse_motion(x, y, dx, dy):
         close.image = close_img
 
 def game_restart():
-    global player_lives
-    for segment in RotatingSprite.dead_segments:  # transform all dead segments back in segments
+    '''
+    Restart the game and set all variables to their beginning state.
+    '''
+    global player_lives, line
+    RotatingSprite.dead_segments.reverse() #segments in the order of their death
+    for segment in RotatingSprite.dead_segments:  # transform all dead segments back in segments but in the right order (reverse)
         segment.relive()
+        RotatingSprite.words.insert(0, segment.word)
     RotatingSprite.dead_segments.clear() # clear the dead_segment list when restart
     RotatingSprite.intert_objects.clear() # clear the dead feathers when restart
     player_lives = 3
+    line = 0
 
 def update(dt):
     '''
@@ -277,10 +284,11 @@ def update(dt):
         ### Collision
         for feather in Feather.feathers:
             already_dead = False #prevent the delete of two segments with the same feather
+            already_hit = False #prevent the delete of two lives with the same feather
             if distance(point_1=(feather.x, feather.y), point_2=(xc, yc)) > r - circle_segment.height//2: # check when a feather reaches the segments 
                 feather.dead = True # kill the feather
                 if len(RotatingSprite.segments) > 0:
-                    for segment in RotatingSprite.segments:
+                    for segment in RotatingSprite.all_segments: #even the dead segments
                         if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.27 * r * math.sin(math.radians(360/15)/2): # check which segments is hit by the feather
                             if not already_dead: # kill the segment if the feather has not kill one already
                                 if segment.word == RotatingSprite.words[0]:
@@ -288,10 +296,10 @@ def update(dt):
                                     segment.dead = True
                                     segment.update(dt) # update the next segment in segment list (to prevent a bug)
                                     already_dead = True
-                                else:
-                                    print(already_dead)
+                                elif not already_hit:
                                     if player_lives > 0:
                                         player_lives -= 1
+                                    already_hit = True
                 else:
                     print('Win')
     else:
