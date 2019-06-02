@@ -101,6 +101,13 @@ final_score = pyglet.text.Label('Score : ' + str(player_score),
                         x=x//2, y=y-y//8,
                         anchor_x='center', anchor_y='center') 
 
+player_best_score = 0
+best_score = pyglet.text.Label('Best score : ' + str(player_best_score),
+                        font_name='Times New Roman',
+                        font_size=x/34,
+                        x=x//8, y=y//2,
+                        anchor_x='center', anchor_y='center')
+
 ##### CIRCLE SEGMENTS #####
 circle_segment = pyglet.resource.image("resources/sprites/circle_segment.png")
 center_image(circle_segment)
@@ -203,6 +210,7 @@ def on_draw():
         close.draw()
         live.draw()
         score.draw()
+        best_score.draw()
         game_window.fps_display.draw()
         parchment.draw()
         #Draw the player and the segments
@@ -277,7 +285,7 @@ def update(dt):
     :param dt: float
     :return: None
     '''
-    global line, player_lives, game, live, score, player_score, final_score
+    global line, player_lives, game, live, score, player_score, final_score, player_best_score, best_score
     if game:
         player_sprite.update(dt)
         if len(Feather.feathers) > 0:
@@ -297,6 +305,9 @@ def update(dt):
             live.text = 'Lives : ' + str(player_lives)
             final_score.text = score.text = 'Score: ' + str(player_score)
         else:
+            if player_best_score < player_score:
+                player_best_score = player_score
+                best_score.text = 'Best score: ' + str(player_best_score)
             game = False
 
         ### Collision
