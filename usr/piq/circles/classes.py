@@ -176,8 +176,9 @@ class Poetry():
             while i < 15:
                 random_choice = random.choice(self.towards[i]) #choose 15 words, each toward give a word
                 if len(random_choice) > 2: #choose words a len bigger than 2
-                    i += 1
-                    Poetry.words.append(random_choice)
+                    if not random_choice in Poetry.words: # Check if the word is not on the list
+                        i += 1
+                        Poetry.words.append(random_choice)
         return Poetry.words
 
     def save_words(self):
@@ -232,6 +233,9 @@ class RotatingSprite(pyglet.sprite.Sprite):
 
     words = Poetry().open_words() #a list of the words of the poetry
     words.pop() # delete the last empty line
+    random.shuffle(words) #shuffle the words
+    words_not_shuffled = Poetry().open_words()
+    words_not_shuffled.pop()
     angular_velocity = math.pi/5
 
     circle_segment = pyglet.image.load("resources/sprites/circle_segment.png")
@@ -278,12 +282,14 @@ class RotatingSprite(pyglet.sprite.Sprite):
     def relive(self):
         self.image = RotatingSprite.circle_segment
         RotatingSprite.words.append(self.word) # add removed word back to the list words
+        RotatingSprite.words_not_shuffled.append(self.word) # add removed word back to the list words
         RotatingSprite.segments.append(self) # add removed segment back to the living segment list
 
     def update(self, dt):
         if self.dead:
             RotatingSprite.segments.remove(self) # remove the dead segment fron the living segment list
             RotatingSprite.words.remove(self.word) #destroy the word assigns to the dead segment
+            RotatingSprite.words_not_shuffled.remove(self.word) #destroy the word assigns to the dead segment
             RotatingSprite.dead_segments.append(self) # add the dead segment to the dead_segment list
             self.image = RotatingSprite.dead_segment #replace the image by a dead segment image
             self.dead = False #Stay as a RotatingSprite to update itself

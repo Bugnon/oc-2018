@@ -273,6 +273,7 @@ def game_restart():
     for segment in RotatingSprite.dead_segments:  # transform all dead segments back in segments but in the right order (reverse)
         segment.relive()
         RotatingSprite.words.insert(0, segment.word)
+        RotatingSprite.words_not_shuffled.insert(0, segment.word)
     RotatingSprite.dead_segments.clear() # clear the dead_segment list when restart
     RotatingSprite.intert_objects.clear() # clear the dead feathers when restart
     player_lives = 3
@@ -320,7 +321,7 @@ def update(dt):
                     for segment in RotatingSprite.all_segments: #even the dead segments
                         if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.27 * r * math.sin(math.radians(360/15)/2): # check which segments is hit by the feather
                             if not already_dead: # kill the segment if the feather has not kill one already
-                                if segment.word == RotatingSprite.words[0]:
+                                if segment.word == RotatingSprite.words_not_shuffled[0]:
                                     line += 1
                                     player_score += 1
                                     segment.dead = True
