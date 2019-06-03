@@ -87,6 +87,27 @@ live = pyglet.text.Label('Lives : ' + str(player_lives),
                         x=x-x//10, y=y-y//15,
                         anchor_x='center', anchor_y='center')
 
+##### SCORE #####
+player_score = 0
+score = pyglet.text.Label('Score : ' + str(player_score),
+                        font_name='Times New Roman',
+                        font_size=x/30,
+                        x=x-x//9.5, y=y-y//5,
+                        anchor_x='center', anchor_y='center')
+
+final_score = pyglet.text.Label('Score : ' + str(player_score),
+                        font_name='Times New Roman',
+                        font_size=x/12,
+                        x=x//2, y=y-y//8,
+                        anchor_x='center', anchor_y='center') 
+
+player_best_score = 0
+best_score = pyglet.text.Label('Best score : ' + str(player_best_score),
+                        font_name='Times New Roman',
+                        font_size=x/34,
+                        x=x//8, y=y//2,
+                        anchor_x='center', anchor_y='center')
+
 ##### CIRCLE SEGMENTS #####
 circle_segment = pyglet.resource.image("resources/sprites/circle_segment.png")
 center_image(circle_segment)
@@ -117,8 +138,8 @@ intro_text = pyglet.text.Label('Press left mouse button to start',
 
 game_over = pyglet.text.Label('Game Over',
                     font_name='Times New Roman',
-                    font_size=x/30,
-                    italic=True,
+                    font_size=x/20,
+                    italic=True, 
                     x=x//2, y=y//2,
                     anchor_x='center', anchor_y='center')
 
@@ -188,6 +209,8 @@ def on_draw():
         restart.draw()
         close.draw()
         live.draw()
+        score.draw()
+        best_score.draw()
         game_window.fps_display.draw()
         parchment.draw()
         #Draw the player and the segments
@@ -210,6 +233,7 @@ def on_draw():
         else:
             game_over.draw()
             restart_text.draw()
+            final_score.draw()
 
 @game_window.event
 def on_mouse_press(x, y, button, modifiers):
@@ -244,14 +268,16 @@ def game_restart():
     '''
     Restart the game and set all variables to their beginning state.
     '''
-    global player_lives, line
+    global player_lives, line, player_score
     RotatingSprite.dead_segments.reverse() #segments in the order of their death
     for segment in RotatingSprite.dead_segments:  # transform all dead segments back in segments but in the right order (reverse)
         segment.relive()
         RotatingSprite.words.insert(0, segment.word)
+        RotatingSprite.words_not_shuffled.insert(0, segment.word)
     RotatingSprite.dead_segments.clear() # clear the dead_segment list when restart
     RotatingSprite.intert_objects.clear() # clear the dead feathers when restart
     player_lives = 3
+    player_score = 0
     line = 0
 
 def update(dt):
@@ -260,7 +286,7 @@ def update(dt):
     :param dt: float
     :return: None
     '''
-    global line, player_lives, game, live
+    global line, player_lives, game, live, score, player_score, final_score, player_best_score, best_score
     if game:
         player_sprite.update(dt)
         if len(Feather.feathers) > 0:
@@ -278,7 +304,11 @@ def update(dt):
 
         if player_lives > 0:
             live.text = 'Lives : ' + str(player_lives)
+            final_score.text = score.text = 'Score: ' + str(player_score)
         else:
+            if player_best_score < player_score:
+                player_best_score = player_score
+                best_score.text = 'Best score: ' + str(player_best_score)
             game = False
 
         ### Collision
@@ -291,8 +321,9 @@ def update(dt):
                     for segment in RotatingSprite.all_segments: #even the dead segments
                         if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.27 * r * math.sin(math.radians(360/15)/2): # check which segments is hit by the feather
                             if not already_dead: # kill the segment if the feather has not kill one already
-                                if segment.word == RotatingSprite.words[0]:
+                                if segment.word == RotatingSprite.words_not_shuffled[0]:
                                     line += 1
+                                    player_score += 1
                                     segment.dead = True
                                     segment.update(dt) # update the next segment in segment list (to prevent a bug)
                                     already_dead = True
