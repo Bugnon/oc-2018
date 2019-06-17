@@ -208,7 +208,7 @@ class Poetry():
         for toward in towards:
             loc = towards[i].index(words_to_remove[i]) #find the location of the word
             towards[i].remove(words_to_remove[i]) # remove the word
-            towards[i].insert(loc, '........') # insert dots in the same location
+            towards[i].insert(loc, '[...]') # insert dots in the same location
             i += 1 
         return towards
 
