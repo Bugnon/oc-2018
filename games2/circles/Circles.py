@@ -65,10 +65,11 @@ batch = pyglet.graphics.Batch()
 ##### PARCHMENT #####
 parchment_image = pyglet.resource.image('resources/sprites/parchment.png')
 center_image(parchment_image)
-parchment_scale = parchment_image.height/parchment_image.width #Scale of the parchment
+parchment_scale = 3*parchment_image.height/parchment_image.width #Scale of the parchment
 parchment = pyglet.sprite.Sprite(img=parchment_image,
                                 x=x//2,
                                 y=parchment_image.height//2 + 20)
+parchment.scale = parchment_scale
 
 ##### PLAYER #####
 player_image = pyglet.resource.image('resources/sprites/player.png')
@@ -83,7 +84,7 @@ game_window.push_handlers(player_sprite)
 player_lives = 3
 live = pyglet.text.Label('Lives : ' + str(player_lives),
                         font_name='Times New Roman',
-                        font_size=x/30,
+                        font_size=x//40,
                         x=x-x//10, y=y-y//15,
                         anchor_x='center', anchor_y='center')
 
@@ -91,8 +92,8 @@ live = pyglet.text.Label('Lives : ' + str(player_lives),
 player_score = 0
 score = pyglet.text.Label('Score : ' + str(player_score),
                         font_name='Times New Roman',
-                        font_size=x/30,
-                        x=x-x//9.5, y=y-y//5,
+                        font_size=x//40,
+                        x=x-x//10, y=y-y//7,
                         anchor_x='center', anchor_y='center')
 
 final_score = pyglet.text.Label('Score : ' + str(player_score),
@@ -104,8 +105,8 @@ final_score = pyglet.text.Label('Score : ' + str(player_score),
 player_best_score = 0
 best_score = pyglet.text.Label('Best score : ' + str(player_best_score),
                         font_name='Times New Roman',
-                        font_size=x/34,
-                        x=x//8, y=y//2,
+                        font_size=x/40,
+                        x=x-x//8, y=y//10,
                         anchor_x='center', anchor_y='center')
 
 ##### CIRCLE SEGMENTS #####
@@ -232,6 +233,7 @@ def on_draw():
             intro_text.draw()
         else:
             game_over.draw()
+            close.draw()
             restart_text.draw()
             final_score.draw()
 
@@ -245,8 +247,11 @@ def on_mouse_press(x, y, button, modifiers):
             elif in_sprite(close, x, y):
                 pyglet.app.exit()
         else:
-            game_restart()
-            game = True
+            if in_sprite(close, x, y):
+                pyglet.app.exit()
+            else:
+                game_restart()
+                game = True
             
 @game_window.event
 def on_mouse_motion(x, y, dx, dy):
