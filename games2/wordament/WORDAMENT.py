@@ -36,6 +36,8 @@ def init_var():
     taken_words = []
     old_case = [-1, -1]
     word_state = 0
+    selectable_line_x = [] # avec des valeurs de y
+    selectable_line_y = [] # avec des valeurs de x
     
 def random_level_generation():
     '''Create a random grid level'''
@@ -198,6 +200,7 @@ def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
                     if case_size / 10 + case_size * k < y < ((k + 1) * case_size) - case_size / 10 and  case_size / 10 + case_size * i + delta_center < x < ((i + 1) * (case_size )) - case_size / 10 + delta_center:
                         if [k, i] not in word_coordinate and (word_coordinate == [] or ((word_coordinate[-1][0] - 2) < k < (word_coordinate[-1][0] + 2) and (word_coordinate[-1][1] - 2) < i < (word_coordinate[-1][1] + 2))): 
                                 word_coordinate.append([k, i])
+                                print(k, i)
                                 new_word += (ML[3 - k][i])
                                 new_word_print.text = "Word : " + new_word
                         elif len(word_coordinate) > 1:
@@ -223,6 +226,15 @@ def check_existence(search):
     string = set(string)
     if search in string:
         return True
+
+def create_selectable_grid():
+    l_x = [] # avec des valeurs de y
+    l_y = [] # avec des valeurs de x
+    for i in range(4):
+        
+        
+    case_size / 10 + case_size * k < y < ((k + 1) * case_size) - case_size / 10 and  case_size / 10 + case_size * i + delta_center < x < ((i + 1) * (case_size )) - case_size / 10 + delta_center:
+    
 
 def create_image_store(ML):
     image_store = {}
