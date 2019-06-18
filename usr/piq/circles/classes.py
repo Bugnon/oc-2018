@@ -44,6 +44,10 @@ class Window(pyglet.window.Window):
         self.frame_rate = 1/60.0
         self.fps_display = FPSDisplay(self)
 
+game_window = Window()
+x = game_window.width
+y = game_window.height
+
 ##### PLAYER CLASS #####
 class Player(pyglet.sprite.Sprite):
     """Class which defines the player which be controlled with left and right arrows."""
@@ -55,7 +59,7 @@ class Player(pyglet.sprite.Sprite):
         self.keys = {'left':False, 'right':False, 'space':False} # keys used to controll the player
         self.timer = 0 #the timer is an attribute to helps the feather to know the angular position of the player
         self.angle = 0 # angle of the player at the beginning of the game
-        self.scale = 0.56*screen.width/1200 # scale of the inkwell in function of the size of the window
+        self.scale = 0.56*x/1200 # scale of the inkwell in function of the size of the window
         self.reloading = 0 # default value of reloading
 
     def on_key_press(self, symbol, modifiers):
@@ -119,9 +123,9 @@ class Feather(pyglet.sprite.Sprite):
         self.image = Feather.feather
         self.xc = player.x
         self.yc = player.y
-        self.r = screen.width // 6
+        self.r = x // 6
 
-        self.scale = 0.02*screen.width/1200 #scale of a feather in function of the screen size
+        self.scale = 0.02*x/1200 #scale of a feather in function of the screen size
 
         self.angle = player.angle # angle of the feather same as the angle of the inkwell
 
@@ -254,9 +258,9 @@ class RotatingSprite(pyglet.sprite.Sprite):
         self.yc = yc
         self.r = r
         if self.word != None: #If the sprite is a segment or an intert object (dead feather)
-            self.scale = screen.width/3240
+            self.scale = x/3240
         else:
-            self.scale = 2*screen.width/120000
+            self.scale = 2*x/120000
 
         self.dead = False
 
