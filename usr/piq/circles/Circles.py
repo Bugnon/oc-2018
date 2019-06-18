@@ -65,10 +65,11 @@ batch = pyglet.graphics.Batch()
 ##### PARCHMENT #####
 parchment_image = pyglet.resource.image('resources/sprites/parchment.png')
 center_image(parchment_image)
-parchment_scale = parchment_image.height/parchment_image.width #Scale of the parchment
+parchment_scale = 3*parchment_image.height/parchment_image.width #Scale of the parchment
 parchment = pyglet.sprite.Sprite(img=parchment_image,
                                 x=x//2,
                                 y=parchment_image.height//2 + 20)
+parchment.scale = parchment_scale
 
 ##### PLAYER #####
 player_image = pyglet.resource.image('resources/sprites/player.png')
@@ -83,7 +84,7 @@ game_window.push_handlers(player_sprite)
 player_lives = 3
 live = pyglet.text.Label('Lives : ' + str(player_lives),
                         font_name='Times New Roman',
-                        font_size=x/30,
+                        font_size=x//40,
                         x=x-x//10, y=y-y//15,
                         anchor_x='center', anchor_y='center')
 
@@ -91,8 +92,8 @@ live = pyglet.text.Label('Lives : ' + str(player_lives),
 player_score = 0
 score = pyglet.text.Label('Score : ' + str(player_score),
                         font_name='Times New Roman',
-                        font_size=x/30,
-                        x=x-x//9.5, y=y-y//5,
+                        font_size=x//40,
+                        x=x-x//10, y=y-y//7,
                         anchor_x='center', anchor_y='center')
 
 final_score = pyglet.text.Label('Score : ' + str(player_score),
@@ -104,8 +105,8 @@ final_score = pyglet.text.Label('Score : ' + str(player_score),
 player_best_score = 0
 best_score = pyglet.text.Label('Best score : ' + str(player_best_score),
                         font_name='Times New Roman',
-                        font_size=x/34,
-                        x=x//8, y=y//2,
+                        font_size=x/40,
+                        x=x-x//8, y=y//10,
                         anchor_x='center', anchor_y='center')
 
 ##### CIRCLE SEGMENTS #####
@@ -127,6 +128,18 @@ for i in range(15):
 poem = Poetry()
 poem.initialize()
 line = 0 #actual line of the poetry
+poetry_text = Poetry.towards_splited
+tow_labels = []
+i = 1
+for tow in poetry_text:
+    i += 1
+    poetry_label = pyglet.text.Label(tow,
+                    font_name='Times New Roman',
+                    font_size=x/70,
+                    italic=True,
+                    x=x//2, y=5*y//6 - parchment_image.height//5*i,
+                    anchor_x='center', anchor_y='center')
+    tow_labels.append(poetry_label)
 
 ##### INRODUCTION AND GAME OVER LABEL #####
 intro_text = pyglet.text.Label('Press left mouse button to start',
@@ -149,6 +162,16 @@ restart_text = pyglet.text.Label('Press left mouse button to restart',
                     italic=True,
                     x=x//2, y=y//3,
                     anchor_x='center', anchor_y='center')
+
+win = True
+
+winning_text = pyglet.text.Label('Congratulations, you have completed the poetry !',
+                        font_name='Times New Roman',
+                        font_size=x/40,
+                        italic=True,
+                        bold=True,
+                        x=x//2, y=y-y//8,
+                        anchor_x='center', anchor_y='center')
 
 ##### GAME FUNCTIONS #####
 def write_towards(poetry):
@@ -202,7 +225,8 @@ def on_draw():
     The draw function.
     :return: None
     '''
-    global game, player_lives
+    global game, player_lives, win
+
     game_window.clear()
     wallpaper_sprite.draw()
     if game:
@@ -228,10 +252,17 @@ def on_draw():
         for obj in RotatingSprite.intert_objects:
             obj.draw()
     else:
-        if player_lives > 0:
+        if player_lives > 0 and not win:
             intro_text.draw()
+        elif player_lives > 0 and win:
+            winning_text.draw()
+            restart.draw()
+            close.draw()
+            for label in tow_labels:
+                label.draw()
         else:
             game_over.draw()
+            close.draw()
             restart_text.draw()
             final_score.draw()
 
@@ -245,8 +276,14 @@ def on_mouse_press(x, y, button, modifiers):
             elif in_sprite(close, x, y):
                 pyglet.app.exit()
         else:
-            game_restart()
-            game = True
+            if in_sprite(close, x, y):
+                pyglet.app.exit()
+            elif in_sprite(restart, x, y):
+                game_restart()
+                game=True
+            elif not win:
+                game_restart()
+                game = True
             
 @game_window.event
 def on_mouse_motion(x, y, dx, dy):
@@ -269,6 +306,7 @@ def game_restart():
     Restart the game and set all variables to their beginning state.
     '''
     global player_lives, line, player_score
+
     RotatingSprite.dead_segments.reverse() #segments in the order of their death
     for segment in RotatingSprite.dead_segments:  # transform all dead segments back in segments but in the right order (reverse)
         segment.relive()
@@ -286,8 +324,9 @@ def update(dt):
     :param dt: float
     :return: None
     '''
-    global line, player_lives, game, live, score, player_score, final_score, player_best_score, best_score
-    if game:
+    global line, player_lives, game, live, score, player_score, final_score, player_best_score, best_score, win
+
+    if game: #if game=False, the game is static
         player_sprite.update(dt)
         if len(Feather.feathers) > 0:
             for feather in Feather.feathers: # update position of all dead segments
@@ -310,6 +349,11 @@ def update(dt):
                 player_best_score = player_score
                 best_score.text = 'Best score: ' + str(player_best_score)
             game = False
+        
+        if player_score >= 15:
+            win = True
+            game = False
+            
 
         ### Collision
         for feather in Feather.feathers:
@@ -331,10 +375,6 @@ def update(dt):
                                     if player_lives > 0:
                                         player_lives -= 1
                                     already_hit = True
-                else:
-                    print('Win')
-    else:
-        pass
 
 if __name__ == "__main__":
 
