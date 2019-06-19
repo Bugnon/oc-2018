@@ -154,9 +154,11 @@ class Poetry():
     """Class which allows to read, cut, choose and use verses and words of a poetry."""
     towards = [] # list with the verses
     words = [] # list with the words to shoot
-    poem = random_poetry()
-    splited_path = re.split('(\W+)', poem)
-    author = splited_path[-5]+ " " + splited_path[-3]
+    poem = random_poetry() # save the poem
+    splited_path = re.split('(\W+)', poem) # split the path of the poem to extract the name and the author
+    author = splited_path[-5] + " " + splited_path[-3] # join first name + last name
+    poem_name = ''.join(splited_path[4:-6]) # the name of the poem
+    print(poem_name)
     poetry = open(poem)
     towards_splited = poetry.read().split('\n') # each toward is a line of the document
 

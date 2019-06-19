@@ -168,12 +168,20 @@ win = True
 winning_text = pyglet.text.Label('Congratulations, you have completed the poetry !',
                         font_name='Times New Roman',
                         font_size=x/40,
-                        italic=True,
+                        italic=False,
                         bold=True,
-                        x=x//2, y=y-y//8,
+                        x=x//2, y=y-y//12,
                         anchor_x='center', anchor_y='center')
 
-##### Author #####
+##### Poem information #####
+poem_title = pyglet.text.Label(Poetry().poem_name,
+                        font_name='Times New Roman',
+                        font_size=x/50,
+                        italic=True,
+                        bold=True,
+                        x=x//2, y=y-y//5,
+                        anchor_x='center', anchor_y='center')
+
 author_image = pyglet.resource.image('resources/documents/authors/'+ Poetry().author +'.jpg')
 center_image(author_image)
 author_scale = 220/290 #Scale of the author
@@ -271,6 +279,7 @@ def on_draw():
         if player_lives > 0 and not win:
             intro_text.draw()
         elif player_lives > 0 and win:
+            poem_title.draw()
             author.draw()
             author_text.draw()
             winning_text.draw()
