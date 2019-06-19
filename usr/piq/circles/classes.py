@@ -38,13 +38,14 @@ def distance(point_1=(0, 0), point_2=(0, 0)):
 class Window(pyglet.window.Window):
     """Class which defines the fullscreen game window at 60 Hz."""
     def __init__(self, *args, **kwargs):
-        super(Window, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
-        self.set_fullscreen(True)
         self.frame_rate = 1/60.0
         self.fps_display = FPSDisplay(self)
 
-game_window = Window()
+game_window = Window(1280, 720, "Circles", resizable = False)
+icon = pyglet.image.load('resources/sprites/logo.ico')
+game_window.set_icon(icon)
 x = game_window.width
 y = game_window.height
 
@@ -110,7 +111,7 @@ class Feather(pyglet.sprite.Sprite):
     #Create the projectile (feathers)
     feather = pyglet.resource.image('resources/sprites/feather.png')
     center_image(feather)
-    speed = 500 # Norm of the velocity
+    speed = 500*x/1920 # Norm of the velocity
     feathers = [] #list of all the feathers thrown
 
     def __init__(self, player, *args, **kwargs):
