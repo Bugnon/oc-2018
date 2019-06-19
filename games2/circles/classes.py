@@ -1,5 +1,5 @@
 ##### IMPORT #####
-import pyglet, random, math, time
+import pyglet, random, math, time, glob, re
 from pyglet.window import key, FPSDisplay
 
 ##### MEDIA #####
@@ -38,11 +38,16 @@ def distance(point_1=(0, 0), point_2=(0, 0)):
 class Window(pyglet.window.Window):
     """Class which defines the fullscreen game window at 60 Hz."""
     def __init__(self, *args, **kwargs):
-        super(Window, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
-        self.set_fullscreen(True)
         self.frame_rate = 1/60.0
         self.fps_display = FPSDisplay(self)
+
+game_window = Window(1280, 720, "Circles", resizable = False)
+icon = pyglet.image.load('resources/sprites/logo.ico')
+game_window.set_icon(icon)
+x = game_window.width
+y = game_window.height
 
 ##### PLAYER CLASS #####
 class Player(pyglet.sprite.Sprite):
@@ -55,7 +60,7 @@ class Player(pyglet.sprite.Sprite):
         self.keys = {'left':False, 'right':False, 'space':False} # keys used to controll the player
         self.timer = 0 #the timer is an attribute to helps the feather to know the angular position of the player
         self.angle = 0 # angle of the player at the beginning of the game
-        self.scale = 0.56*screen.width/1200 # scale of the inkwell in function of the size of the window
+        self.scale = 0.56*x/1200 # scale of the inkwell in function of the size of the window
         self.reloading = 0 # default value of reloading
 
     def on_key_press(self, symbol, modifiers):
@@ -106,7 +111,7 @@ class Feather(pyglet.sprite.Sprite):
     #Create the projectile (feathers)
     feather = pyglet.resource.image('resources/sprites/feather.png')
     center_image(feather)
-    speed = 500 # Norm of the velocity
+    speed = 500*x/1920 # Norm of the velocity
     feathers = [] #list of all the feathers thrown
 
     def __init__(self, player, *args, **kwargs):
@@ -119,9 +124,9 @@ class Feather(pyglet.sprite.Sprite):
         self.image = Feather.feather
         self.xc = player.x
         self.yc = player.y
-        self.r = screen.width // 6
+        self.r = x // 6
 
-        self.scale = 0.02*screen.width/1200 #scale of a feather in function of the screen size
+        self.scale = 0.02*x/1200 #scale of a feather in function of the screen size
 
         self.angle = player.angle # angle of the feather same as the angle of the inkwell
 
@@ -144,11 +149,21 @@ class Feather(pyglet.sprite.Sprite):
         RotatingSprite.intert_objects.append(self)
 
 ##### POETRY #####
+def random_poetry():
+    '''Choose randomly a poeam in the folder /resources/documents/'''
+    poem_list = glob.glob('resources/documents/*.txt')
+    random_poem =  random.choice(poem_list)
+    return random_poem
+
 class Poetry():
     """Class which allows to read, cut, choose and use verses and words of a poetry."""
     towards = [] # list with the verses
     words = [] # list with the words to shoot
-    poetry = open("resources/documents/poeme.txt", encoding='utf8')
+    poem = random_poetry() # save the poem
+    splited_path = re.split(r'(\W+)', poem) # split the path of the poem to extract the name and the author
+    author = splited_path[-5] + " " + splited_path[-3] # join first name + last name
+    poem_name = ''.join(splited_path[4:-6]) # the name of the poem
+    poetry = open(poem) # open the poem
     towards_splited = poetry.read().split('\n') # each toward is a line of the document
 
     def __init__(self):
@@ -186,7 +201,7 @@ class Poetry():
         Save the 15 words chosen in choose_words in a created file called <words.txt>
         :return: None
         '''
-        with open('resources/documents/words.txt', 'w', encoding='utf8') as filehandle: #save the words in a txt document
+        with open('resources/documents/words/words.txt', 'w', encoding='utf8') as filehandle: #save the words in a txt document
             for listitem in self.choose_words():
                 filehandle.write('%s\n' % listitem)
 
@@ -195,21 +210,19 @@ class Poetry():
         Open the file with the words in it
         :return: list
         '''
-        return open("resources/documents/words.txt", encoding='utf8').read().split('\n') #open the file containing the words
+        return open("resources/documents/words/words.txt", encoding='utf8').read().split('\n') #open the file containing the words
 
     def remove_words(self):
         '''
         Remove the word chosen in the toward.
         :return: list
         '''
-        i = 0
         words_to_remove = self.open_words()
         towards = self.towards
-        for toward in towards:
+        for i in range(len(towards)):
             loc = towards[i].index(words_to_remove[i]) #find the location of the word
             towards[i].remove(words_to_remove[i]) # remove the word
             towards[i].insert(loc, '[...]') # insert dots in the same location
-            i += 1 
         return towards
 
     def initialize(self):
@@ -254,9 +267,9 @@ class RotatingSprite(pyglet.sprite.Sprite):
         self.yc = yc
         self.r = r
         if self.word != None: #If the sprite is a segment or an intert object (dead feather)
-            self.scale = screen.width/3240
+            self.scale = x/3240
         else:
-            self.scale = 2*screen.width/120000
+            self.scale = 2*x/120000
 
         self.dead = False
 
