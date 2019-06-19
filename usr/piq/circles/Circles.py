@@ -36,7 +36,7 @@ music.eos_action = pyglet.media.SourceGroup.loop
 game = False #State of the game, on or off
 
 ##### WALLPAPER #####
-wallpaper = pyglet.resource.image('resources/sprites/wallpaper.jpg')
+wallpaper = pyglet.resource.image('resources/sprites/wallpaper.png')
 wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
 
 ##### MENU ####
