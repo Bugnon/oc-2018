@@ -1,7 +1,7 @@
 ##### IMPORT #####
 import pyglet, random, math
 from pyglet import font
-from classes import Player, Feather, RotatingSprite, Window, Poetry
+from classes import Player, Feather, RotatingSprite, Window, Poetry, x, y, game_window
 from pyglet.window import mouse
 
 ##### USEFUL SIMPLE FUNCTIONS #####
@@ -33,13 +33,10 @@ music.volume = 0.0005
 music.eos_action = pyglet.media.SourceGroup.loop
 
 ##### GAME WINDOW #####
-game_window = Window()
-x = game_window.width
-y = game_window.height
 game = False #State of the game, on or off
 
 ##### WALLPAPER #####
-wallpaper = pyglet.resource.image('resources/sprites/wallpaper.jpg')
+wallpaper = pyglet.resource.image('resources/sprites/wallpaper.png')
 wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
 
 ##### MENU ####
@@ -47,17 +44,17 @@ close_img = pyglet.resource.image('resources/sprites/close_game.png')
 close_img2 = pyglet.resource.image('resources/sprites/close_game_grey.png')
 close_scale = close_img.height/close_img.width
 close = pyglet.sprite.Sprite(img=close_img,
-                            x=close_img.width*close_scale//4,
-                            y=y-int(2*close_img.height*close_scale)) #set position of close image
-close.scale = close_scale
+                            x=55*x//1920,
+                            y=y-int(116.46*y//1080)) #set position of close image
+close.scale = close_scale*x/1920
 
 restart_img = pyglet.resource.image('resources/sprites/restart_game.png')
 restart_img2 = pyglet.resource.image('resources/sprites/restart_game_grey.png')
 restart_scale = restart_img.height/restart_img.width
 restart = pyglet.sprite.Sprite(img=restart_img,
-                            x=restart_img.width*restart_scale//4,
-                            y=y-int(3.5*restart_img.height*restart_scale)) #set position of restart image
-restart.scale = restart_scale
+                            x=55*x//1920,
+                            y=y-int(203.8*y//1080)) #set position of restart image
+restart.scale = restart_scale*x/1920
 
 ##### BATCH #####
 batch = pyglet.graphics.Batch()
@@ -68,8 +65,8 @@ center_image(parchment_image)
 parchment_scale = 3*parchment_image.height/parchment_image.width #Scale of the parchment
 parchment = pyglet.sprite.Sprite(img=parchment_image,
                                 x=x//2,
-                                y=parchment_image.height//2 + 20)
-parchment.scale = parchment_scale
+                                y=(parchment_image.height//2 + 20)*x//1920)
+parchment.scale = 1.137*x/1920
 
 ##### PLAYER #####
 player_image = pyglet.resource.image('resources/sprites/player.png')
@@ -98,14 +95,14 @@ score = pyglet.text.Label('Score : ' + str(player_score),
 
 final_score = pyglet.text.Label('Score : ' + str(player_score),
                         font_name='Times New Roman',
-                        font_size=x/12,
+                        font_size=x//12,
                         x=x//2, y=y-y//8,
                         anchor_x='center', anchor_y='center') 
 
-player_best_score = 0
-best_score = pyglet.text.Label('Best score : ' + str(player_best_score),
+player_high_score = 0
+high_score = pyglet.text.Label('High score : ' + str(player_high_score),
                         font_name='Times New Roman',
-                        font_size=x/40,
+                        font_size=x//40,
                         x=x-x//8, y=y//10,
                         anchor_x='center', anchor_y='center')
 
@@ -137,7 +134,7 @@ for tow in poetry_text:
                     font_name='Times New Roman',
                     font_size=x/70,
                     italic=True,
-                    x=x//2, y=5*y//6 - parchment_image.height//5*i,
+                    x=x//2, y=5*y//6 - parchment_image.height//5*i*x//1920,
                     anchor_x='center', anchor_y='center')
     tow_labels.append(poetry_label)
 
@@ -156,27 +153,27 @@ game_over = pyglet.text.Label('Game Over',
                     x=x//2, y=y//2,
                     anchor_x='center', anchor_y='center')
 
-restart_text = pyglet.text.Label('Press left mouse button to restart',
+restart_text = pyglet.text.Label('Press left mouse button to retry',
                     font_name='Times New Roman',
-                    font_size=x/30,
+                    font_size=x//30,
                     italic=True,
                     x=x//2, y=y//3,
                     anchor_x='center', anchor_y='center')
 
-win = True
+win = False
 
 winning_text = pyglet.text.Label('Congratulations, you have completed the poetry !',
                         font_name='Times New Roman',
-                        font_size=x/40,
-                        italic=False,
+                        font_size=x//40,
+                        italic=True,
                         bold=True,
                         x=x//2, y=y-y//12,
                         anchor_x='center', anchor_y='center')
 
-##### Poem information #####
+##### POEM INFORMATION #####
 poem_title = pyglet.text.Label(Poetry().poem_name,
                         font_name='Times New Roman',
-                        font_size=x/50,
+                        font_size=x//50,
                         italic=True,
                         bold=True,
                         x=x//2, y=y-y//5,
@@ -184,17 +181,17 @@ poem_title = pyglet.text.Label(Poetry().poem_name,
 
 author_image = pyglet.resource.image('resources/documents/authors/'+ Poetry().author +'.jpg')
 center_image(author_image)
-author_scale = 220/290 #Scale of the author
+author_scale = 220/290*x/1920 #Scale of the author
 author = pyglet.sprite.Sprite(img=author_image,
                                 x=x//6,
-                                y=author_image.height)
+                                y=y//3)
 author.scale = author_scale
 
 author_text = pyglet.text.Label(Poetry().author,
                         font_name='Times New Roman',
                         font_size=x/60,
                         italic=True,
-                        x=x//6, y=author_image.height//4,
+                        x=x//6, y=author.y-1.4*author.height//2,
                         anchor_x='center', anchor_y='center')
 
 ##### GAME FUNCTIONS #####
@@ -204,7 +201,7 @@ def write_towards(poetry):
     msg = ' '.join(toward[line]) #take the first verse
     label = pyglet.text.Label(str(msg),
             font_name='Times New Roman',
-            font_size=18,
+            font_size=18*x/1920,
             color=(75, 0, 130, 255),
             x=parchment.x, y=parchment.y,
             anchor_x='center', anchor_y='center')
@@ -258,7 +255,7 @@ def on_draw():
         close.draw()
         live.draw()
         score.draw()
-        best_score.draw()
+        high_score.draw()
         game_window.fps_display.draw()
         parchment.draw()
         #Draw the player and the segments
@@ -307,7 +304,7 @@ def on_mouse_press(x, y, button, modifiers):
                 pyglet.app.exit()
             elif in_sprite(restart, x, y):
                 game_restart()
-                game=True
+                game = True
             elif not win:
                 game_restart()
                 game = True
@@ -351,7 +348,7 @@ def update(dt):
     :param dt: float
     :return: None
     '''
-    global line, player_lives, game, live, score, player_score, final_score, player_best_score, best_score, win
+    global line, player_lives, game, live, score, player_score, final_score, player_high_score, high_score, win
 
     if game: #if game=False, the game is static
         player_sprite.update(dt)
@@ -372,9 +369,9 @@ def update(dt):
             live.text = 'Lives : ' + str(player_lives)
             final_score.text = score.text = 'Score: ' + str(player_score)
         else:
-            if player_best_score < player_score:
-                player_best_score = player_score
-                best_score.text = 'Best score: ' + str(player_best_score)
+            if player_high_score < player_score:
+                player_high_score = player_score
+                high_score.text = 'High score: ' + str(player_high_score)
             game = False
         
         if player_score >= 15:
@@ -390,7 +387,7 @@ def update(dt):
                 feather.dead = True # kill the feather
                 if len(RotatingSprite.segments) > 0:
                     for segment in RotatingSprite.all_segments: #even the dead segments
-                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.27 * r * math.sin(math.radians(360/15)/2): # check which segments is hit by the feather
+                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) < (math.sqrt((segment.height/2)**2 + (segment.width/2)**2) + feather.height/2): # check which segments is hit by the feather
                             if not already_dead: # kill the segment if the feather has not kill one already
                                 if segment.word == RotatingSprite.words_not_shuffled[0]:
                                     line += 1
