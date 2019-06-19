@@ -99,8 +99,8 @@ final_score = pyglet.text.Label('Score : ' + str(player_score),
                         x=x//2, y=y-y//8,
                         anchor_x='center', anchor_y='center') 
 
-player_best_score = 0
-best_score = pyglet.text.Label('Best score : ' + str(player_best_score),
+player_high_score = 0
+high_score = pyglet.text.Label('High score : ' + str(player_high_score),
                         font_name='Times New Roman',
                         font_size=x//40,
                         x=x-x//8, y=y//10,
@@ -176,7 +176,7 @@ def write_towards(poetry):
     msg = ' '.join(toward[line]) #take the first verse
     label = pyglet.text.Label(str(msg),
             font_name='Times New Roman',
-            font_size=18,
+            font_size=18*x/1920,
             color=(75, 0, 130, 255),
             x=parchment.x, y=parchment.y,
             anchor_x='center', anchor_y='center')
@@ -230,7 +230,7 @@ def on_draw():
         close.draw()
         live.draw()
         score.draw()
-        best_score.draw()
+        high_score.draw()
         game_window.fps_display.draw()
         parchment.draw()
         #Draw the player and the segments
@@ -259,6 +259,7 @@ def on_draw():
         else:
             game_over.draw()
             close.draw()
+            restart.draw()
             restart_text.draw()
             final_score.draw()
 
@@ -320,7 +321,7 @@ def update(dt):
     :param dt: float
     :return: None
     '''
-    global line, player_lives, game, live, score, player_score, final_score, player_best_score, best_score, win
+    global line, player_lives, game, live, score, player_score, final_score, player_high_score, high_score, win
 
     if game: #if game=False, the game is static
         player_sprite.update(dt)
@@ -341,9 +342,9 @@ def update(dt):
             live.text = 'Lives : ' + str(player_lives)
             final_score.text = score.text = 'Score: ' + str(player_score)
         else:
-            if player_best_score < player_score:
-                player_best_score = player_score
-                best_score.text = 'Best score: ' + str(player_best_score)
+            if player_high_score < player_score:
+                player_high_score = player_score
+                high_score.text = 'High score: ' + str(player_high_score)
             game = False
         
         if player_score >= 15:
@@ -359,7 +360,7 @@ def update(dt):
                 feather.dead = True # kill the feather
                 if len(RotatingSprite.segments) > 0:
                     for segment in RotatingSprite.all_segments: #even the dead segments
-                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) <  1.27 * r * math.sin(math.radians(360/15)/2): # check which segments is hit by the feather
+                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) < 1.01*(math.sqrt((segment.height/2)**2 + (segment.width/2)**2) + feather.height/2): # check which segments is hit by the feather
                             if not already_dead: # kill the segment if the feather has not kill one already
                                 if segment.word == RotatingSprite.words_not_shuffled[0]:
                                     line += 1
