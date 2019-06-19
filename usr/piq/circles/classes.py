@@ -44,7 +44,7 @@ class Window(pyglet.window.Window):
         self.frame_rate = 1/60.0
         self.fps_display = FPSDisplay(self)
 
-game_window = Window(1920, 1080, "Circles", resizable = False)
+game_window = Window(1280, 720, "Circles", resizable = False)
 icon = pyglet.image.load('resources/sprites/logo.ico')
 game_window.set_icon(icon)
 x = game_window.width
