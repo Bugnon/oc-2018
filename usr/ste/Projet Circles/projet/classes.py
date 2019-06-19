@@ -158,8 +158,7 @@ class Poetry():
     splited_path = re.split('(\W+)', poem) # split the path of the poem to extract the name and the author
     author = splited_path[-5] + " " + splited_path[-3] # join first name + last name
     poem_name = ''.join(splited_path[4:-6]) # the name of the poem
-    print(poem_name)
-    poetry = open(poem)
+    poetry = open(poem) # open the poem
     towards_splited = poetry.read().split('\n') # each toward is a line of the document
 
     def __init__(self):
