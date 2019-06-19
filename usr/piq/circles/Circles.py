@@ -36,7 +36,7 @@ music.eos_action = pyglet.media.SourceGroup.loop
 game = False #State of the game, on or off
 
 ##### WALLPAPER #####
-wallpaper = pyglet.resource.image('resources/sprites/wallpaper.jpg')
+wallpaper = pyglet.resource.image('resources/sprites/wallpaper.png')
 wallpaper_sprite = pyglet.sprite.Sprite(img=wallpaper, x=0, y=0)
 
 ##### MENU ####
@@ -134,7 +134,7 @@ for tow in poetry_text:
                     font_name='Times New Roman',
                     font_size=x/70,
                     italic=True,
-                    x=x//2, y=5*y//6 - parchment_image.height//5*i,
+                    x=x//2, y=5*y//6 - parchment_image.height//5*i*x/1980,
                     anchor_x='center', anchor_y='center')
     tow_labels.append(poetry_label)
 
@@ -259,7 +259,6 @@ def on_draw():
         else:
             game_over.draw()
             close.draw()
-            restart.draw()
             restart_text.draw()
             final_score.draw()
 
@@ -360,7 +359,7 @@ def update(dt):
                 feather.dead = True # kill the feather
                 if len(RotatingSprite.segments) > 0:
                     for segment in RotatingSprite.all_segments: #even the dead segments
-                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) < 1.01*(math.sqrt((segment.height/2)**2 + (segment.width/2)**2) + feather.height/2): # check which segments is hit by the feather
+                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) < (math.sqrt((segment.height/2)**2 + (segment.width/2)**2) + feather.height/2): # check which segments is hit by the feather
                             if not already_dead: # kill the segment if the feather has not kill one already
                                 if segment.word == RotatingSprite.words_not_shuffled[0]:
                                     line += 1

@@ -40,6 +40,7 @@ class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        ##self.set_fullscreen(True)
         self.frame_rate = 1/60.0
         self.fps_display = FPSDisplay(self)
 
