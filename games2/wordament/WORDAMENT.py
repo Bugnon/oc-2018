@@ -60,11 +60,11 @@ def init_objects():
     # Set of the written items to initial form :
     new_word_print = pyglet.text.Label('Word : ', font_size = 28, x = 150, y = 612)
     score_print = pyglet.text.Label('Score : 0', font_size = 28, x = 5, y = 612)
-    background_image = pyglet.image.load(Path(game_location + '/images/Background.jpg'))
-    selected_button = pyglet.sprite.Sprite(pyglet.image.load(Path(game_location + '/images/bouton_selected.png')))
-    random_button = pyglet.sprite.Sprite(pyglet.image.load(Path(game_location + '/images/bouton_random.png')))
-    next_level_button = pyglet.sprite.Sprite(pyglet.image.load(Path(game_location + '/images/next_level.png')))
-    menu_background = pyglet.image.load(Path(game_location + '/images/Menu_Background.jpg'))
+    background_image = pyglet.image.load(str(Path(game_location + '/images/Background.jpg')))
+    selected_button = pyglet.sprite.Sprite(pyglet.image.load(str(Path(game_location + '/images/bouton_selected.png'))))
+    random_button = pyglet.sprite.Sprite(pyglet.image.load(str(Path(game_location + '/images/bouton_random.png'))))
+    next_level_button = pyglet.sprite.Sprite(pyglet.image.load(str(Path(game_location + '/images/next_level.png'))))
+    menu_background = pyglet.image.load(str(Path(game_location + '/images/Menu_Background.jpg')))
     add_audio()
             
 # Set of the music during the game :
@@ -107,6 +107,8 @@ def on_draw():
         global word_state
         global word_coordinate
         window.clear()
+        batch = pyglet.graphics.Batch()
+        sprites = []
         # draws the image on the screen
         background_image.blit(x = 0, y = 0, height = window.height, width = window.width)
         for u in range(4):
@@ -114,16 +116,25 @@ def on_draw():
                 letter = image_store[ML[3 - n][u]]
                 if word_state == 1 and [n, u] in word_coordinate:
                     letter_print = letter[1]
-                    letter_print.blit(x = delta_center + case_size * u, y = case_size * n, height = case_size, width = case_size)
+                    pint = pyglet.sprite.Sprite(letter_print, x = delta_center + case_size * u, y = case_size * n, batch = batch)
+                    pint.update(scale = case_size/400)
+                    sprites.append(pint)
                 elif word_state == 2 and [n, u] in word_coordinate:
                     letter_print = letter[3]
-                    letter_print.blit(x = delta_center + case_size * u, y = case_size * n, height = case_size, width = case_size)
+                    pint = pyglet.sprite.Sprite(letter_print, x = delta_center + case_size * u, y = case_size * n, batch = batch)
+                    pint.update(scale = case_size/400)
+                    sprites.append(pint)
                 elif [n,u] in word_coordinate :
                     letter_print = letter[2]
-                    letter_print.blit(x = delta_center + case_size * u, y = case_size * n, height = case_size, width = case_size)
+                    pint = pyglet.sprite.Sprite(letter_print, x = delta_center + case_size * u, y = case_size * n, batch = batch)
+                    pint.update(scale = case_size/400)
+                    sprites.append(pint)
                 else:
                     letter_print = letter[0]
-                    letter_print.blit(x = delta_center + case_size * u, y = case_size * n, height = case_size, width = case_size)
+                    pint = pyglet.sprite.Sprite(letter_print, x = delta_center + case_size * u, y = case_size * n, batch = batch)
+                    pint.update(scale = case_size/400)
+                    sprites.append(pint)
+        batch.draw()
         if game_state == 2:
             if window.width >= 800:
                 next_level_button.update(x = delta_center + window.width - (window.width - window.height)- 145 , y = window.height - 53)
@@ -165,7 +176,7 @@ def on_mouse_release(x, y, button, modifiers):
         global old_case, new_word, word_coordinate, score, word_state, right
         old_case = [-1, -1]
         if new_word not in taken_words and check_existence(new_word) and len(new_word) > 2:
-            right = pyglet.media.load(Path(game_location + '/images/right.wav'))
+            right = pyglet.media.load(str(Path(game_location + '/images/right.wav')))
             right.play()
             for letter in new_word:
                 score += levels.score_number[letter]
@@ -227,7 +238,7 @@ def create_image_store(ML):
     image_store = {}
     for u in range(4):
         for n in range(4):
-            init = pyglet.image.load(Path(game_location + '/images/' + ML[3 - n][u] + '.png'))
+            init = pyglet.image.load(str(Path(game_location + '/images/' + ML[3 - n][u] + '.png')))
             init_grid = pyglet.image.ImageGrid(init, 1, 4)
             image_store[ML[3 - n][u]] = init_grid
     return image_store
