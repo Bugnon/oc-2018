@@ -1,5 +1,5 @@
 ##### IMPORT #####
-import pyglet, random, math, time, glob, re
+import pyglet, random, math, time, glob, re, codecs
 from pyglet.window import key, FPSDisplay
 
 ##### MEDIA #####
@@ -163,7 +163,7 @@ class Poetry():
     splited_path = re.split(r'(\W+)', poem) # split the path of the poem to extract the name and the author
     author = splited_path[-5] + " " + splited_path[-3] # join first name + last name
     poem_name = ''.join(splited_path[4:-6]) # the name of the poem
-    poetry = open(poem) # open the poem
+    poetry = codecs.open(poem, 'r', encoding='ISO-8859-1') # open the poem
     towards_splited = poetry.read().split('\n') # each toward is a line of the document
 
     def __init__(self):
@@ -201,7 +201,7 @@ class Poetry():
         Save the 15 words chosen in choose_words in a created file called <words.txt>
         :return: None
         '''
-        with open('resources/documents/words/words.txt', 'w', encoding='utf8') as filehandle: #save the words in a txt document
+        with codecs.open('resources/documents/words/words.txt', 'w', encoding='ISO-8859-1') as filehandle: #save the words in a txt document
             for listitem in self.choose_words():
                 filehandle.write('%s\n' % listitem)
 
@@ -210,7 +210,7 @@ class Poetry():
         Open the file with the words in it
         :return: list
         '''
-        return open("resources/documents/words/words.txt", encoding='utf8').read().split('\n') #open the file containing the words
+        return codecs.open("resources/documents/words/words.txt", encoding='ISO-8859-1').read().split('\n') #open the file containing the words
 
     def remove_words(self):
         '''
