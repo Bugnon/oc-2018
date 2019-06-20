@@ -359,7 +359,7 @@ def update(dt):
                 feather.dead = True # kill the feather
                 if len(RotatingSprite.segments) > 0:
                     for segment in RotatingSprite.all_segments: #even the dead segments
-                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) < (math.sqrt((segment.height/2)**2 + (segment.width/2)**2) + feather.height/2): # check which segments is hit by the feather
+                        if distance(point_1=(feather.x, feather.y), point_2=(segment.x, segment.y)) < (math.sqrt((segment.height/2)**2 + (segment.width/2)**2)): # check which segments is hit by the feather
                             if not already_dead: # kill the segment if the feather has not kill one already
                                 if segment.word == RotatingSprite.words_not_shuffled[0]:
                                     line += 1
