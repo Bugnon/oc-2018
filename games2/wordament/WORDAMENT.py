@@ -15,7 +15,7 @@ from random  import randint
 ############################################
 def init():
     '''game startpoint'''
-    global fo, height, width, pattern_size, case_size, game_state, game_location, delta_center
+    global fo, height, width, pattern_size, case_size, game_state, game_location, delta_center, dictionnary
     width = 800
     height = 850
     pattern_size = min(height - 55, width)
@@ -24,6 +24,7 @@ def init():
     delta_center = (width - pattern_size)/2
     case_size = pattern_size/4
     fo = codecs.open(game_location + '/levels/dico.txt', 'r', 'utf-8')
+    dictionnary = set(fo.readlines())
     init_var()
     init_objects()
 
@@ -36,8 +37,6 @@ def init_var():
     taken_words = []
     old_case = [-1, -1]
     word_state = 0
-    selectable_line_x = [] # avec des valeurs de y
-    selectable_line_y = [] # avec des valeurs de x
     
 def random_level_generation():
     '''Create a random grid level'''
@@ -66,13 +65,12 @@ def init_objects():
     random_button = pyglet.sprite.Sprite(pyglet.image.load(Path(game_location + '/images/bouton_random.png')))
     next_level_button = pyglet.sprite.Sprite(pyglet.image.load(Path(game_location + '/images/next_level.png')))
     menu_background = pyglet.image.load(Path(game_location + '/images/Menu_Background.jpg'))
-    
     add_audio()
             
 # Set of the music during the game :
 def add_audio():
     '''Bring the music in the game through 3 differents musics choosen randomly'''
-    pyglet.options['audio'] = ('openal', 'pulse', 'directsound', 'silent')
+    pyglet.options['audio'] = ('openal', 'pulse', 'directsound')
     num = randint(0,2)
     music = pyglet.media.load(Path(game_location + '/images/music_' + str(num) + '.wav'))
     looper = pyglet.media.SourceGroup(music.audio_format, None)
@@ -82,8 +80,6 @@ def add_audio():
     looper.loop = True
     music_player.play()
     music_player.volume = 0.25
-
-
 init()
 
 
@@ -181,7 +177,7 @@ def on_mouse_release(x, y, button, modifiers):
             word_state = 2
         new_word_print.text = "Word : " + new_word
         new_word = ""
-        if score >=100:
+        if score >=30:
             new_level()
         
     
@@ -196,18 +192,19 @@ def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
         global old_case
         if buttons & pyglet.window.mouse.LEFT:
             for k in range(4):
-                for i in range(4):
-                    if case_size / 10 + case_size * k < y < ((k + 1) * case_size) - case_size / 10 and  case_size / 10 + case_size * i + delta_center < x < ((i + 1) * (case_size )) - case_size / 10 + delta_center:
-                        if [k, i] not in word_coordinate and (word_coordinate == [] or ((word_coordinate[-1][0] - 2) < k < (word_coordinate[-1][0] + 2) and (word_coordinate[-1][1] - 2) < i < (word_coordinate[-1][1] + 2))): 
-                                word_coordinate.append([k, i])
-                                print(k, i)
-                                new_word += (ML[3 - k][i])
-                                new_word_print.text = "Word : " + new_word
-                        elif len(word_coordinate) > 1:
-                                if word_coordinate[-2][0] == k and word_coordinate[-2][1] ==i:
-                                    del word_coordinate[-1]
-                                    new_word = new_word[:-1]
+                if case_size / 10 + case_size * k < y < ((k + 1) * case_size) - case_size / 10:
+                    for i in range(4):
+                        if  case_size / 10 + case_size * i + delta_center < x < ((i + 1) * (case_size )) - case_size / 10 + delta_center:
+                            if [k, i] not in word_coordinate and (word_coordinate == [] or ((word_coordinate[-1][0] - 2) < k < (word_coordinate[-1][0] + 2) and (word_coordinate[-1][1] - 2) < i < (word_coordinate[-1][1] + 2))): 
+                                    word_coordinate.append([k, i])
+                                    #print(k, i)
+                                    new_word += (ML[3 - k][i])
                                     new_word_print.text = "Word : " + new_word
+                            elif len(word_coordinate) > 1:
+                                    if word_coordinate[-2][0] == k and word_coordinate[-2][1] ==i:
+                                        del word_coordinate[-1]
+                                        new_word = new_word[:-1]
+                                        new_word_print.text = "Word : " + new_word
 
 @window.event 
 def on_resize(width, height):
@@ -222,25 +219,14 @@ def on_resize(width, height):
 def check_existence(search):
     search = str(search + '\r\n')
     search = search.lower()
-    string = fo.readlines()
-    string = set(string)
-    if search in string:
+    if search in dictionnary:
         return True
-
-def create_selectable_grid():
-    l_x = [] # avec des valeurs de y
-    l_y = [] # avec des valeurs de x
-    for i in range(4):
-        
-        
-    case_size / 10 + case_size * k < y < ((k + 1) * case_size) - case_size / 10 and  case_size / 10 + case_size * i + delta_center < x < ((i + 1) * (case_size )) - case_size / 10 + delta_center:
     
 
 def create_image_store(ML):
     image_store = {}
     for u in range(4):
         for n in range(4):
-            print(ML[3 - n][u])
             init = pyglet.image.load(Path(game_location + '/images/' + ML[3 - n][u] + '.png'))
             init_grid = pyglet.image.ImageGrid(init, 1, 4)
             image_store[ML[3 - n][u]] = init_grid
@@ -255,10 +241,12 @@ def new_level():
         ML = getattr(levels, var)
     else:
         ML = random_level_generation()
-    print(ML)
     image_store = {}
     image_store = create_image_store(ML)
-        
+    print(score)
+    new_word_print.text = "Word : "
+    score_print.text = "Score : "
+    on_draw()
 
 
 
