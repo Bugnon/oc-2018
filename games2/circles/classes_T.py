@@ -3,9 +3,9 @@ import pyglet, random, math, time, glob, re, codecs
 from pyglet.window import key, FPSDisplay
 
 ##### MEDIA #####
-fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
-fire_sound = pyglet.media.Player()
-fire_sound.volume = 0.001
+#fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
+#fire_sound = pyglet.media.Player()
+#fire_sound.volume = 0.001
 
 ##### SCREEN INFORMATION #####
 platform = pyglet.window.get_platform()
@@ -86,8 +86,8 @@ class Player(pyglet.sprite.Sprite):
         feather = Feather(player=self, img=Feather.feather, x=self.x, y=self.y)
         Feather.feathers.append(feather)
 
-        fire_sound.queue(fire) # fire sound when a feather is shot
-        fire_sound.play()
+        #fire_sound.queue(fire) # fire sound when a feather is shot
+        #fire_sound.play()
 
         self.reloading = 30 # = 0,5 sec because it decreases by 1 every 1/60 of a second
 
