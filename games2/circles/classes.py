@@ -5,7 +5,7 @@ from pyglet.window import key, FPSDisplay
 ##### MEDIA #####
 fire = pyglet.media.load('resources/sound/fire.wav', streaming=False)
 fire_sound = pyglet.media.Player()
-fire_sound.volume = 0.001
+fire_sound.volume = 0.05
 
 ##### SCREEN INFORMATION #####
 platform = pyglet.window.get_platform()
@@ -164,7 +164,7 @@ class Poetry():
     splited_path = re.split(r'(\W+)', poem) # split the path of the poem to extract the name and the author
     author = splited_path[-5] + " " + splited_path[-3] # join first name + last name
     poem_name = ''.join(splited_path[4:-6]) # the name of the poem
-    poetry = codecs.open(poem, 'r', encoding='latin1') # open the poem
+    poetry = codecs.open(poem, 'r', encoding='ISO-8859-15') # open the poem
     towards_splited = poetry.read().split('\n') # each toward is a line of the document
 
     def __init__(self):
@@ -202,7 +202,7 @@ class Poetry():
         Save the 15 words chosen in choose_words in a created file called <words.txt>
         :return: None
         '''
-        with codecs.open('resources/documents/words/words.txt', 'w', encoding='latin1') as filehandle: #save the words in a txt document
+        with codecs.open("resources/documents/words/words.txt", 'w', encoding='ISO-8859-15') as filehandle: #save the words in a txt document
             for listitem in self.choose_words():
                 filehandle.write('%s\n' % listitem)
 
@@ -211,7 +211,7 @@ class Poetry():
         Open the file with the words in it
         :return: list
         '''
-        return codecs.open("resources/documents/words/words.txt", encoding='latin1').read().split('\n') #open the file containing the words
+        return codecs.open("resources/documents/words/words.txt", encoding='ISO-8859-15').read().split('\n') #open the file containing the words
 
     def remove_words(self):
         '''

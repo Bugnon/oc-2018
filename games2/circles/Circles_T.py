@@ -26,7 +26,7 @@ def distance(point_1=(0, 0), point_2=(0, 0)):
         (point_1[1] - point_2[1]) ** 2) # pythagore
 
 ##### MUSIC #####
-#musicSource = pyglet.media.load('resources/sound/violin.wav')
+#musicSource = pyglet.media.load('resources/sound/Violin.wav')
 #music = pyglet.media.Player()
 #music.volume = 0.0005
 #Keep playing for as long as the app is running (or you tell it to stop):
